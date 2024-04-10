@@ -59,23 +59,23 @@
                         </div>
                         <div style="overflow: auto;display: inline-flex;width: 20%" >
                             <span th:if="${student.pretest}">완료</span>
-                            <span th:if="${!student.pretest}">미완료 </span>
+                            <span th:if="${!student.pretest}"> - </span>
 
                         </div>
                         <div style="overflow: auto;display: inline-flex;width: 20%">
-                            <span th:if="${student.survey == 0}"> 미완료</span>
-                            <span th:if="${student.survey == 1}"> 첫번째 설문 완료 </span>
-                            <span th:if="${student.survey == 2}">두번째 설문 완료 </span>
-                            <span th:if="${student.survey == 3}">세번째 설문 완료 </span>
+                            <span th:if="${student.survey == 0}"> - </span>
+                            <span th:if="${student.survey == 1}"> 1회차 완료 </span>
+                            <span th:if="${student.survey == 2}"> 2회차 완료 </span>
+                            <span th:if="${student.survey == 3}"> 3회차 완료 </span>
                         </div>
                         <div style="overflow: auto;display: inline-flex;width: 20%">
-                            <span th:if="${student.counseling == 0}"> 완료된 상담이 없습니다.</span>
-                            <span th:if="${student.counseling == 1}"> 첫번째 상담 완료</span>
-                            <span th:if="${student.counseling == 2}"> 두번째 상담 완료</span>
-                            <span th:if="${student.counseling == 3}"> 세번째 상담 완료</span>
-                            <span th:if="${student.counseling == 4}"> 네번째 상담 완료</span>
-                            <span th:if="${student.counseling == 5}"> 다섯번째 상담 완료</span>
-                            <span th:if="${student.counseling == 6}"> 여섯번째 상담 완료</span>
+                            <span th:if="${student.counseling == 0}"> - </span>
+                            <span th:if="${student.counseling == 1}"> 1회차 완료</span>
+                            <span th:if="${student.counseling == 2}"> 2회차 완료</span>
+                            <span th:if="${student.counseling == 3}"> 3회차 완료</span>
+                            <span th:if="${student.counseling == 4}"> 4회차 완료</span>
+                            <span th:if="${student.counseling == 5}"> 5회차 완료</span>
+                            <span th:if="${student.counseling == 6}"> 6회차 완료</span>
                         </div>
                     </div>
                 </a>

@@ -29,6 +29,8 @@ public class LessonSearchImpl extends QuerydslRepositorySupport implements Lesso
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
+
+
         if (types != null && keyword != null) {
             for (String type : types) {
                 switch (type) {

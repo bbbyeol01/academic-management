@@ -11,6 +11,11 @@
     margin-bottom: 15px;
   }
 
+  .studentName:hover, .lessonName:hover {
+    text-decoration-line : underline;
+    cursor: pointer;
+  }
+
 </style>
 <body>
 <!-- warpper start -->
@@ -98,8 +103,8 @@
 
           </tr>
           <tr th:each="student : ${pageResponseDTO.dtoList}">
-            <td th:text="${student.lesson.curriculum.name + ' ' + student.lesson.number + '회차'}" class="align-middle"></td>
-            <td th:text="${student.name}" class="align-middle"></td>
+            <td th:text="${student.lesson.curriculum.name + ' ' + student.lesson.number + '회차'}" class="align-middle lessonName" th:idx="${student.lesson.idx}" onclick="goToLessonInfo(this.getAttribute('idx'))"></td>
+            <td th:text="${student.name}" class="align-middle studentName" th:idx="${student.idx}" onclick="goToStudentInfo(this.getAttribute('idx'))"></td>
             <td th:text="${student.birthday}" class="align-middle"></td>
             <td th:text="${student.email}" class="align-middle"></td>
             <td th:text="${student.phone}" class="align-middle"></td>
@@ -710,6 +715,18 @@
       reader.readAsDataURL(modifyFile.files[0]);
     }
   })
+
+
+  function goToStudentInfo(idx){
+    location.href = "/lesson/studentDetail?idx=" + idx;
+  }
+
+  function goToLessonInfo(idx){
+    location.href = "/lesson/detail?idx=" + idx;
+  }
+
+
+
 
   // nav 활성화
   // document.querySelector(".teacherManagement").classList.add("active");

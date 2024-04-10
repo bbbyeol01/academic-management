@@ -58,6 +58,7 @@ public class QuestionServiceImpl implements QuestionService{
         Question byId = findById(questionDTO.getIdx());
         byId.changeContent(questionDTO.getContent());
         byId.changeExample(questionDTO.getExample());
+        byId.changeAnswer(questionDTO.getAnswer());
 //        파일 고치는 로직은 따로?
         byId.changeItem(questionDTO.getItem1(), questionDTO.getItem2(), questionDTO.getItem3(), questionDTO.getItem4());
 

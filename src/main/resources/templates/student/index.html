@@ -21,7 +21,14 @@
 
                 <br>
                 <br>
+
                 <div style="max-width: 500px">
+                    <div class="alert alert-danger" role="alert" style="width: 100%; display: none" id="alertDiv">
+
+                        <button type="button" class="btn-close float-end" data-dismiss="alert" aria-label="Close" id="alertCloseBtn">
+                        </button>
+                    </div>
+
                     <form action="/student/select" method="post">
                         <select class="form-select" name="lessonIdx">
                             <option th:value="${lesson.idx}" th:each="lesson : ${lessonList}">[[${lesson.curriculum.name}]] [[${lesson.number}]]회차</option>
@@ -63,22 +70,50 @@
     document.querySelector(".studentHomeBtn").classList.add("active");
 
 
-    // const code = [[${code}]];
-
+    // alert -------------------------------------------------------------
     const url = new URL(window.location.href);
     console.log(window.location.href);
     const urlSearchParams = url.searchParams;
 
-    console.log(urlSearchParams.get("code"));
     const code = urlSearchParams.get("code");
+    const alertDiv = document.querySelector("#alertDiv");
 
     switch (code){
         case 'success' :
-            alert('제출되었습니다. ◝(ᵔᵕᵔ)◜');
+            changeMessage('success', '제출되었습니다. ◝(ᵔᵕᵔ)◜')
             break;
         case 'fail' :
-            alert('오류 발생! 다시 제출해주세요. (T⌓T)');
+            changeMessage('danger', '오류 발생! 다시 제출해주세요. (T⌓T)')
+            break;
+        case 'not-exist-student' :
+            changeMessage('danger', '존재하지 않는 학생입니다... (T⌓T) 다시 입력해주세요.')
     }
+
+    function changeMessage(type, message){
+        alertDiv.prepend(message);
+        switch (type){
+            case 'danger' :
+                alertDiv.classList = 'alert alert-danger';
+                break;
+            case 'success' :
+                alertDiv.classList = 'alert alert-success';
+        }
+        alertDiv.style.display = 'block';
+        history.replaceState({}, null, location.pathname);
+    }
+
+    // alert 닫기
+    const alertCloseBtn = document.querySelector("#alertCloseBtn");
+    alertCloseBtn.addEventListener("click", function (e){
+        e.stopPropagation();
+        e.preventDefault();
+        alertDiv.style.display = 'none';
+    })
+
+    // alert 끝 -------------------------------------------------------------
+
+
+
 
 </script>
 

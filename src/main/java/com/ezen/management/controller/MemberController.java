@@ -40,7 +40,8 @@ public class MemberController {
     @Value("${com.ezen.management.upload.path}")
     private String uploadPath;
 
-//    행정 관리 홈(행정 리스트)
+
+//    행정 -----------------------------------------------------------------------------------------------------
     @PreAuthorize("hasRole('MASTER')")
     @GetMapping("/admin")   //  /member/admin
     public String adminIndex(Model model, PageRequestDTO pageRequestDTO){
@@ -59,7 +60,7 @@ public class MemberController {
 
 //    행정 추가
     @PreAuthorize("hasRole('MASTER')")
-    @PostMapping("/admin/insert")   //  /member/admin/insert POST
+    @PostMapping("/admin/insert")
     public String adminInsert(MemberDTO memberDTO, MultipartFile file){
 
         if(file != null){
@@ -75,7 +76,7 @@ public class MemberController {
     }
 
 
-//    행정 정보
+//    행정 찾기
     @GetMapping("/admin/getAdmin")
     @ResponseBody
     public Member getAdmin(String adminId){
@@ -111,10 +112,11 @@ public class MemberController {
     public void adminDelete(String id) throws IOException {
         memberService.delete(id);
     }
+//    행정 끝 -----------------------------------------------------------------------------------------------------
 
 
 
-//    교사 관리 홈(교사 리스트)
+//    교사 -----------------------------------------------------------------------------------------------------
     @PreAuthorize("hasAnyRole('MASTER', 'ADMIN')")
     @GetMapping("/teacher")
     public String teacherIndex(Model model, PageRequestDTO pageRequestDTO){
@@ -181,8 +183,6 @@ public class MemberController {
     }
 
 
-
-
 //    교사 삭제
     @PreAuthorize("hasAnyRole('MASTER', 'ADMIN')")
     @PostMapping("/teacher/delete")
@@ -197,8 +197,13 @@ public class MemberController {
         }
 
     }
+//    교사 끝 -----------------------------------------------------------------------------------------------------
 
 
+
+
+
+//    학생 -----------------------------------------------------------------------------------------------------
 //    학생 목록
     @GetMapping("/student")
     public String student(Long lessonIdx, PageRequestDTO pageRequestDTO, Model model){
@@ -248,7 +253,7 @@ public class MemberController {
     }
 
 
-//    학생 정보
+//    학생 찾기
     @GetMapping("/student/getStudent")
     @ResponseBody
     public StudentDTO getStudent(Long studentIdx){
@@ -273,6 +278,7 @@ public class MemberController {
     }
 
 
+//    학생 삭제
     @PostMapping("/student/delete")
     public String deleteStudent(StudentDTO studentDTO){
 
@@ -284,6 +290,8 @@ public class MemberController {
         }
 
     }
+//    학생 끝 -----------------------------------------------------------------------------------------------------
+
 
 
     private void studentFileSave(StudentDTO studentDTO, MultipartFile file){
@@ -324,12 +332,6 @@ public class MemberController {
         }
 
     }
-
-
-
-
-
-
 
 
 

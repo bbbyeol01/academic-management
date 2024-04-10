@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="/layout/basic :: head">
-    <style>
+<style>
 
-        img {
-            max-width: 100%; /* 이미지가 부모 요소를 넘지 않도록 최대 너비 설정 */
-            max-height: 100%; /* 이미지가 부모 요소를 넘지 않도록 최대 높이 설정 */
-        }
-    </style>
+    img {
+        max-width: 100%; /* 이미지가 부모 요소를 넘지 않도록 최대 너비 설정 */
+        max-height: 100%; /* 이미지가 부모 요소를 넘지 않도록 최대 높이 설정 */
+    }
+
+    /*스크롤바 지우기*/
+    ::-webkit-scrollbar{
+        display: none;
+    }
+
+</style>
+<head th:replace="/layout/basic :: head">
 
 </head>
+
 <body>
 <!-- warpper start -->
 <div class="wrapper">
@@ -210,54 +217,70 @@
                   </div>
                   <div class="modal-body">
 
+                      <br>
+                      <button class="btn btn-primary float-end" style="margin-right: 50px" id="printBtn">인쇄하기</button>
+                      <br>
+                      <br>
+                      <hr>
+                      <br>
+                      <br>
+
+                      <div style="max-width: 2480px" id="print">
+
+
                       <!-- 학생 정보 -->
-<!--                      <div class="studentInfo" style="display: inline-flex; margin-top: 40px; margin-left: 10%">-->
+                      <div class="studentInfo" style="display: inline-flex; margin-top: 40px; margin-left: 10%">
 
-<!--                          <div style=" border: 1px solid lightgray; margin-right: 50px; width: 150px; height: 200px" class="studentFilename">-->
-<!--                              <img src="">-->
-<!--                              &lt;!&ndash;                                image here&ndash;&gt;-->
-<!--                          </div>-->
-<!--                          <table class="table table-borderless" style="width: 600px; flex-wrap: wrap">-->
+                          <div style=" border: 1px solid lightgray; margin-right: 50px; width: 150px; height: 200px" class="studentFilename">
+                              <img src="">
+                              <!--                                image here-->
+                          </div>
+                          <table class="table table-borderless" style="width: 600px; flex-wrap: wrap">
 
-<!--                              <tr>-->
-<!--                                  <td>이름</td>-->
-<!--                                  <td colspan="2" class="studentName">이름임</td>-->
-<!--                                  <td rowspan="5"><div class="studentScore" style="margin: 60px 0 60px 0; font-size: 20pt; display: inline-flex">00점/</div><p style="display: inline-flex">/100점</p></td>-->
-<!--                              </tr>-->
-<!--                              <tr>-->
-<!--                                  <td>생년월일</td>-->
-<!--                                  <td colspan="2" class="studentBirthday">960123</td>-->
-<!--                              </tr>-->
-<!--                              <tr>-->
-<!--                                  <td>연락처</td>-->
-<!--                                  <td colspan="2" class="studentPhone">010-0000-0000</td>-->
-<!--                              </tr>-->
-<!--                              <tr>-->
-<!--                                  <td>이메일</td>-->
-<!--                                  <td colspan="2" class="studentEmail">byeol@gmail.com</td>-->
-<!--                              </tr>-->
-<!--                              <tr>-->
-<!--                                  <td>과정</td>-->
-<!--                                  <td colspan="2"><div style="max-width: 300px; overflow: scroll; display: inline-flex; word-break: keep-all" class="studentLesson">과정이름과정이름과정이름과정이름과정이름과정이름과정이름</div></td>-->
-<!--                              </tr>-->
+                              <tr>
+                                  <td>이름</td>
+                                  <td colspan="2" class="studentName"> </td>
+                                  <td rowspan="5"><div class="studentScore" style="margin: 60px 0 60px 0; font-size: 20pt; display: inline-flex">00점/</div><p style="display: inline-flex">/100점</p></td>
+                              </tr>
+                              <tr>
+                                  <td>생년월일</td>
+                                  <td colspan="2" class="studentBirthday"> </td>
+                              </tr>
+                              <tr>
+                                  <td>연락처</td>
+                                  <td colspan="2" class="studentPhone"> </td>
+                              </tr>
+                              <tr>
+                                  <td>이메일</td>
+                                  <td colspan="2" class="studentEmail"> </td>
+                              </tr>
+                              <tr>
+                                  <td>과정</td>
+                                  <td colspan="2"><div style="max-width: 300px; overflow: scroll; display: inline-flex; word-break: keep-all" class="studentLesson">과정이름과정이름과정이름과정이름과정이름과정이름과정이름</div></td>
+                              </tr>
 
-<!--                          </table>-->
-
-
-
-<!--                      </div>-->
-                      <!-- 학생 정보 끝-->
+                          </table>
 
 
-<!--                      <br>-->
-<!--                      <br>-->
-<!--                      <br>-->
-<!--                      <hr>-->
-<!--                      <br>-->
+
+                      </div>
+<!--                       학생 정보 끝-->
+
+
+                      <br>
+                      <br>
+                      <br>
+                      <hr>
+                      <br>
+
+
+
+
 
                       <!-- 문제 리스트 -->
                       <div class="questionAnswerPaper" style="margin: 20px; ">
 
+                      </div>
 
 
                       </div>
@@ -355,7 +378,7 @@
 
   })
 
-  const questionAnswerPaper = document.querySelector(".questionAnswerPaper");
+  let questionAnswerPaper = document.querySelector(".questionAnswerPaper");
 
 
   // 답안지 모달
@@ -364,13 +387,13 @@
     return response.data;
   }
 
-  // async function getStudent(paramList){
-  //   const response = await axios.get('/student/getStudent', {params : paramList});
-  //   console.log("done!");
-  //   console.log(response);
-  //
-  //   return response.data;
-  // }
+  async function getStudent(paramList){
+    const response = await axios.get('/student/getStudent', {params : paramList});
+    console.log("done!");
+    console.log(response);
+
+    return response.data;
+  }
 
 
 
@@ -394,22 +417,26 @@
 
 
     // 학생 정보
-    // getStudent(params).then(result => {
-    //   console.log("student info!");
-    //   console.log(result);
-    //
-    //   studentName.innerText = result.name;
-    //   studentLesson.innerText = result.lessonName + ' ' +  result.lessonNumber + '회차';
-    //   studentPhone.innerText = result.phone;
-    //   studentBirthday.innerText = result.birthday;
-    //   studentFileName.innerHTML = `<img src="/images/${result.fileName}" style="object-fit: cover; width: 150px; height: 200px">`;
-    //   studentScore.innerText = result.score + '점';
-    //
-    //
-    // }).catch( e => {
-    //   alert('student error!');
-    //
-    // })
+    getStudent(params).then(result => {
+      console.log("student info!");
+      console.log(result);
+
+      studentName.innerText = result.name;
+      studentLesson.innerText = result.lessonName + ' ' +  result.lessonNumber + '회차';
+      studentPhone.innerText = result.phone;
+      studentBirthday.innerText = result.birthday;
+      if(result.uuid != null){
+        studentFileName.innerHTML = `<img src="/view/${result.uuid + '_' + result.fileName}" style="object-fit: cover; width: 150px; height: 200px">`;
+      }else{
+          studentFileName.innerHTML = `<img src="/images/default_profile.jpg" style="object-fit: cover; width: 150px; height: 200px">`;
+      }
+      studentScore.innerText = result.score + '점';
+
+
+    }).catch( e => {
+      alert('student error!');
+
+    })
 
 
     // 답안지
@@ -427,7 +454,7 @@
       for(let i = 0; i < 20; i++){
         // $(".questionAnswerPaper").append()
 
-        htmls += `<div style="display: inline-flex; width: 500px; flex-wrap: nowrap">
+        htmls += `<div style="display: inline-flex; width: 500px; flex-wrap: nowrap" class="oneQuestion">
 
                         ${(result.questionAnswer[i]) === (result.answerList[i].answer.toString()) ?
                 `<img src="/images/correct.png" style=" width: 120px; position: absolute;">` :
@@ -479,6 +506,50 @@
     $("#answerPaper").modal('show');
 
   }
+
+
+
+  // const answerPaper = document.querySelector("#answerPaper"); // 모달
+  // questionAnswerPaper 얘가 내부 내용만 있는 div
+
+  const printBtn = document.querySelector("#printBtn");
+  let print = document.querySelector("#print");
+
+  printBtn.addEventListener("click", function (e) {
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if(!confirm('인쇄하시겠습니까?')){
+          return;
+      }
+
+      // let initBody;
+      print = document.querySelector("#print");
+      document.body.innerHTML = print.innerHTML;
+
+      window.onbeforeprint = function(){
+          document.body.style.zoom = '68%';
+          // document.body.innerHTML = print.innerHTML;
+      };
+
+      window.onafterprint = function(){
+          // 버튼 속성이 다 깨져서 그냥 새로고침
+          location.reload();
+      };
+
+      setTimeout(function () {
+        window.print();
+      }, 250);
+
+      return false;
+
+  })
+
+
+
+
+
 
 
 

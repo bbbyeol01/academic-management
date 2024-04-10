@@ -25,7 +25,7 @@ public class Counseling extends BaseEntity{
     @Column(nullable = false)
     private LocalDateTime counselingDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String content;
 
     @Column(nullable = false)

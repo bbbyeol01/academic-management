@@ -54,18 +54,20 @@ public class StudentController {
     @PostMapping("/select")
     public String select(Model model, StudentDTO studentDTO) {
 
+        Student student = null;
+
 
 //        레슨 인덱스와 받아온 이름으로 학생 조회
 //        뷰에서는 학생 정보를 보여주고 사전평가/설문조사 중 하나를 클릭하면 거기로 student idx를 넘겨줌
-        Student student = studentService.findByLessonIdxAndName(studentDTO.getLessonIdx(), studentDTO.getName());
+        try {
+            student = studentService.findByLessonIdxAndName(studentDTO.getLessonIdx(), studentDTO.getName());
+        }catch (Exception e){
+//        학생이 존재하지 않으면 돌아감
+            return "redirect:/student?code=not-exist-student";
 
-
-//        학생이 존재하지 않으면 문제를 풀 수 없음
-
-        if (student == null) {
-
-            return "redirect:/student";
         }
+
+
 
 
         model.addAttribute("lesson", student.getLesson());

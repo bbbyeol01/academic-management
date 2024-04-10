@@ -39,6 +39,7 @@ public class CustomUserDetailService implements UserDetailsService {
                 member.getId(),
                 member.getPwd(),
                 member.getName(),
+                member.getUuid(),
                 member.getFileName(),
                 true,
                 true,

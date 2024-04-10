@@ -73,9 +73,18 @@
     <a href="/">
       <img class="mb-4" src="/images/ezen_logo_font.png" alt="" width="80%" style="margin: 0; padding: 0">
     </a>
-<!--    <h1 >이젠 아카데미</h1>-->
     <br>
     <br>
+
+
+    <div class="alert alert-danger" role="alert" style="width: 100%; display: none" id="alertDiv">
+      <div class="float-start">아이디나 비밀번호가 올바르지 않습니다.</div>
+      <button type="button" class="btn-close float-end" data-dismiss="alert" aria-label="Close" id="alertCloseBtn">
+      </button>
+      <br>
+    </div>
+
+
     <div class="form-floating">
       <input type="text" name="username" class="form-control" id="floatingInput" placeholder="name@example.com">
       <label for="floatingInput">아이디</label>
@@ -102,14 +111,20 @@
   const urlSearchParams = url.searchParams;
   const error = urlSearchParams.get("error");
 
-  // switch (code){
-  //   case 'fail' :
-  //     alert('아이디나 비밀번호가 올바르지 않습니다.');
-  // }
 
   if(error !== null){
-    alert('아이디나 비밀번호가 올바르지 않습니다.');
+    // alert('아이디나 비밀번호가 올바르지 않습니다.');
+    alertDiv.style.display = 'block';
   }
+
+  // alert 닫기
+  const alertCloseBtn = document.querySelector("#alertCloseBtn");
+  alertCloseBtn.addEventListener("click", function (e){
+    e.stopPropagation();
+    e.preventDefault();
+    alertDiv.style.display = 'none';
+  })
+
 
 
 </script>
