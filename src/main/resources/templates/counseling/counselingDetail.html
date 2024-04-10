@@ -83,6 +83,7 @@
                                         <span class="input-group-text">상담일자</span>
                                         <input type="text" class="form-control" name="counselingDate" th:value="${#temporals.format(counseling.counselingDate, 'yyyy-MM-dd')}" readonly>
                                     </div>
+                <!-- resize: none; => textarea수정불가 / overflow: hidden => 스크롤 숨기기 -->
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">상담내용</span>
                                         <textarea class="form-control col-sm-5" name="content" id="content" th:text="${counseling.content}" style="resize: none; overflow: hidden;" readonly></textarea>

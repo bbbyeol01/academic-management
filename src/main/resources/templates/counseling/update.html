@@ -44,7 +44,7 @@
                                         <textarea class="form-control col-sm-5" rows="40" name="content" id="content" maxlength="1000" th:text="${counseling.content}" oninput="checkTextareaLength()" style="resize: none; overflow: hidden;" placeholder="상담내용을 작성하세요" required></textarea>
                                         <p class="text-end" id="charCount"></p>
                                     </div>
-                                    <!--  기입으로할지 아니면 radio로 할지                              -->
+                                    <!--  기입으로할지 아니면 radio로 할지  -->
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">상담 방법</span>
                                         <input type="text" id="numberOnly1" class="form-control" name="method" th:value="${counseling.method}" placeholder="0:대면, 1:온라인, 2:전화 중 맞는 방법을 입력하세요" required>
