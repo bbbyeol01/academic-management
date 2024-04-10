@@ -13,22 +13,17 @@
     <!-- content start -->
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
-
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
-
             <div class="row float-end">
                 <div class="col-auto">
                     <button type="button" class="btn btn-outline-dark clearBtn">목록</button>
                     <button type="button" class="btn btn-primary creatBtn">추가</button>
                 </div>
             </div>
-
             <h3> 상담 </h3>
             <hr>
             <br>
             <!-- 학생 정보-->
-
-
             <div style="display: inline-flex">
                 <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
                      style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
@@ -57,60 +52,14 @@
                     </div>
                 </div>
             </div>
-
             <!-- 학생정보 끝 -->
-
-
             <br>
             <br>
-
             <div class="row mt-3">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-
                 <!-- Title -->
-                            <div class="row">
-                                <p class="fs-2 fw-bold">상담</p>
-                                <!--<h8>※상담방식: ( 0: 대면 / 1: 온라인 / 2: 전화 )</h8><br>-->
-                <!-- Curriculum -->
-                                <input type="text" class="form-control" th:value="${student.lesson.curriculum.name}" style="margin: 0;" readonly />
-                            </div>
-                            <hr>
-
-                            <div class="card-body">
-                                <div class="row">
-                <!-- 왼쪽에 학생 정보 표시 -->
-                                    <div class="col-md-6">
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">No</span>
-                                            <input type="text" class="form-control" name="studentIdx" th:value="${student.idx}" readonly>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">이름</span>
-                                            <input type="text" class="form-control" name="name" th:value="${student.name}" readonly>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">연락처</span>
-                                            <input type="text" class="form-control" name="phone" th:value="${student.phone}" readonly>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <span class="input-group-text">이메일</span>
-                                            <input type="text" class="form-control" name="phone" th:value="${student.email}" readonly>
-                                        </div>
-                                    </div>
-
-                <!-- 오른쪽에 사진 표시 -->
-
-                                    <div class="col-md-6">
-                                        <div class="border border-dark-end rounded p-2 d-flex justify-content-end align-items-center" style="margin: 1px; width: 160px;">
-                                            <!-- 여기에 사진 표시인디 사진은 변화없이 고정해놓고 싶은데 -->
-                                            <img src="/images/default_profile.jpg" alt="학생 사진" class="img-fluid" style="width: 150px; height: 200px; padding: 1px; object-fit: cover;">
-                                        </div>
-                                    </div>
-                                </div>
-
-
 
                 <!-- 여기부터는 상담List로 나오기 -->
                             <div class="card-body">
@@ -158,7 +107,6 @@
                             </div><!-- end row -->
                             </form>
                             </div><!-- end th:each -->
-                            </div><!-- end card body -->
                             </div><!-- end card body -->
                         </div><!-- end card-header -->
                     </div><!-- end card -->
@@ -272,21 +220,25 @@
 
 
 
-    // textarea의 높이를 동적으로 조절하는 함수
-    function adjustTextareaHeight() {
-        var textarea = document.getElementById('content');
-        textarea.style.height = 'auto'; // 기본 높이로 재설정
-        textarea.style.height = textarea.scrollHeight + 'px'; // 내용에 맞게 높이 조절
+    // textarea의 높이를 동적으로 조절하는 함수 / list로 여러 값에 적용할 때는 (document.querySelectorAll 사용)
+    function TextareaHeight() {
+        // 모든 textarea 요소에 대해 높이 조절
+        document.querySelectorAll('textarea').forEach(function(textarea) {
+            textarea.style.height = 'auto'; // 기본 높이로 재설정
+            textarea.style.height = textarea.scrollHeight + 'px'; // 내용에 맞게 높이 조절
+        });
     }
 
     // 페이지 로드 시 textarea의 높이를 조절
     window.onload = function() {
-        adjustTextareaHeight();
+        TextareaHeight();
     };
 
     // textarea의 값이 변경될 때마다 높이를 조절
-    document.getElementById('content').addEventListener('input', function() {
-        adjustTextareaHeight();
+    document.querySelectorAll('textarea').forEach(function(textarea) {
+        textarea.addEventListener('input', function() {
+            TextareaHeight();
+        });
     });
 
 

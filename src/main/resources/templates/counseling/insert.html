@@ -7,10 +7,8 @@
 <!-- warpper start -->
 <div class="wrapper">
     <div th:replace="/layout/basic :: sidebar">
-
     </div>
-
-    <!-- content start -->
+<!-- content start -->
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
 
@@ -19,10 +17,10 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
+<!--        Title -->
                             <h5>상담 추가</h5>
                         <div class="card-body">
                             <form th:action="@{/counseling/insert}" method="post" id="i1">
-<!--  학생번호랑 학생이름은 땡겨오는 걸로                              -->
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">학생.No</span>
                                     <input type="text" class="form-control" name="studentIdx" th:value="${student.idx}" readonly>
@@ -34,17 +32,16 @@
 <!-- 수정요청사항 이미 등록된 상담회차는 등록 못하게 -->
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">상담회차</span>
-                                    <input type="text" id="numberOnly" class="form-control" name="round" placeholder="상담회차" required>
+                                    <input type="text" id="numberOnly" class="form-control" name="round" oninput="checkRoundNumber()" placeholder="상담회차" required>
                                 </div>
                                 <div class="bs-body-color-rgb">
                                     <span class="input-group-text">내용</span>
-                                    <textarea class="form-control col-sm-5" rows="5" id="content" name="content" maxlength="1000" placeholder="상담내용을 작성하세요" required oninput="checkTextareaLength()"></textarea>
+                                    <textarea class="form-control col-sm-5" rows="15" id="content" name="content" maxlength="1000" placeholder="상담내용을 작성하세요" oninput="checkTextareaLength()" style="resize: none; overflow: hidden;" required></textarea>
                                     <p class="text-end" id="charCount"></p>
                                 </div>
-<!--  기입으로할지 아니면 radio로 할지                              -->
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">상담 방법</span>
-                                    <input type="text" id="numberOnly1" class="form-control" name="method" placeholder="0:대면, 1:온라인, 2:전화 중 맞는 방법을 입력하세요" required>
+                                    <input type="text" id="numberOnly1" class="form-control" name="method" oninput="checkMethodNumber()" placeholder="0:대면, 1:온라인, 2:전화 중 맞는 방법을 입력하세요" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">담당자</span>
@@ -54,8 +51,7 @@
                                     <span class="input-group-text">날짜</span>
                                     <input type="text" class="form-control counselingDate" name="counselingDate" placeholder="상담시간" >
                                 </div>
-
-
+            <!-- button -->
                                 <div class="my-4">
                                     <div class="float-end">
                                         <button type="button" class="btn btn-primary creatBtn">저장</button>
@@ -153,6 +149,19 @@
     $("#numberOnly1").on("keyup", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
 
 
+    //상담방법 0,1,2 입력 가능
+    function checkMethodNumber(){
+        var methodInput = document.getElementById('numberOnly1');
+        var method = methodInput.value;
+
+        if (!(method === '0' || method === '1' || method === '2')){
+            alert("맞는 번호를 입력하세요")
+            // 잘못된 값 입력 시 입력값을 지우기
+            methodInput.value = "";
+        }else{
+            console.log("method= " + method);
+        }
+    }
 
 
 
@@ -174,14 +183,19 @@
 
 
 
+    //상담회차 1~6으로 제한
+    function checkRoundNumber(){
+        var roundInput = document.getElementById('numberOnly');
+        var round = roundInput.value;
 
-    //시간 가져오기1
-    // var currentDate = moment();
-    // console.log(currentDate); // 현재 날짜와 시간 출력
-
-    //시간 가져오기2
-    //var today = new Date();
-    //var formattedDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        if (!(round === '1' || round === '2' || round === '3' || round === '4'|| round === '5'|| round === '6')){
+            alert("맞는 번호를 입력하세요")
+            // 잘못된 값 입력 시 입력값을 지우기
+            roundInput.value = "";
+        }else{
+            console.log("round= " + round);
+        }
+    }
 
 
 

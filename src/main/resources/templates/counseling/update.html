@@ -7,47 +7,43 @@
 <!-- warpper start -->
 <div class="wrapper">
     <div th:replace="/layout/basic :: sidebar">
-
     </div>
-
     <!-- content start -->
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
-
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
             <div class="row mt-3">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h5>상담 수정</h5>
+                <!-- Title -->
+                            <h3>상담 수정</h3>
                             <div class="card-body">
                                 <form th:action="@{/counseling/update}" method="post" id="m1">
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text">상담.No</span>
-                                        <input type="text" class="form-control" name="idx" th:value="${counseling.idx}" readonly>
+                                        <input type="hidden" class="form-control" name="idx" th:value="${counseling.idx}" readonly>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text">학생.No</span>
+                                        <span class="input-group-text">학생 번호</span>
                                         <input type="text" class="form-control" name="studentIdx" th:value="${student.idx}" readonly>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text">학생이름</span>
+                                        <span class="input-group-text">학생 이름</span>
                                         <input type="text" class="form-control" th:value="${student.name}" placeholder="name" readonly>
                                     </div>
-                                    <!-- 수정요청사항 이미 등록된 상담회차는 등록 못하게 -->
+                <!-- 수정요청사항 이미 등록된 상담회차는 등록 못하게 -->
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">상담회차</span>
                                         <input type="text" id="numberOnly" class="form-control" name="round" th:value="${counseling.round}" placeholder="상담회차" readonly>
                                     </div>
                                     <div class="bs-body-color-rgb">
                                         <span class="input-group-text">내용</span>
-                                        <textarea class="form-control col-sm-5" rows="30" name="content" id="content" maxlength="1000" th:text="${counseling.content}" oninput="checkTextareaLength()" style="resize: none; overflow: hidden;" placeholder="상담내용을 작성하세요" required></textarea>
+                                        <textarea class="form-control col-sm-5" rows="15" name="content" id="content" maxlength="1000" th:text="${counseling.content}" oninput="checkTextareaLength()" style="resize: none; overflow: hidden;" placeholder="상담내용을 작성하세요" required></textarea>
                                         <p class="text-end" id="charCount"></p>
                                     </div>
-                                    <!--  기입으로할지 아니면 radio로 할지  -->
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">상담 방법</span>
-                                        <input type="text" id="numberOnly1" class="form-control" name="method" th:value="${counseling.method}" placeholder="0:대면, 1:온라인, 2:전화 중 맞는 방법을 입력하세요" required>
+                                        <input type="text" id="numberOnly1" class="form-control" name="method" th:value="${counseling.method}" oninput="checkMethodNumber()" placeholder="0:대면, 1:온라인, 2:전화 중 맞는 방법을 입력하세요" required>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">담당자</span>
@@ -57,8 +53,7 @@
                                         <span class="input-group-text">날짜</span>
                                         <input type="text" class="form-control counselingDate" name="counselingDate" th:value="${counseling.counselingDate}" placeholder="상담시간" readonly>
                                     </div>
-
-
+                <!-- button -->
                                     <div class="my-4">
                                         <div class="float-end">
                                             <button type="button" class="btn btn-primary creatBtn">저장</button>
@@ -67,7 +62,6 @@
                                     </div>
                                 </form>
                             </div><!-- end card body -->
-
                         </div><!-- end card-header -->
                     </div><!-- end card -->
                 </div><!-- end col -->
@@ -137,6 +131,21 @@
     $("#numberOnly1").on("keyup", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
 
 
+    //상담방법 0,1,2 입력 가능
+    function checkMethodNumber(){
+        var methodInput = document.getElementById('numberOnly1');
+        var method = methodInput.value;
+
+        if (!(method === '0' || method === '1' || method === '2')){
+            alert("맞는 번호를 입력하세요")
+            // 잘못된 값 입력 시 입력값을 지우기
+            methodInput.value = "";
+        }else{
+            console.log("method= " + method);
+        }
+    }
+
+
 
     //입력된 글자 수 표시
     function checkTextareaLength() {
@@ -157,7 +166,7 @@
 
 
     // textarea의 높이를 동적으로 조절하는 함수
-    function adjustTextareaHeight() {
+    function TextareaHeight() {
         var textarea = document.getElementById('content');
         textarea.style.height = 'auto'; // 기본 높이로 재설정
         textarea.style.height = textarea.scrollHeight + 'px'; // 내용에 맞게 높이 조절
@@ -165,12 +174,12 @@
 
     // 페이지 로드 시 textarea의 높이를 조절
     window.onload = function() {
-        adjustTextareaHeight();
+        TextareaHeight();
     };
 
     // textarea의 값이 변경될 때마다 높이를 조절
     document.getElementById('content').addEventListener('input', function() {
-        adjustTextareaHeight();
+        TextareaHeight();
     });
 
 
