@@ -15,32 +15,72 @@
         <div th:replace="/layout/basic :: navbar"></div>
 
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
+
+            <div class="row float-end">
+                <div class="col-auto">
+                    <button type="button" class="btn btn-outline-dark clearBtn">목록</button>
+                    <button type="button" class="btn btn-primary creatBtn">추가</button>
+                </div>
+            </div>
+
+            <h3> 상담 </h3>
+            <hr>
+            <br>
+            <!-- 학생 정보-->
+
+
+            <div style="display: inline-flex">
+                <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
+                     style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
+                <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
+                     style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
+                <div style="line-height: 90%"> <!-- 이미지랑 텍스트로 두 칸 -->
+                    <br>
+                    <div> <!-- 이름이랑 값으로 두칸 -->
+                        <h5 style="margin-right: 50px">이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.name}]]</h5>
+                    </div>
+                    <br>
+                    <div>
+                        <h5 style="margin-right: 20px">생년월일&nbsp;&nbsp;&nbsp;&nbsp;[[${student.birthday}]]</h5>
+                    </div>
+                    <br>
+                    <div>
+                        <h5 style="margin-right: 20px">전화번호&nbsp;&nbsp;&nbsp;&nbsp;[[${student.phone}]]</h5>
+                    </div>
+                    <br>
+                    <div>
+                        <h5 style="margin-right: 35px">이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.email}]]</h5>
+                    </div>
+                    <br>
+                    <div>
+                        <h5 style="margin-right: 35px">과정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.lesson.curriculum.name}]]</h5>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 학생정보 끝 -->
+
+
+            <br>
+            <br>
+
             <div class="row mt-3">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <div class="row justify-content-end">
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-outline-dark clearBtn">목록</button>
-                                    <button type="button" class="btn btn-primary creatBtn">추가</button>
-                                </div>
-                            </div>
-                        <!-- Title -->
+
+                <!-- Title -->
                             <div class="row">
                                 <p class="fs-2 fw-bold">상담</p>
                                 <!--<h8>※상담방식: ( 0: 대면 / 1: 온라인 / 2: 전화 )</h8><br>-->
-                        <!-- Curriculum -->
+                <!-- Curriculum -->
                                 <input type="text" class="form-control" th:value="${student.lesson.curriculum.name}" style="margin: 0;" readonly />
                             </div>
                             <hr>
 
                             <div class="card-body">
                                 <div class="row">
-
                 <!-- 왼쪽에 학생 정보 표시 -->
-
-
-
                                     <div class="col-md-6">
                                         <div class="input-group mb-3">
                                             <span class="input-group-text">No</span>
@@ -71,9 +111,20 @@
                                 </div>
 
 
+
                 <!-- 여기부터는 상담List로 나오기 -->
-                                <form th:each="counseling: ${counselingList}" id="l1">
-                                    <hr>
+                            <div class="card-body">
+                                <div th:each="counseling: ${counselingList}" id="l1">
+                                <form>
+                                <div class="row">
+                                    <div class="col text-end">
+                                        <a th:href="|@{/counseling/update}?idx=${counseling.idx}|">
+                                            <button type="button" class="btn btn-secondary modBtn">수정하기</button>
+                                        </a>
+                                        <a th:href="|@{/counseling/delete}?idx=${counseling.idx}|">
+                                            <button type="button" class="btn btn-danger delBtn">삭제하기</button>
+                                        </a>
+                                    </div>
                                     <div class="input-group mb-3">
                                         <input type="hidden" class="form-control" name="idx" th:value="${counseling.idx}" readonly>
                                     </div>
@@ -104,22 +155,11 @@
                                         <span class="input-group-text">담당자</span>
                                         <input type="text" class="form-control" name="writer" th:value="${counseling.writer}" readonly>
                                     </div>
-                <!-- button -->
-                                    <div class="row my-4">
-                                        <div class="col text-end">
-                                            <a th:href="|@{/counseling/update}?idx=${counseling.idx}|">
-                                                <button type="button" class="btn btn-secondary modBtn">수정하기</button>
-                                            </a>
-                                            <a th:href="|@{/counseling/delete}?idx=${counseling.idx}|">
-                                                <button type="button" class="btn btn-danger delBtn">삭제하기</button>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </form><!-- end th:each -->
-
-
+                            </div><!-- end row -->
+                            </form>
+                            </div><!-- end th:each -->
                             </div><!-- end card body -->
-
+                            </div><!-- end card body -->
                         </div><!-- end card-header -->
                     </div><!-- end card -->
                 </div><!-- end col -->
@@ -248,6 +288,7 @@
     document.getElementById('content').addEventListener('input', function() {
         adjustTextareaHeight();
     });
+
 
 
 
