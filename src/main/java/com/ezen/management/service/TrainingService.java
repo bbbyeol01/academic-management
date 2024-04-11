@@ -26,6 +26,9 @@ public interface TrainingService {
 
     //유형 찾기
     public Category getCategoryIdx(Long idx);
+    
+    //유형 이름으로 유형찾기
+    public Category getCategoryByName(String name);
 
     default Category dtoToEntity(CategoryDTO categoryDTO){
 
@@ -99,7 +102,7 @@ public interface TrainingService {
     //----------------------------------------------------수업----------------------------------------------------
 
     //수업전체 & 검색 & 페이징
-    public PageResponseDTO<Lesson> searchLesson(PageRequestDTO pageRequestDTO);
+    public PageResponseDTO<Lesson> searchLesson(PageRequestDTO pageRequestDTO, String userID);
 
     //수업전체
     public List<Lesson> lessonList();
@@ -151,4 +154,7 @@ public interface TrainingService {
 
         return subjectHold;
     }
+
+    //과목평가 수정
+    public void subjectTestUpdate(SubjectTestDTO subjectTestDTO);
 }

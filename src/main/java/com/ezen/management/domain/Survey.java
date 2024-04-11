@@ -50,7 +50,7 @@ public class Survey {
         this.content = content;
         this.type = type;
 
-        // 선택안함이거나 주관식일 때, 입력이 없으면 null로 설정
+        // 선택안함이거나 주관식일 때, 입력이 없으면 0으로 설정
         if ("선택안함".equals(type) || "주관식".equals(type)) {
             this.item1 = null;
             this.item2 = null;

@@ -12,4 +12,7 @@ import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Long>, CategorySearch {
 
+    @Query("select c from Category c where c.name = :name")
+    Category getCategoryByName(String name);
+
 }

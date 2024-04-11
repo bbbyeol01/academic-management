@@ -25,6 +25,7 @@ public class TrainingServiceImpl implements TrainingService{
     private final LessonRepository lessonRepository;
     private final SubjectHoldRepository subjectHoldRepository;
     private final MemberRepository memberRepository;
+    private final SubjectTestRepository subjectTestRepository;
 
     //----------------------------------------------------유형----------------------------------------------------
     //유형전체
@@ -90,6 +91,13 @@ public class TrainingServiceImpl implements TrainingService{
 
         return category;
     }
+
+    @Override
+    public Category getCategoryByName(String name){
+        return categoryRepository.getCategoryByName(name);
+    }
+
+
 
     //----------------------------------------------------과목----------------------------------------------------
     //과목 전체 & 페이징
@@ -207,21 +215,35 @@ public class TrainingServiceImpl implements TrainingService{
 
     //수업 전체
     @Override
-    public PageResponseDTO<Lesson> searchLesson(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<Lesson> searchLesson(PageRequestDTO pageRequestDTO, String userId) {
         Pageable pageable = pageRequestDTO.getPageable();
 
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
 
-        Page<Lesson> lessonPage = lessonRepository.searchLesson(types, keyword, pageable);
+        Optional<Member> memberResult = memberRepository.findById(userId);
+        Member member = memberResult.orElseThrow();
+        String role = member.getRoleSet().toString();
 
-        List<Lesson> dtoList = lessonPage.getContent();
+        log.info("서비스 : " + role +" , "+userId );
 
-        return PageResponseDTO.<Lesson>withAll()
-                .pageRequestDTO(pageRequestDTO)
-                .dtoList(dtoList)
-                .total((int)lessonPage.getTotalElements())
-                .build();
+        if(role.equals("[ROLE_TEACHER]")){
+            Page<Lesson> lessonPage = lessonRepository.searchLesson(types, keyword, pageable, userId);
+            List<Lesson> dtoList = lessonPage.getContent();
+            return PageResponseDTO.<Lesson>withAll()
+                    .pageRequestDTO(pageRequestDTO)
+                    .dtoList(dtoList)
+                    .total((int)lessonPage.getTotalElements())
+                    .build();
+        }else{
+            Page<Lesson> lessonPage = lessonRepository.searchLesson(types, keyword, pageable, "None");
+            List<Lesson> dtoList = lessonPage.getContent();
+            return PageResponseDTO.<Lesson>withAll()
+                    .pageRequestDTO(pageRequestDTO)
+                    .dtoList(dtoList)
+                    .total((int)lessonPage.getTotalElements())
+                    .build();
+        }
     }
 
     //수업 전체
@@ -286,11 +308,12 @@ public class TrainingServiceImpl implements TrainingService{
         lesson.changeClassroom(lessonDTO.getClassRoom());
         lesson.changeQuestionName(lessonDTO.getQuestionName());
         lesson.changeContent(lessonDTO.getContent());
-        lesson.changeNumber(lesson.getNumber());
-        lesson.changeStartDay(lesson.getStartDay());
-        lesson.changeSurvey1(lesson.getSurvey1());
-        lesson.changeSurvey2(lesson.getSurvey2());
-        lesson.changeSurvey3(lesson.getSurvey3());
+        lesson.changeNumber(lessonDTO.getNumber());
+        lesson.changeStartDay(lessonDTO.getStartDay());
+        lesson.changeEndDay(lessonDTO.getEndDay());
+        lesson.changeSurvey1(lessonDTO.getSurvey1());
+        lesson.changeSurvey2(lessonDTO.getSurvey2());
+        lesson.changeSurvey3(lessonDTO.getSurvey3());
 
         log.info("잘 바뀌었나 확인해보자 : " + lesson);
 
@@ -300,4 +323,13 @@ public class TrainingServiceImpl implements TrainingService{
     //수업 삭제
     @Override
     public void lessonDelete(Long idx) { lessonRepository.deleteById(idx);}
+
+    //과목 평가 수정
+    @Override
+    public void subjectTestUpdate(SubjectTestDTO subjectTestDTO){
+        Optional<SubjectTest> result = subjectTestRepository.findById(subjectTestDTO.getIdx());
+        SubjectTest subjectTest = result.orElseThrow();
+
+        subjectTestRepository.save(subjectTest);
+    }
 }

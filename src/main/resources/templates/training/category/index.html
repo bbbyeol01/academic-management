@@ -22,9 +22,9 @@
             <br>
 
             <!-- 검색 -->
-            <div class="row mt-3 float-end" style="max-width: 500px; display: inline-flex">
+            <div class="row mt-3 float-end" style="max-width: 500px; display: inline-flex;">
                 <form action="/training/category" method="get">
-                    <div class="col">
+                    <div class="col" >
                         <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
                         <div class="input-group">
                             <input type="text" class="form-control keyword" name="keyword" th:value="${pageRequestDTO.keyword}" style="border-radius: 5px">&nbsp;
@@ -39,7 +39,7 @@
             <!-- 리스트 -->
             <br>
             <div style="display: inline-flex">총 [[${responseDTO.total}]]개</div>
-            <div th:each="category: ${responseDTO.getDtoList()}">
+            <div th:each="category: ${responseDTO.getDtoList()}" >
                 <hr>
                 <a style="cursor: pointer; color: #222;" th:name="${category.name}" th:idx="${category.idx}" th:onclick="updateBtn(this.getAttribute('name'),this.getAttribute('idx'))">
                     <div class="hovercolor" style="display: inline-flex" th:text="${category.name}"></div>
@@ -100,11 +100,11 @@
                         <div class="modal-body">
                             <div class="input-group mb-3">
                                 <input type="hidden" class="updateIdx">
-                                <input type="text" class="form-control updateName" placeholder="유형명" readonly>
+                                <input type="text" class="form-control updateName" placeholder="유형명">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <!--                        <button type="button" class="btn btn-outline-primary updateSubmit" >수정</button>&nbsp;-->
+                            <button type="button" class="btn btn-outline-primary updateSubmit" >수정</button>&nbsp;
                             <button type="button" class="btn btn-outline-danger deleteBtn" style="display: inline-flex" >삭제</button>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
     //유형 수정 모달
     const updateModal = new bootstrap.Modal(document.querySelector(".updateModal"))
     const updateName = document.querySelector(".updateName")
-    // const updateSubmit = document.querySelector(".updateSubmit")
+    const updateSubmit = document.querySelector(".updateSubmit")
     const updateIdx = document.querySelector(".updateIdx")
     const deleteBtn = document.querySelector(".deleteBtn")
 
@@ -188,25 +188,25 @@
         updateModal.show()
     }
 
-    // updateSubmit.addEventListener("click", function (e){
-    //
-    //     const updateCategory = {
-    //         contentType: 'application/json',
-    //         idx : updateIdx.value,
-    //         name: updateName.value
-    //     }
-    //
-    //     categoryUpdate(updateCategory).then(result => {
-    //         updateName.value = ''
-    //         updateIdx.value=''
-    //         updateModal.hide()
-    //         location.reload()
-    //     }).catch(e => {
-    //         console.log(e)
-    //     })
-    // }, false)
+    updateSubmit.addEventListener("click", function (e){
 
-    //유형 수정 모달 닫기
+        const updateCategory = {
+            contentType: 'application/json',
+            idx : updateIdx.value,
+            name: updateName.value
+        }
+
+        categoryUpdate(updateCategory).then(result => {
+            updateName.value = ''
+            updateIdx.value=''
+            updateModal.hide()
+            location.reload()
+        }).catch(e => {
+            console.log(e)
+        })
+    }, false)
+
+    // // 유형 수정 모달 닫기
     // updateClose.addEventListener("click", function (e){
     //     updateModal.hide()
     // })

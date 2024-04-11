@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:replace="/layout/basic :: head"></head>
 <body>
-<!-- warpper start -->
+<!-- wrapper start -->
 <div class="wrapper">
     <div th:replace="/layout/basic :: sidebar">
 
@@ -14,56 +14,164 @@
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
 
-        <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%;">
+        <div class="container-fluid pt-5 px-5">
 
-            <h3 style="display: inline-flex">Survey Result</h3>
+            <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%;">
 
-            <hr>
-            <br>
+                <h1>Survey Result</h1>
 
-            <!-- 검색 -->
-            <div class="row mt-3 float-end" style="max-width: 500px; display: inline-flex">
 
+
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <button class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차">
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <button class="btn btn-outline-primary w-100 m-2 secondBtn" type="button" th:text="2회차">
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <button class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차">
+                        </button>
+                    </div>
+
+                    <hr>
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6>훈련과정 : [[ ${lesson.curriculum.name} ]]</h6>
+                        <h6>훈련기간 : [[ ${lesson.startDay} ]] ~ [[ ${lesson.endDay} ]]</h6>
+                        <h6>훈련기수 : [[ ${lesson.number} ]]기</h6>
+                        <h6>훈련교사 : [[ ${lesson.member.name} ]]</h6>
+                        <h6>설문일자 : [[ ${lesson.survey1} ]]</h6>
+                        <h6>설문회차 : [[ ${round} ]]회차</h6>
+                    </div>
+
+                    <hr>
+
+                    <!-- 검색 -->
+                    <div class="row mt-3 float-end" style="max-width: 500px; display: inline-flex">
+
+                    </div>
+                    <!-- 검색 끝-->
+
+                    <!-- 설문 결과 그래프 -->
+                    <div th:each="i : ${#numbers.sequence(0, 14)}">
+                        <div class="bg-light rounded h-100 p-4">
+                            <h6 class="mb-4" th:text="${surveyDTOList[i].number} + '.' + ${surveyDTOList[i].content}"></h6>
+                            <div>
+                                <th:block th:each="surveyAnswerDTO : ${surveyAnswerDTOList}">
+                                    <div th:if="${not #strings.isEmpty(surveyAnswerDTO['com' + surveyDTOList[i].number])}">
+                                        <div class="p-2 mb-2 bg-white text-dark" th:text="${surveyAnswerDTO['com' + surveyDTOList[i].number]}"></div>
+                                    </div>
+                                </th:block>
+                            </div>
+                            <div th:if="${surveyDTOList[i].type} == '객관식'">
+                                <!-- 여기에 차트 생성 -->
+                                <canvas th:id="'bar-chart-' + ${surveyDTOList[i].number}"></canvas>
+                            </div>
+                        </div>
+                        <br>
+                    </div><!--반복문의 끝-->
+                </div><!--end row g-4-->
             </div>
-            <!-- 검색 끝-->
-
-
-            <br>
-
-
-            <!--      페이지 -->
-            <hr>
-            <br>
-
-            <br>
-
-
-            <h2>언젠가 차트가 나올거에요</h2>
-
-            <div>
-                여기에??
-            </div>
-        </div>
-        <!--    inner content end -->
-
-
-
-
+            <!-- inner content end -->
+        </div><!--end container-fluid pt-4 px-4-->
     </div>
     <!-- content end -->
 
-
     <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
+    <!-- 좀 빠르게 고침 -->
     <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
     <a th:replace="/layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
-
 <div th:replace="/layout/basic :: scriptSet">
 </div>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart.js Annotation Plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.2.1/chartjs-plugin-annotation.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    document.addEventListener('DOMContentLoaded', function() {
+        /* Thymeleaf를 통해 전달받은 데이터 */
+        var surveyDTOList = [[${surveyDTOList}]];
+        var surveyResultDTOList = [[${surveyResultDTOList}]];
+
+        /* 반복문을 통해 각 요소에 대한 그래프 생성 */
+        surveyDTOList.forEach(function(surveyDTO, index) {
+            var canvasId = 'bar-chart-' + (index + 1);
+            var canvas = document.getElementById(canvasId);
+
+            if (canvas) {
+                var ctx = canvas.getContext('2d');
+
+                if (surveyDTO.type === '객관식') {
+                    /* 객관식인 경우에만 차트 생성 */
+                    var surveyResultDTO = surveyResultDTOList[index];
+
+                    /* surveyResultDTO 객체에서 아이템들의 값을 배열로 추출 */
+                    var data = [
+                        surveyResultDTO.sumOf1,
+                        surveyResultDTO.sumOf2,
+                        surveyResultDTO.sumOf3,
+                        surveyResultDTO.sumOf4,
+                        surveyResultDTO.sumOf5,
+                        surveyResultDTO.sumOf6,
+                        surveyResultDTO.sumOf7
+                    ];
+
+                    // 데이터 배열의 합계 계산
+                    var sum = data.reduce(function(a, b) {
+                        return a + b;
+                    }, 0);
+
+                    // 합계 출력
+                    console.log('y축의 합계: ' + sum);
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: [surveyDTO.item1,surveyDTO.item2,surveyDTO.item3,surveyDTO.item4,surveyDTO.item5,surveyDTO.item6,surveyDTO.item7],
+                            datasets: [{
+                                label: `응답자수`,
+                                data: data,
+                                backgroundColor: 'rgb(0,156,255)',
+                                borderColor: 'rgb(47,90,236)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    });
+    /*]]>*/
+
+    document.querySelector('.firstBtn').addEventListener('click', function() {
+        var  round = 1;
+        window.location.href = '/member/lesson/survey/result?lessonIdx=' + [[ ${lesson.idx} ]] + '&round=' + round;
+    });
+
+    document.querySelector('.secondBtn').addEventListener('click', function() {
+        var  round = 2;
+        window.location.href = '/member/lesson/survey/result?lessonIdx=' + [[ ${lesson.idx} ]] + '&round=' + round;
+    });
+
+    document.querySelector('.thirdBtn').addEventListener('click', function() {
+        var  round = 3;
+        window.location.href = '/member/lesson/survey/result?lessonIdx=' + [[${lesson.idx}]] + '&round=' + round;
+    });
+</script>
 </body>
 </html>

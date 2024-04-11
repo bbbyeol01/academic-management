@@ -51,8 +51,6 @@ public class HomeController {
             log.info("is that MASTER? {}", auth.toString().equals(MemberRole.MASTER.toString()));
         });
 
-
-
         return "/member/index";
     }
 

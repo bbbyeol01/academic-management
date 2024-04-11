@@ -92,7 +92,7 @@ public class Lesson extends BaseEntity{
 
     public void changeStartDay(LocalDate startDay){this.startDay = startDay;}
 
-    public void changEndDay(LocalDate endDay){this.endDay = endDay;}
+    public void changeEndDay(LocalDate endDay){this.endDay = endDay;}
     public void changeSurvey1(LocalDate survey1){this.survey1 = survey1;}
     public void changeSurvey2(LocalDate survey2){this.survey2 = survey2;}
     public void changeSurvey3(LocalDate survey3){this.survey3 = survey3;}

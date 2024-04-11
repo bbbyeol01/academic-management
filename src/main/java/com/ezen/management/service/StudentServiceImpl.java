@@ -3,11 +3,15 @@ package com.ezen.management.service;
 import com.ezen.management.AlreadyExistException;
 import com.ezen.management.domain.Lesson;
 import com.ezen.management.domain.Student;
+import com.ezen.management.domain.SubjectHold;
+import com.ezen.management.domain.SubjectTest;
 import com.ezen.management.dto.PageRequestDTO;
 import com.ezen.management.dto.PageResponseDTO;
 import com.ezen.management.dto.StudentDTO;
 import com.ezen.management.repository.LessonRepository;
 import com.ezen.management.repository.StudentRepository;
+import com.ezen.management.repository.SubjectHoldRepository;
+import com.ezen.management.repository.SubjectTestRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +37,8 @@ public class StudentServiceImpl implements StudentService{
 
     private final StudentRepository studentRepository;
     private final LessonRepository lessonRepository;
+    private final SubjectHoldRepository subjectHoldRepository;
+    private final SubjectTestRepository subjectTestRepository;
 
     @Override
     public Student findByLessonIdxAndName(Long lessonIdx, String name) {
@@ -111,10 +117,22 @@ public class StudentServiceImpl implements StudentService{
         }
 
 
-        studentRepository.save(student);
+        Student studentSave = studentRepository.save(student);
         lesson.headCountUp();
         lessonRepository.save(lesson);
 
+        //과목평가 state = "X"로 insert
+        List<String> subjectHoldList = subjectHoldRepository.getSubjectHoldByLesson_idx(lesson.getIdx());
+        for(String subject : subjectHoldList){
+            SubjectTest subjectTest = SubjectTest.builder()
+                    .student(studentSave)
+                    .subject(subject)
+                    .state("X")
+                    .build();
+            log.info("서비스 과목명 : " + subject);
+
+            subjectTestRepository.save(subjectTest);
+        }
     }
 
     @Override

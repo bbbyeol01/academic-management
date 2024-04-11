@@ -1,8 +1,6 @@
 package com.ezen.management.service;
 
 import com.ezen.management.domain.Survey;
-import com.ezen.management.domain.SurveyAnswer;
-import com.ezen.management.dto.SurveyAnswerDTO;
 import com.ezen.management.dto.SurveyDTO;
 import com.ezen.management.dto.SurveyDtoList;
 import com.ezen.management.repository.SurveyAnswerRepository;
@@ -10,7 +8,6 @@ import com.ezen.management.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -96,5 +93,19 @@ public class SurveyServiceImpl implements SurveyService{
         int result = surveyRepository.deleteAllByRound(round);
 
         return result;
+    }
+
+
+    //문제1
+    @Override
+    public List<SurveyDTO> findByRoundAndNumber(int round, int number) {
+
+        List<Survey> surveyList = surveyRepository.findByRoundAndNumber(round,number);
+
+        List<SurveyDTO> surveyDTOList = surveyList.stream()
+                .map(this::surveyEntityToDTO)
+                .collect(Collectors.toList());
+
+        return surveyDTOList;
     }
 }

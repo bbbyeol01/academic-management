@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
@@ -61,7 +63,6 @@ public class TrainingController {
     @ResponseBody
     @PutMapping(value = "/category/{idx}")
     public void categoryUpdate(@RequestBody CategoryDTO categoryDTO){
-        log.info("Controller input : " + categoryDTO);
         trainingService.categoryUpdate(categoryDTO);
     }
 
@@ -140,11 +141,13 @@ public class TrainingController {
     @PostMapping(value = "/curriculum/update")
     public String  curriculumUpdate(Long idx, String name, String category_name, Long category_idx, int time, int day){
 
-        log.info("Controller : " +idx + name + category_name + category_idx);
+        Category category = new Category();
 
-        Category category = trainingService.getCategoryIdx(category_idx);
-
-        log.info(String.valueOf(category));
+        if(category_name.equals("유형을 변경하시려면 선택하세요.")){
+            category = trainingService.getCategoryIdx(category_idx);
+        }else {
+            category = trainingService.getCategoryByName(category_name);
+        }
 
         CurriculumDTO curriculumDTO = new CurriculumDTO();
         curriculumDTO.setIdx(idx);
@@ -169,8 +172,11 @@ public class TrainingController {
     //수업전체
     @GetMapping("/lesson")
     public String lessonIndex(Model model, PageRequestDTO pageRequestDTO){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        UserDetails userDetails = (UserDetails)principal;
+        String userId = ((UserDetails) principal).getUsername();
 
-        PageResponseDTO<Lesson> responseDTO = trainingService.searchLesson(pageRequestDTO);
+        PageResponseDTO<Lesson> responseDTO = trainingService.searchLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
         PageResponseDTO<Curriculum> responseCurriculum = trainingService.searchCurriculum(pageRequestDTO);
@@ -190,7 +196,6 @@ public class TrainingController {
 
         //과목들 Map에 담아 보내기
         List<Subject> subject = trainingService.subjectList();
-        log.info(subject.toString());
         model.addAttribute("subject", subject);
 
         return "training/lesson/index";
@@ -220,7 +225,6 @@ public class TrainingController {
 
         //인덱스에 해당하는 수업
         model.addAttribute("lesson", trainingService.getLessonByIdx(idx));
-        log.info("컨트롤러 레슨 : " + trainingService.getLessonByIdx(idx));
 
         return "/training/lesson/detail";
     }
@@ -253,8 +257,6 @@ public class TrainingController {
         lessonDTO.setContent(content);
         lessonDTO.setQuestionName(questionName);
 
-        log.info("컨트롤러 보유과목 : " + selectedSubjects);
-
         Long subjectIdx = trainingService.lessonInsert(lessonDTO);
         SubjectHoldDTO subjectHoldDTO = new SubjectHoldDTO();
         subjectHoldDTO.setLesson_idx(subjectIdx);
@@ -266,8 +268,6 @@ public class TrainingController {
                 trainingService.subjectHoldInsert(subjectHoldDTO);
             }
         }
-
-        log.info("컨트롤러 잘 들어갔나");
 
         return "redirect:/training/lesson";
     }
@@ -292,8 +292,6 @@ public class TrainingController {
         lessonDTO.setQuestionName(questionName);
 
         trainingService.lessonUpdate(lessonDTO);
-
-        log.info("Controller : " + lessonDTO);
 
         return "redirect:/training/lesson/detail?idx="+lessonDTO.getIdx();
     }

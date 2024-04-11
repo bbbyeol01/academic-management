@@ -16,8 +16,6 @@
         <div class="container-fluid pt-5 px-5">
             <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
                 <h1> 설문조사 등록 </h1>
-                [[ ${surveyDtoList} ]]
-                <span></span>
             </div>
             <form action="/member/survey/register" method="post">
                 <div class="row g-4" th:name="formTableDiv">
@@ -43,20 +41,22 @@
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <th>
+                                            <th style="align-content: center; width: 33px; padding-left: 14px;">
                                                 <input type="hidden" th:name="'surveyDtoList[' + ${i} + '].round'" th:value="${param.round}">
                                                 <input type="hidden" th:name="'surveyDtoList[' + ${i} + '].number'" th:value="${i+1}">
-                                                <span th:text="${i+1}"></span>
+                                                <span th:text="${i+1} + '.'"></span>
                                             </th>
                                             <td colspan="7">
-                                                <textarea class="form-control" th:name="'surveyDtoList[' + ${i} + '].content'"></textarea>
+                                                <label style="width: 100%;">
+                                                    <textarea class="form-control" th:name="'surveyDtoList[' + ${i} + '].content'" style="resize: none; width: 100%; height: 38px;"></textarea>
+                                                </label>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th colspan="7">답변유형</th>
+                                            <th colspan="7" style="padding-left: 44px;">답변유형</th>
                                         </tr>
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="7" style="padding-left: 44px;">
                                                 <select class="form-select" th:name="'surveyDtoList[' + ${i} + '].type'" onchange="selectType(this)">
                                                     <option value="선택안함">선택안함</option>
                                                     <option value="객관식">객관식</option>
@@ -65,10 +65,10 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th colspan="7">답변보기</th>
+                                            <th colspan="7" style="padding-left: 44px;">답변보기</th>
                                         </tr>
                                         <tr>
-                                            <td colspan="7">
+                                            <td colspan="7" style="padding-left: 44px;">
                                                 <!-- 객관식 양식 -->
                                                 <div class="objectiveInputs" th:id="'objectiveInputs' + ${i}" style="display: none;">
                                                     <!-- 객관식 양식 내용 -->

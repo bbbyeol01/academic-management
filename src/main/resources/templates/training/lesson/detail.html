@@ -16,7 +16,7 @@
             <h3 style="display: inline-flex">수업정보</h3>
 
 
-            <button style="display: inline-flex" class="btn btn-primary float-end">설문결과</button>
+            <button style="display: inline-flex" class="btn btn-primary float-end surveyResult">설문결과</button>
 
             <hr>
             <h7 style="color: #0d6efd; font-size: large; font-weight: bold" th:text="${lesson.number}"></h7>
@@ -358,11 +358,19 @@
         }
 
         lessonDelete(idx).then(result => {
-            location.reload()
+            window.location.href ='/training/lesson';
         }).catch(e => {
             console.log(e)
         })
     }
+
+    // 설문결과로 이동하는 이벤트
+    document.querySelector('.surveyResult').addEventListener('click', function() {
+
+        var round = 1;
+
+        window.location.href = '/member/lesson/survey/result?lessonIdx=' + [[${lesson.idx}]] + '&round=' + 1;
+    });
 
 </script>
 </html>

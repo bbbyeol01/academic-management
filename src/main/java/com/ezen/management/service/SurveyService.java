@@ -1,14 +1,11 @@
 package com.ezen.management.service;
 
 import com.ezen.management.domain.Survey;
-import com.ezen.management.domain.SurveyAnswer;
-import com.ezen.management.dto.SurveyAnswerDTO;
 import com.ezen.management.dto.SurveyDTO;
 import com.ezen.management.dto.SurveyDtoList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public interface SurveyService {
 
@@ -26,6 +23,9 @@ public interface SurveyService {
 
     //설문 삭제
     int deleteAllByRound(int round);
+
+    //문제
+    List<SurveyDTO> findByRoundAndNumber(int round, int number);
 
 
     default Survey surveyDtoToEntity(SurveyDTO surveyDTO){

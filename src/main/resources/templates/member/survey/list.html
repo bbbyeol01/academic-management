@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/layout/basic :: head"></head>
+<head th:replace="/layout/basic :: head">
+</head>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
@@ -18,17 +19,16 @@
                 <div class="col-12 text-center">
                     <h1> 중간 교육만족도 설문조사서 리스트 </h1>
                 </div>
-                <div class="col-12 text-center">
+                <div class="col-12 text-center" id="imageContainer">
                     <!-- 각 버튼에 대한 이벤트 핸들러 -->
-                    <button class="btn btn-outline-info w-75 m-5 h-25 surveyBtn" type="button"
-                            th:text="1회차"
-                            th:attr="data-round=1"></button>
-                    <button class="btn btn-outline-info w-75 m-5 h-25 surveyBtn" type="button"
-                            th:text="2회차"
-                            th:attr="data-round=2"></button>
-                    <button class="btn btn-outline-info w-75 m-5 h-25 surveyBtn" type="button"
-                            th:text="3회차"
-                            th:attr="data-round=3"></button>
+                    <a class="btn surveyBtn" type="button" id="image1"
+                            th:attr="data-round=1" style=" width: 60%; margin-bottom: 12px; height: 210px; border-radius: 0; justify-content: center; position: relative; padding: 0;">
+
+                    </a>
+                    <a class="btn surveyBtn" type="button" id="image2"
+                            th:attr="data-round=2" style="width: 60%; margin-bottom: 12px; height: 210px; border-radius: 0; justify-content: center; position: relative; padding: 0;"></a>
+                    <a class="btn surveyBtn" type="button" id="image3"
+                            th:attr="data-round=3" style="width: 60%; margin: 0; height: 210px; border-radius: 0; justify-content: center; position: relative; padding: 0;"></a>
                 </div><!--end col-12-->
 
             </div><!--end row g-4-->
@@ -61,6 +61,41 @@
             window.location.href = '/member/survey/read?round=' + round;
         });
     });
+</script>
+<script>
+    // 이미지를 표시할 영역
+    var container = document.getElementById('imageContainer');
+
+    // 이미지 요소 생성 및 추가하는 함수
+    function addImage(src, alt, id) {
+        // 이미지 요소 생성
+        var img = document.createElement('img');
+        // 이미지 소스 설정
+        img.src = src;
+        // 대체 텍스트 설정
+        img.alt = alt;
+        // 이미지에 클래스 추가
+        img.classList.add('roundNum');
+
+        // 이미지를 포함하는 a 태그 찾기
+        var anchor = document.getElementById(id);
+        // 이미지를 포함하는 a 태그에 이미지 추가
+        anchor.appendChild(img);
+
+        // span 요소 생성
+        var div = document.createElement('div');
+        // span에 클래스 추가
+        div.classList.add('roundSpan');
+        // span 텍스트 설정
+        div.textContent = alt;
+        // 이미지를 포함하는 a 태그에 span 추가
+        anchor.appendChild(div);
+    }
+
+    // 이미지 추가 호출
+    addImage('/images/1.png', '1회차', 'image1');
+    addImage('/images/2.png', '2회차', 'image2');
+    addImage('/images/3.jpg', '3회차', 'image3');
 </script>
 
 <div th:replace="/layout/basic :: scriptSet">

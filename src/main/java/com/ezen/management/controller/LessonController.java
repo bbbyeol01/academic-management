@@ -1,25 +1,22 @@
 package com.ezen.management.controller;
 
 import com.ezen.management.domain.*;
-import com.ezen.management.dto.LessonPageRequestDTO;
-import com.ezen.management.dto.LessonPageResponseDTO;
-import com.ezen.management.dto.PageRequestDTO;
-import com.ezen.management.dto.PageResponseDTO;
+import com.ezen.management.dto.*;
 import com.ezen.management.repository.CurriculumRepository;
 import com.ezen.management.repository.MemberRepository;
 import com.ezen.management.repository.SubjectHoldRepository;
+import com.ezen.management.repository.SubjectTestRepository;
 import com.ezen.management.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +38,11 @@ public class LessonController {
     //전체 수업 목록
     @GetMapping("")
     public String lesson(Model model, PageRequestDTO pageRequestDTO){
-        PageResponseDTO<Lesson> responseDTO = trainingService.searchLesson(pageRequestDTO);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        UserDetails userDetails = (UserDetails)principal;
+        String userId = ((UserDetails) principal).getUsername();
+
+        PageResponseDTO<Lesson> responseDTO = trainingService.searchLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
         List<QuestionName> questionName = questionNameService.findAll();
@@ -53,7 +54,11 @@ public class LessonController {
     //진행중인 수업 목록
     @GetMapping("/ongoing")
     public String ongoing(Model model, PageRequestDTO pageRequestDTO){
-        PageResponseDTO<Lesson> responseDTO = lessonService.ongoingLesson(pageRequestDTO);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = ((UserDetails) principal).getUsername();
+
+
+        PageResponseDTO<Lesson> responseDTO = lessonService.ongoingLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
         List<QuestionName> questionName = questionNameService.findAll();
@@ -65,7 +70,10 @@ public class LessonController {
     //완료된 수업 목록
     @GetMapping("/end")
     public String end(Model model, PageRequestDTO pageRequestDTO){
-        PageResponseDTO<Lesson> responseDTO = lessonService.endLesson(pageRequestDTO);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String userId = ((UserDetails) principal).getUsername();
+
+        PageResponseDTO<Lesson> responseDTO = lessonService.endLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
         List<QuestionName> questionName = questionNameService.findAll();
@@ -90,11 +98,13 @@ public class LessonController {
 
     //학생 목록
     @GetMapping(value = "/studentList")
-    public String studentList(Model model, @RequestParam("idx") Long idx){
+    public String studentList(Model model, @RequestParam("idx") Long idx, PageRequestDTO pageRequestDTO){
 
         Lesson lesson = trainingService.getLessonByIdx(idx);
         model.addAttribute("lesson", lesson);
-        model.addAttribute("responseDTO", lessonService.studentList(idx));
+        model.addAttribute("responseDTO", studentService.searchStudent(idx, pageRequestDTO));
+
+        log.info("아아아아아" + pageRequestDTO.getPage());
 
         return "/lesson/studentList";
     }
@@ -120,5 +130,17 @@ public class LessonController {
         log.info("ongoing lesson : {}", ongoingLesson);
 
         return lessonService.getOngoingLesson();
+    }
+
+    //과목 평가 변경
+    @PostMapping(value = "/subjectTest/update")
+    public String subjectTestUpdate(@ModelAttribute("subjectTestList") SubjectTestList subjectTestList){
+
+        log.info("컨트롤러 : " + subjectTestList );
+
+        Long idx = lessonService.subjectTestUpdate(subjectTestList);
+        log.info("컨트롤러 학생 인덱스 : " + idx);
+
+        return "redirect:/lesson/studentDetail?idx=" + idx;
     }
 }

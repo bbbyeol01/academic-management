@@ -30,6 +30,27 @@
             <hr>
             <br>
 
+            <!-- 검색 -->
+            <div class="row mt-3 float-end" style="max-width: 500px; display: inline-flex">
+                <form action="/training/subject" method="get">
+                    <div class="col">
+                        <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <select class="form-select type" name="type">
+                                    <option value="">---</option>
+                                    <option th:selected="${pageRequestDTO.type == 'n'}" value="n">이름</option>
+                                </select>
+                            </div> &nbsp;
+                            <input type="text" class="form-control keyword" name="keyword" th:value="${pageRequestDTO.keyword}" style="border-radius: 5px"> &nbsp;
+                            <button style="border-radius: 5px" type="submit" class="btn btn-outline-primary searchBtn">검색</button> &nbsp;
+                            <button style="border-radius: 5px" type="button" class="btn btn-outline-secondary clearBtn">초기화</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <!-- 본문 -->
             <h5 style="color: #0d6efd" >[[${lesson.curriculum.name}]] [[${lesson.number}]] 기</h5>
             <hr>
@@ -43,10 +64,7 @@
                 <div style="display: inline-flex;width: 20%; font-weight: bold; font-size: large; color: #0d6efd">상담여부</div>
             </div>
 
-
-
-
-            <div style="width: 100%; " th:each="student : ${responseDTO}">
+            <div style="width: 100%; " th:each="student : ${responseDTO.getDtoList()}">
                 <a th:href="@{/lesson/studentDetail(idx=${student.idx})}" style="color: black">
                     <div>
                         <hr>
@@ -81,9 +99,25 @@
                 </a>
             </div>
 
+            <!-- 페이지 -->
+            <hr>
+            <br>
+            <ul class="pagination flex-wrap">
+                <li class="page-item" th:if="${responseDTO.prev}">
+                    <a class="page-link" th:data-num="${responseDTO.start -1}">이전</a>
+                </li>
 
+                <th:block th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                    <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                        <a class="page-link" th:data-num="${i}" th:idx="${responseDTO.getDtoList().get(0).lesson.idx}">[[${i}]]</a>
+                    </li>
+                </th:block>
 
+                <li class="page-item" th:if="${responseDTO.next}">
+                    <a class="page-link" th:data-num="${responseDTO.end + 1}">다음</a>
+                </li>
 
+            </ul>
 
             <br>
 
@@ -114,6 +148,47 @@
         window.location.href = '/lesson/detail?idx=' + idx;
 
     })
+
+    //페이지 클릭
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        const target = e.target;
+
+        if (target.tagName !== 'A') {
+            return;
+        }
+
+        const formObj = document.querySelector("form");
+
+        const num = target.getAttribute("data-num");
+        const idx = target.getAttribute("idx");
+        const keyword = document.querySelector(".keyword");
+        const type = document.querySelector(".type");
+
+        // 버튼 누르면 ?page=num
+        formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
+        formObj.innerHTML += `<input type="hidden" name="idx" value="${idx}">`;
+
+        // 검색 목록이면
+        if (keyword.value !== '') {
+            formObj.innerHTML += `<input type="hidden" name="type" value="${type.value}">`
+            formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
+        }
+
+        formObj.submit();
+
+    }, false);
+
+    //  검색 조건 초기화
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        self.location = '/training/lesson';
+
+    }, false)
 
 
 

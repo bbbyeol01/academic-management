@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/layout/student/basic :: head"></head>
 
-<body>
+<body style="color: #000;">
 <!-- warpper start -->
 <div class="wrapper">
     <div th:replace="/layout/student/basic :: sidebar">
@@ -17,7 +17,7 @@
 
         <br>
         <br>
-        <div class="inner-content" style="margin: 0 4vw 0 12vh; max-width: 80%">
+        <div class="inner-content" style="margin: 0 4vw 0 12vh; max-width: 80%;">
 
 
             <div>
@@ -30,16 +30,16 @@
 
             <br>
 
-            <hr>
+            <hr style="width: 660px;">
             <br>
 
-            <form action="/student/survey/insert" method="post">
+            <form action="/student/survey/insert" method="post" style="width: 660px;">
                 <input type="hidden" th:value="${student.lesson.idx}" name="lessonIdx">
                 <input type="hidden" th:value="${student.idx}" name="idx">
                 <div style="font-size: 12pt"> ■본 설문은 교육 진행 중 훈련생의 의견을 수렴하여 수업의 질적 향상을 도모하고 교육만족도를 향상하기 위하여 활용되며, 무기명 진행으로 성실 답변 부탁드립니다. 또한, 본 조사는 훈련기관 자체 조사이며, 조사 이외 목적으로 사용되지 않음도 알려 드립니다. </div>
                 <br>
 
-                <div th:each="survey : ${surveys}" style="margin: 10px;" class="col-md-6">
+                <div th:each="survey : ${surveys}" style="margin: 10px;">
                     <input type="hidden" name="round" th:value="${round}">
 
                     <div th:if="${survey.type} != '선택안함'">
@@ -66,14 +66,14 @@
                     </div>
 
                     <div th:if="${survey.type} == '주관식'">
-                        <input th:name="'com' + ${survey.number}" type="text" placeholder="내 답변.."/>
+                        <input th:name="'com' + ${survey.number}" type="text" placeholder="내 답변.." style="resize: none; width: 660px;"/>
                     </div>
 
                     <br th:if="${survey.type} != '선택안함'">
 
                     <div th:if="${survey.type} != '선택안함' and ${survey.type} != '주관식'">
                         <h6>추가로 남기고 싶은 의견이 있다면..</h6>
-                        <textarea th:name="'com' + ${survey.number}" type="text" placeholder="작성해주세요.."></textarea>
+                        <textarea th:name="'com' + ${survey.number}" type="text" placeholder="작성해주세요.." style="resize: none; width: 640px;"></textarea>
                     </div>
 
                     <br th:if="${survey.type} != '선택안함'">
@@ -89,16 +89,12 @@
                                 </div>-->
 
                 <br>
-                <hr>
-
-                <button type="submit" class="btn btn-primary">제출</button>
+                <div style="display: flex; justify-content: flex-end;">
+                    <button type="submit" class="btn btn-primary" style="width: 90px; margin-right: 10px;">제출</button>
+                </div>
 
             </form>
             <!--            OMR -->
-            <div class="col-md-6">
-
-
-            </div>
 
         </div>
 

@@ -12,7 +12,8 @@ async function categoryUpdate(updateCategory){
 
 //유형 삭제
 async function categoryDelete(idx){
-    await axios.delete(`/training/category/${idx}`)
+    console.log("악시오스 되나")
+    await axios.delete(`/training/category/${idx.idx}`)
 }
 
 //----------------------------------------------------과목----------------------------------------------------
@@ -29,7 +30,7 @@ async function subjectUpdate(updateSubject){
 
 //과목 삭제
 async function subjectDelete(idx){
-    await axios.delete(`/training/subject/${idx}`)
+    await axios.delete(`/training/subject/${idx.idx}`)
 }
 
 //----------------------------------------------------과정----------------------------------------------------
@@ -48,7 +49,7 @@ async function curriculumUpdate(updateCurriculum){
 
 //과정 삭제
 async function curriculumDelete(idx){
-    await axios.delete(`/training/curriculum/${idx}`)
+    await axios.delete(`/training/curriculum/${idx.idx}`)
 }
 
 //----------------------------------------------------수업----------------------------------------------------

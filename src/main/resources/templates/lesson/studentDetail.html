@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="/layout/basic :: head">
+</head>
+
+<body>
 <style>
 
     img {
@@ -12,13 +16,14 @@
     ::-webkit-scrollbar{
         display: none;
     }
+    .subjectTest:focus {
+        outline: none;
+    }
 
+    .modal-backdrop.show {
+        opacity: .5
+    }
 </style>
-<head th:replace="/layout/basic :: head">
-
-</head>
-
-<body>
 <!-- warpper start -->
 <div class="wrapper">
     <div th:replace="/layout/basic :: sidebar"></div>
@@ -29,11 +34,9 @@
 
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
-      <h3 style="display: inline-flex" > [[${student.name}]] </h3>
-
-      <button style="display: inline-flex ; background-color: #0d6efd; color: white; " class="btn float-end counselingBtn">상담내역</button>
-      <button style="display: inline-flex ; background-color: #0d6efd; color: white; margin-right: 5px" class="btn float-end" th:studentIdx="${student.idx}" onclick="openPaper(this.getAttribute('studentIdx'))">사전평가결과지</button>
-
+        <h3 style="display: inline-flex" > [[${student.name}]] </h3>
+        <button style="display: inline-flex ; background-color: #0d6efd; color: white; " class="btn float-end counselingBtn">상담내역</button>
+        <button style="display: inline-flex ; background-color: #0d6efd; color: white; margin-right: 10px" class="btn float-end" th:studentIdx="${student.idx}" onclick="openPaper(this.getAttribute('studentIdx'))">사전평가결과지</button>
 
             <hr>
             <br>
@@ -137,7 +140,6 @@
                                 <span th:if="${student.survey == 1}"> 첫번째 설문 완료 </span>
                                 <span th:if="${student.survey == 2}">두번째 설문 완료 </span>
                                 <span th:if="${student.survey == 3}">세번째 설문 완료 </span>
-
                             </td>
                         </tr>
                         <tr>
@@ -168,13 +170,12 @@
                                 <table>
                                     <tr th:each="test:${subjectTest}">
                                         <td style="width: 15%" th:text="${test.subject}"></td>
-                                        <td style="width: 15%">
-                                            <span th:if="${test.state eq 'X'}"> 완료 </span>
-                                            <span th:if="${test.state eq 'O'}"> 미완료 </span>
+                                        <td style="width: 15%" >
+                                            <span th:if="${test.state eq 'X'}"> 미완료 </span>
+                                            <span th:if="${test.state eq 'O'}"> 완료 </span>
                                         </td>
                                     </tr>
                                 </table>
-
                             </td>
                         </tr>
                     </table>
@@ -184,20 +185,51 @@
 
             <br>
 
-            <div class="float-end" style="display: inline-flex">
-                <button style="display: inline-flex" class="btn btn-outline-dark backList">학생전체목록</button>
+            <div class="float-end" style="display: inline-flex;">
+                <button style=" background-color: #0d6efd; color: white; margin-right: 10px" class="btn float-end subjectTestBtn">과목평가수정</button>
+                <button class="btn btn-outline-dark backList">학생전체목록</button>
             </div>
 
-            <!-- 수정 모달 -->
-            <div class="modal updatModal" tabindex="-1">
+            <!-- 과목 평가 수정 모달 -->
+            <div class="modal subjectTestModal" tabindex="-1">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" >
+                        <div class="modal-header" style="border-bottom: none;">
+                            <h5 class="modal-title">과목평가 변경</h5>
+                        </div>
 
-                    </div>
+                        <form action="/lesson/subjectTest/update" method="post">
+                            <div th:each="test, iterStat : ${subjectTest}" style="border-top: 1px solid #dee2e6; padding-bottom: 8px;">
+                                <input type="hidden" th:name="'subjectTestList['+${iterStat.index} +'].idx'" th:value="${test.idx}">
+                                <input type="hidden" th:name="'subjectTestList[' + ${iterStat.index} + '].studentIdx'" th:value="${test.student.idx}">
+                                <br>
+                                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 10px; margin-bottom: 10px;">
+                                <input size="40px;" class="subjectTest" type="text" th:name="'subjectTestList[' + ${iterStat.index} + '].subject'"
+                                       th:value="${test.subject}" style="background-color: white; border: none; outline: none; text-align: center; font-size: 16px; cursor: default;" readonly />
+                                <hr>
+                                    <div>
+                                    <select style="width: 100px; background-color: rgba(10,255,245,0.18);" class="form-control" th:name="'subjectTestList['+${iterStat.index}+'].state'">
+                                        <option selected>
+                                            <span th:if="${test.state eq 'O'}" th:text="O" ></span>
+                                            <span th:if="${test.state eq 'X'}" th:text="X" ></span>
+                                            </option>
+                                        <option>
+                                            <span th:if="${test.state eq 'O'}" th:text="X" ></span>
+                                            <span th:if="${test.state eq 'X'}" th:text="O" ></span>
+                                         </option>
+                                    </select>
+                                </div>
+                                </div>
+                            </div> <!-- moddalbody End -->
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-outline-primary subjectTestInsert">등록</button>
+                            </div> <!-- moddalfooter End -->
+                        </form>
+                    </div> <!-- SubjectTestModal End -->
+
                 </div>
             </div>
-
-
         </div> <!-- inner content end -->
 
 
@@ -320,8 +352,6 @@
 <script layout:fragment="script" th:inline="javascript">
 
 
-  console.log("studentIdx확인용= " + [[${student.idx}]])
-
   //에러메세지 띄워주기
   const errors = [[${errors}]]
   console.log(errors)
@@ -339,19 +369,9 @@
 
     const lessonIdx = document.querySelector(".lessonIdx")
     document.querySelector(".backList").addEventListener("click", function (e) {
-        const idx = lessonIdx.value
-
-        console.log("idx : " + idx);
-        window.location.href = '/lesson/studentList?idx=' + idx;
+        window.location.href = '/lesson/studentList?idx=' + lessonIdx.value;
     })
 
-
-  const studentIdx = document.querySelector(".studentIdx")
-  document.querySelector(".backList").addEventListener("click", function (e){
-    const idx = studentIdx.value
-    window.location.href = '/lesson/studentList?idx=' + idx;
-
-  })
 
 
 
@@ -506,6 +526,24 @@
     $("#answerPaper").modal('show');
 
   }
+
+
+  //과목평가 모달
+    const subjectTestModal = new bootstrap.Modal(document.querySelector(".subjectTestModal"))
+    const subjectTestBtn = document.querySelector(".subjectTestBtn")
+    const subjectTestInsert = document.querySelector(".subjectTestInsert")
+
+    subjectTestBtn.addEventListener("click", function (e){
+        subjectTestModal.show()
+    })
+
+    subjectTestInsert.addEventListener("click", function (e){
+        location.reload();
+    })
+
+
+
+
 
 
 

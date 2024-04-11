@@ -113,7 +113,7 @@
                         <form action="/training/curriculum/insert" method="post">
                             <div class="modal-body">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control curriculumName"placeholder="과정명" required>
+                                    <input type="text" class="form-control curriculumName" name="name" placeholder="과정명" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <select class="form-select curriculumCategory" th:name="category" required>
@@ -163,7 +163,8 @@
                                     </div>
                                 </div>
                                 <div class="input-group mb-3">
-                                    <input type="text" style="background-color: white;border:none; border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;" class="form-control updateCategory_name" name="category_name" readonly>
+                                    <input type="text" style="background-color: white;border:none; border-right:0px; border-top:0px; boder-left:0px; boder-bottom:0px;"
+                                           class="form-control updateCategory_name" readonly>
                                 </div>
 
                                 <div class="input-group mb-2">
@@ -173,7 +174,7 @@
                                 </div>
                                 <div class="input-group mb-3">
                                     <select class="form-select curriculumCategory" th:name="category_name">
-                                        <option value="" >유형을 변경하시려면 선택하세요.</option>
+                                        <option text="유형을 변경하시려면 선택하세요." selected>유형을 변경하시려면 선택하세요.</option>
                                         <option th:each="category:${category}" th:value="${category.name}" th:text="${category.name}"></option>
                                     </select>
                                     <input type="hidden" class="form-control updateCategory_idx" name="category_idx">

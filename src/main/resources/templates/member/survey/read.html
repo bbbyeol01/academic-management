@@ -15,78 +15,92 @@
 
         <div class="container-fluid pt-5 px-5">
 
-            <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
+            <div class="inner-content" style="margin: 2vw 0 20px 20px; max-width: 80%">
 
-                <h1> 설문조사 조회 메뉴에요 </h1>
+                <h1> 설문조사 조회 메뉴 </h1>
 
-            </div>
+                <div class="row g-4">
 
-            <!-- 설문이 존재하는 경우 -->
-            <div class="row g-4" th:if="${surveys != null and not surveys.isEmpty() and surveys[0].type != 'init'}" th:name="tableDiv">
-                <!-- 설문회차 출력 -->
-                <div class="col-12" th:name="surveyTitle">
-                    <div class="bg-light rounded h-100 p-4">
-                        <div class="table-responsive">
-                            <h2><span th:name="${surveys[0].round}" th:text="${param.round}"></span>회차 설문조사폼</h2>
-                        </div><!--end table-responsive-->
-                    </div><!--end bg-light rounded h-100 p-4-->
-                </div><!--end col-12-->
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <button class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차">
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <button class="btn btn-outline-primary w-100 m-2 secondBtn" type="button" th:text="2회차">
+                        </button>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <button class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차">
+                        </button>
+                    </div>
 
-                <!-- 설문항목 반복 출력 -->
-                <div th:each="survey : ${surveys}">
-                    <div class="col-12" th:name="'answer' + ${survey.number}">
+                    <hr>
+
+                    <!-- 설문회차 출력 -->
+                    <div class="col-12" th:name="surveyTitle">
                         <div class="bg-light rounded h-100 p-4">
                             <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th th:name="${survey.number}" th:text="${survey.number}" disabled></th>
-                                        <td colspan="7">
-                                            <span th:text="${survey.content}"></span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>답변유형</th>
-                                        <td colspan="7" th:name="${survey.type}" th:text="${survey.type}" disabled></td>
-                                    </tr>
-                                    <tr>
-                                        <th>답변보기</th>
-                                        <td th:each="i : ${#numbers.sequence(1, 7)}">
-                                            <span th:if="${survey.type eq '객관식'}">
-                                                <label>
-                                                    <input type="radio" th:text="${survey['item' + i]}" disabled>
-                                                </label>
-                                            </span>
-                                            <span th:if="${survey.type eq '주관식'}">
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <!-- 나머지 항목들을 여기에 추가 -->
-                                    </thead>
-                                </table>
+                                <h2><span th:name="${surveys[0].round}" th:text="${param.round}"></span>회차 설문조사폼</h2>
                             </div><!--end table-responsive-->
                         </div><!--end bg-light rounded h-100 p-4-->
                     </div><!--end col-12-->
-                </div>
 
-                <div class="col-12">
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-secondary modifyBtn">수정</button>
-                        <button type="button" class="btn btn-danger removeBtn">삭제</button>
-                    </div>
-                </div>
-                <div class="col-12"></div>
-            </div><!--end row g-4-->
+                    <div th:name="tableDiv">
+                        <!-- 설문항목 반복 출력 -->
+                        <div th:each="survey : ${surveys}">
+                            <div class="col-12" th:name="'answer' + ${survey.number}">
+                                <div class="bg-light rounded h-100 p-4">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <td colspan="8">
+                                                    <span th:name="${survey.number}" th:text="${survey.number}" disabled></span>
+                                                    <span>.</span>
+                                                    <span th:text="${survey.content}"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>답변유형</th>
+                                                <td colspan="7" th:name="${survey.type}" th:text="${survey.type}" disabled></td>
+                                            </tr>
+                                            <tr>
+                                                <th>답변보기</th>
+                                                <td th:each="i : ${#numbers.sequence(1, 7)}">
+                                                    <span th:if="${survey.type eq '객관식'}">
+                                                        <label th:if="${survey['item' + i]} != 7">
+                                                            <input type="radio" th:text="${survey['item' + i]}" disabled="disabled">
+                                                        </label>
+                                                        <label th:if="${survey['item' + i]} == 7">
+                                                            <input type="radio" th:text="${survey['item' + i]} check">
+                                                        </label>
+                                                    </span>
+                                                    <span th:if="${survey.type eq '주관식'}">
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <!-- 나머지 항목들을 여기에 추가 -->
+                                            </thead>
+                                        </table>
+                                    </div><!--end table-responsive-->
+                                </div><!--end bg-light rounded h-100 p-4-->
+                            </div><!--end col-12-->
+                        </div>
 
-            <div class="row g-4">
-                <!-- 설문이 존재하지 않는 경우 -->
-                <div class="col-12" th:if="${surveys == null or surveys.isEmpty() or surveys[0].type == 'init'}">
-                    <div class="bg-light rounded h-100 p-4">
-                        <p>등록된 설문이 없습니다.</p>
-                    </div>
-                    <button type="button" class="btn btn-primary registerBtn">등록</button>
-                </div>
-            </div>
+                        <div class="col-12" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+                            <div class="btn-group" role="group" style="margin-right: 10px;">
+                                <button type="button" class="btn btn-secondary modifyBtn">수정</button>
+                                <!--<button type="button" class="btn btn-danger removeBtn">삭제</button>-->
+                            </div>
+                        </div>
+
+                    </div><!--end tableDiv-->
+
+                    <div class="col-12"></div>
+
+                </div><!--end row g-4-->
+
+            </div><!--end inner-content-->
 
         </div><!--end container-fluid pt-4 px-4-->
 
@@ -101,7 +115,7 @@
 
 </div>
 <!-- wrapper end-->
-
+<div th:replace="/layout/basic :: scriptSet"></div>
 <script >
     document.addEventListener("DOMContentLoaded", function() {
         const removeButtons = document.querySelectorAll(".removeBtn");
@@ -117,13 +131,14 @@
 
         // 수정 버튼에 대한 이벤트 리스너 추가
         const modifyBtn = document.querySelector(".modifyBtn");
-        modifyBtn.addEventListener("click", function() {
-            const round = document.querySelector('h2 span').textContent.trim();
-            window.location.href = 'modify?round=' + round;
-        });
-    });
+        if (modifyBtn) {
+            // 수정 버튼에 대한 이벤트 리스너 추가
+            modifyBtn.addEventListener("click", function() {
+                const round = document.querySelector('h2 span').textContent.trim();
+                window.location.href = 'modify?round=' + round;
+            });
+        }
 
-    document.addEventListener("DOMContentLoaded", function() {
         // 등록 버튼이 있는지 확인
         const registerBtn = document.querySelector(".registerBtn");
         if (registerBtn) {
@@ -140,12 +155,38 @@
                 window.location.href = 'register?round=' + round;
             });
         }
+
+        // 회차 버튼
+        const firstBtn = document.querySelector(".firstBtn");
+        if (firstBtn) {
+            // 수정 버튼에 대한 이벤트 리스너 추가
+            firstBtn.addEventListener("click", function() {
+                const  round = 1;
+                window.location.href = '/member/survey/read?round=' + round;
+            });
+        }
+
+        // 회차 버튼
+        const secondBtn = document.querySelector(".secondBtn");
+        if (secondBtn) {
+            // 수정 버튼에 대한 이벤트 리스너 추가
+            secondBtn.addEventListener("click", function() {
+                const  round = 2;
+                window.location.href = '/member/survey/read?round=' + round;
+            });
+        }
+
+        // 회차 버튼
+        const thirdBtn = document.querySelector(".thirdBtn");
+        if (thirdBtn) {
+            // 수정 버튼에 대한 이벤트 리스너 추가
+            thirdBtn.addEventListener("click", function() {
+                const  round = 3;
+                window.location.href = '/member/survey/read?round=' + round;
+            });
+        }
     });
-
 </script>
-
-
-</div>
 
 </body>
 </html>

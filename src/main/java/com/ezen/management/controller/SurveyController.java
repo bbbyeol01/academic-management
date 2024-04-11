@@ -2,6 +2,7 @@ package com.ezen.management.controller;
 
 import com.ezen.management.domain.Lesson;
 import com.ezen.management.domain.Student;
+import com.ezen.management.domain.SurveyAnswer;
 import com.ezen.management.dto.*;
 import com.ezen.management.service.*;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -54,7 +56,9 @@ public class SurveyController {
      * OK
      */
     @PostMapping("/member/survey/register")
-    public String registerPost(@ModelAttribute("surveyDtoList") SurveyDtoList surveyDtoList, @RequestParam("round")int round){
+    public String registerPost(@ModelAttribute("surveyDtoList") SurveyDtoList surveyDtoList, @RequestParam("round")int round, @RequestParam("lessonIdx")String lessonIdx){
+
+        log.info("확인 : " + lessonIdx);
 
         round = surveyService.register(surveyDtoList);
 
@@ -67,11 +71,13 @@ public class SurveyController {
     @GetMapping("/member/survey/read")
     public String read(Model model, @RequestParam("round")int round) {
 
-        // 특정 회차(round)에 대한 Survey 목록을 조회합
+        // 특정 회차(round)에 대한 Survey 목록을 조회
         List<SurveyDTO> surveyList = surveyService.readAllByRound(round);
 
         // 조회된 Survey 목록을 모델에 추가
         model.addAttribute("surveys", surveyList);
+
+        log.info("안찍???????" + surveyList);
 
         // 뷰 페이지로 이동합니다.
         return "/member/survey/read";
@@ -116,9 +122,13 @@ public class SurveyController {
     @PostMapping("/student/survey")
     public String survey(Model model, StudentDTO studentDTO){
 
+        log.info("되나" + studentDTO);
+
         Student student = studentService.findById(studentDTO.getIdx());
 
-        int round = student.getSurvey() + 1;
+        int round = student.getSurvey();
+
+        log.info("라운드" + round);
 
         // 특정 회차(round)에 대한 Survey 목록을 조회
         List<SurveyDTO> surveyList = surveyService.readAllByRound(round);
@@ -149,23 +159,36 @@ public class SurveyController {
     }
 
     /*=========================설문결과=========================*/
-    
-    @GetMapping("/member/lesson/survey")
-    public String result(@RequestParam("lessonIdx")Long lessonIdx){
+
+
+    //1회차
+    @GetMapping("/member/lesson/survey/result")
+    public String result(Model model, @RequestParam("lessonIdx")Long lessonIdx, @RequestParam("round")int round){
         //수업에서 필요한 정보 : 커리큘럼, 기수, 시작일, 종료일, 교사
         //그리고.. survey와 surveyAnswer 필요
-
-        log.info("확인용 : result의 lessonIdx = " + lessonIdx);
 
         //수업
         Lesson lesson = lessonService.findById(lessonIdx);
 
-        //설문(문항)
-        List<SurveyDTO> surveyList = surveyService.surveyList();
+        //설문(질문과보기)
+        List<SurveyDTO> surveyDTOList = surveyService.readAllByRound(round);
 
-        //설문(답변)
+        log.info("확인용 : " + surveyDTOList);
 
+        //설문(결과 : 객관식)
+        List<SurveyResultDTO> surveyResultDTOList = surveyAnswerService.calculateSumOfAnswers(round, lessonIdx);
+        log.info("컨트롤러" + surveyResultDTOList);
 
-        return "/member/lesson/survey";
+        //설문(주관식 때문에 필요)
+        List<SurveyAnswerDTO> surveyAnswerDTOList = surveyAnswerService.findByLessonIdxAndRound(lessonIdx,round);
+
+        model.addAttribute("round", round);
+        model.addAttribute("lesson", lesson);
+        model.addAttribute("surveyDTOList", surveyDTOList);
+        model.addAttribute("surveyResultDTOList", surveyResultDTOList);
+        model.addAttribute("surveyAnswerDTOList", surveyAnswerDTOList);
+
+        return "/member/lesson/survey/result";
     }
+
 }
