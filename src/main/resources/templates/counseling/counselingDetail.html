@@ -24,45 +24,50 @@
             <hr>
             <br>
             <!-- 학생 정보-->
-            <div style="display: inline-flex">
-                <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
-                     style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
-                <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
-                     style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
-                <div style="line-height: 90%"> <!-- 이미지랑 텍스트로 두 칸 -->
-                    <br>
-                    <div> <!-- 이름이랑 값으로 두칸 -->
-                        <h5 style="margin-right: 50px">이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.name}]]</h5>
-                    </div>
-                    <br>
-                    <div>
-                        <h5 style="margin-right: 20px">생년월일&nbsp;&nbsp;&nbsp;&nbsp;[[${student.birthday}]]</h5>
-                    </div>
-                    <br>
-                    <div>
-                        <h5 style="margin-right: 20px">전화번호&nbsp;&nbsp;&nbsp;&nbsp;[[${student.phone}]]</h5>
-                    </div>
-                    <br>
-                    <div>
-                        <h5 style="margin-right: 35px">이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.email}]]</h5>
-                    </div>
-                    <br>
-                    <div>
-                        <h5 style="margin-right: 35px">과정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.lesson.curriculum.name}]]</h5>
-                    </div>
-                </div>
-            </div>
+            <table class="table" >
+                <tr class="col" style="border-bottom: 1px solid grey;" >
+                    <td style="display: inline-flex; padding-right: 20px; vertical-align: top;">
+                        <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
+                             style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
+                        <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
+                             style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
+                        <table style="margin-left: 20px;"> <!-- 내부 테이블 -->
+                            <tr>
+                                <td style="margin-bottom: 10px;">이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.name}]]</td>
+                            </tr>
+                            <tr>
+                                <td style="margin-bottom: 10px;">생년월일&nbsp;&nbsp;&nbsp;&nbsp;[[${student.birthday}]]</td>
+                            </tr>
+                            <tr>
+                                <td style="margin-bottom: 10px;">전화번호&nbsp;&nbsp;&nbsp;&nbsp;[[${student.phone}]]</td>
+                            </tr>
+                            <tr>
+                                <td style="margin-bottom: 10px;">이 메 일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.email}]]</td>
+                            </tr>
+                            <tr>
+                                <td style="margin-bottom: 10px;">과정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.lesson.curriculum.name}]]</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+
+
+
             <!-- 학생정보 끝 -->
             <br>
             <br>
-            <div class="row mt-3">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
+
+            <table class="table"></table>
+            <tr class="row mt-3">
+                <tr class="col">
+                    <tr class="card">
+                        <tr class="card-header">
                 <!-- Title -->
 
                 <!-- 여기부터는 상담List로 나오기 -->
-                            <div class="card-body">
+                            <tr class="card-body">
                                 <div th:each="counseling: ${counselingList}" id="l1">
                                 <form>
                                 <div class="row">
@@ -107,11 +112,13 @@
                             </div><!-- end row -->
                             </form>
                             </div><!-- end th:each -->
-                            </div><!-- end card body -->
-                        </div><!-- end card-header -->
-                    </div><!-- end card -->
-                </div><!-- end col -->
-            </div><!-- end row -->
+                            </tr><!-- end card body -->
+                        </tr><!-- end card-header -->
+                    </tr><!-- end card -->
+                </tr><!-- end col -->
+            </tr><!-- end row -->
+
+            </table>
         </div><!-- end inner-content -->
 
 
