@@ -16,6 +16,7 @@
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
             <div class="row float-end">
                 <div class="col-auto">
+                    <button class="btn btn-outline-success" onclick="printPage()">인쇄</button>
                     <button type="button" class="btn btn-outline-dark clearBtn">목록</button>
                     <button type="button" class="btn btn-primary creatBtn">추가</button>
                 </div>
@@ -24,8 +25,9 @@
             <hr>
             <br>
             <!-- 학생 정보-->
-            <table class="table" >
-                <tr class="col" style="border-bottom: 1px solid grey;" >
+            <table class="table">
+                <tbody class="col">
+                <tr class="col" style="display: flex; flex-direction: column; min-height: 100%;">
                     <td style="display: inline-flex; padding-right: 20px; vertical-align: top;">
                         <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
                              style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
@@ -33,92 +35,88 @@
                              style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
                         <table style="margin-left: 20px;"> <!-- 내부 테이블 -->
                             <tr>
-                                <td style="margin-bottom: 10px;">이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.name}]]</td>
+                                <td style="vertical-align: top; margin-bottom: 10px;">&nbsp;이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.name}]]</td>
                             </tr>
                             <tr>
-                                <td style="margin-bottom: 10px;">생년월일&nbsp;&nbsp;&nbsp;&nbsp;[[${student.birthday}]]</td>
+                                <td style="vertical-align: top; margin-bottom: 10px;">생년월일&nbsp;&nbsp;&nbsp;&nbsp;[[${student.birthday}]]</td>
                             </tr>
                             <tr>
-                                <td style="margin-bottom: 10px;">전화번호&nbsp;&nbsp;&nbsp;&nbsp;[[${student.phone}]]</td>
+                                <td style="vertical-align: top; margin-bottom: 10px;">전화번호&nbsp;&nbsp;&nbsp;&nbsp;[[${student.phone}]]</td>
                             </tr>
                             <tr>
-                                <td style="margin-bottom: 10px;">이 메 일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.email}]]</td>
+                                <td style="vertical-align: top; margin-bottom: 10px;">이&nbsp;&nbsp;메&nbsp;&nbsp;일&nbsp;&nbsp;&nbsp;&nbsp;[[${student.email}]]</td>
                             </tr>
                             <tr>
-                                <td style="margin-bottom: 10px;">과정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.lesson.curriculum.name}]]</td>
+                                <td style="vertical-align: top; margin-bottom: 10px;">&nbsp;과&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정&nbsp;&nbsp;&nbsp;&nbsp;[[${student.lesson.curriculum.name}]]</td>
                             </tr>
                         </table>
                     </td>
                 </tr>
+                </tbody>
             </table>
 
-
-
-
-            <!-- 학생정보 끝 -->
+        <!-- 학생정보 끝 -->
             <br>
             <br>
 
-            <table class="table"></table>
-            <tr class="row mt-3">
-                <tr class="col">
-                    <tr class="card">
-                        <tr class="card-header">
-                <!-- Title -->
 
-                <!-- 여기부터는 상담List로 나오기 -->
-                            <tr class="card-body">
-                                <div th:each="counseling: ${counselingList}" id="l1">
-                                <form>
-                                <div class="row">
-                                    <div class="col text-end">
-                                        <a th:href="|@{/counseling/update}?idx=${counseling.idx}|">
-                                            <button type="button" class="btn btn-secondary modBtn">수정하기</button>
-                                        </a>
-                                        <a th:href="|@{/counseling/delete}?idx=${counseling.idx}|">
-                                            <button type="button" class="btn btn-danger delBtn">삭제하기</button>
-                                        </a>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <input type="hidden" class="form-control" name="idx" th:value="${counseling.idx}" readonly>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">상담회차</span>
-                                        <input type="text" class="form-control" name="round" th:value="${counseling.round}" readonly>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">상담일자</span>
-                                        <input type="text" class="form-control" name="counselingDate" th:value="${#temporals.format(counseling.counselingDate, 'yyyy-MM-dd')}" readonly>
-                                    </div>
-                <!-- resize: none; => textarea수정불가 / overflow: hidden => 스크롤 숨기기 -->
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">상담내용</span>
-                                        <textarea class="form-control col-sm-5" name="content" id="content" th:text="${counseling.content}" style="resize: none; overflow: hidden;" readonly></textarea>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">상담방식</span>
-                                        <input type="hidden" class="form-control counselingMethod" name="method" th:value="${counseling.method}" readonly>
-                                        <div class="form-control" th:switch="${counseling.method}">
-                                            <span th:case="0"> 대면 </span>
-                                            <span th:case="1"> 온라인 </span>
-                                            <span th:case="2"> 전화 </span>
-                                            <span th:case="*" class="text-danger"> 몰?루? </span>
-                                        </div>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">담당자</span>
-                                        <input type="text" class="form-control" name="writer" th:value="${counseling.writer}" readonly>
-                                    </div>
-                            </div><!-- end row -->
-                            </form>
-                            </div><!-- end th:each -->
-                            </tr><!-- end card body -->
-                        </tr><!-- end card-header -->
-                    </tr><!-- end card -->
-                </tr><!-- end col -->
-            </tr><!-- end row -->
+            <div class="row mt-3">
+                <div class="col">
+                    <!-- 여기부터는 상담List로 나오기 -->
+                    <div th:each="counseling: ${counselingList}" id="l1" >
+                        <form class="mb-5"> <!-- card 사이의 공백 조절 가능(mb-공백) -->
+                            <div class="card">
+                                <div class="card-header" >
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col text-end">
+                                                <a th:href="|@{/counseling/update}?idx=${counseling.idx}|">
+                                                    <button type="button" class="btn btn-secondary modBtn">수정하기</button>
+                                                </a>
+                                                <a th:href="|@{/counseling/delete}?idx=${counseling.idx}|">
+                                                    <button type="button" class="btn btn-danger delBtn">삭제하기</button>
+                                                </a>
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <input type="hidden" class="form-control" name="idx" th:value="${counseling.idx}" readonly>
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">상담회차</span>
+                                                <input type="text" class="form-control" name="round" th:value="${counseling.round}" readonly>
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">상담일자</span>
+                                                <input type="text" class="form-control" name="counselingDate" th:value="${#temporals.format(counseling.counselingDate, 'yyyy-MM-dd')}" readonly>
+                                            </div>
+                                            <!-- resize: none; => textarea수정불가 / overflow: hidden => 스크롤 숨기기 -->
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">상담내용</span>
+                                                <textarea class="form-control col-sm-5" name="content" id="content" th:text="${counseling.content}" style="resize: none; overflow: hidden;" readonly></textarea>
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">상담방식</span>
+                                                <input type="hidden" class="form-control counselingMethod" name="method" th:value="${counseling.method}" readonly>
+                                                <div class="form-control" th:switch="${counseling.method}">
+                                                    <span th:case="0"> 대면 </span>
+                                                    <span th:case="1"> 온라인 </span>
+                                                    <span th:case="2"> 전화 </span>
+                                                    <span th:case="*" class="text-danger"> 몰?루? </span>
+                                                </div>
+                                            </div>
+                                            <div class="input-group mb-3">
+                                                <span class="input-group-text">담당자</span>
+                                                <input type="text" class="form-control" name="writer" th:value="${counseling.writer}" readonly>
+                                            </div>
+                                        </div><!-- end row -->
+                                    </div><!-- end card body -->
+                                </div><!-- end card-header -->
+                            </div><!-- end card -->
+                        </form>
+                    </div><!-- end th:each -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        <!-- 상담정보 끝 -->
 
-            </table>
         </div><!-- end inner-content -->
 
 
@@ -165,7 +163,6 @@
         }
         alert(errorMsg)
     }
-
 
 
     //학생정보확인
@@ -224,9 +221,6 @@
         });
     });
 
-
-
-
     // textarea의 높이를 동적으로 조절하는 함수 / list로 여러 값에 적용할 때는 (document.querySelectorAll 사용)
     function TextareaHeight() {
         // 모든 textarea 요소에 대해 높이 조절
@@ -247,6 +241,13 @@
             TextareaHeight();
         });
     });
+
+
+    //인쇄하기
+    function printPage() {
+        window.print();
+    }
+
 
 
 
