@@ -54,7 +54,7 @@ public class StudentSearchImpl extends QuerydslRepositorySupport implements Stud
                 }
             }
         }
-
+        query.orderBy(student.name.asc());
         query.where(booleanBuilder);
 
         //페이징

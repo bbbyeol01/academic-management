@@ -111,21 +111,23 @@ public class QuestionController {
 
     }
 
-    @PostMapping("/update")
-    @ResponseBody
-    public List<Question> updatePOST(QuestionDTO questionDTO){
+    @PostMapping("/modify")
+    public String modify(QuestionDTO questionDTO, MultipartFile file){
 //        해당 문제 수정한 다음 그 문제 키워드로 가져온 문제 리스트 반환
 
-        int update = questionService.update(questionDTO);
-        String name = questionDTO.getName();
+        log.info("file : {}", file.getOriginalFilename());
 
-        List<Question> questionByName = questionService.findQuestionByName(name);
+        questionFileSave(questionDTO, file);
 
-        log.info("update result");
-        log.info("" + questionByName);
+        try{
+            questionService.update(questionDTO);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return "redirect:/member/question?code=modify-fail";
+        }
 
-        return questionByName;
 
+        return "redirect:/member/question?code=modify-success";
 
     }
 
@@ -202,7 +204,7 @@ public class QuestionController {
 
     private void questionFileSave(QuestionDTO questionDTO, MultipartFile file){
 
-        if(file.isEmpty()){
+        if(file == null){
             return;
         }
 

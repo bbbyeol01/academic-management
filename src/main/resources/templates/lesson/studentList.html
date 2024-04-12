@@ -52,7 +52,7 @@
             </div>
 
             <!-- 본문 -->
-            <h5 style="color: #0d6efd" >[[${lesson.curriculum.name}]] [[${lesson.number}]] 기</h5>
+            <h5 style="color: #0d6efd; max-width: 500px" >[[${lesson.curriculum.name}]] [[${lesson.number}]]회차</h5>
             <hr>
             <br>
 
@@ -71,8 +71,8 @@
                         <input type="hidden" class="Idx" th:value="${student.lesson.idx}">
                         <div style="overflow: auto;display: inline-flex;width: 20%" th:text="${student.name}"></div>
                         <div style="overflow: auto;display: inline-flex;width: 10%">
-                            <span th:if="${student.done == 0}">수료</span>
-                            <span th:if="${student.done == 1}">미수료 </span>
+                            <span th:if="${student.done == 0}">미수료</span>
+                            <span th:if="${student.done == 1}">수료</span>
                             <span th:if="${student.done == 2}">중도탈락 </span>
                         </div>
                         <div style="overflow: auto;display: inline-flex;width: 20%" >

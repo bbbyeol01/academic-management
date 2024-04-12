@@ -45,7 +45,8 @@ public class Question {
         this.example = example;
     }
 
-    public void changeFileName(String fileName) {
+    public void changeFileName(String uuid, String fileName) {
+        this.uuid = uuid;
         this.fileName = fileName;
     }
 

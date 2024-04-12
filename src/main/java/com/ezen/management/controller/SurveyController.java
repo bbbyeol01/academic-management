@@ -169,6 +169,8 @@ public class SurveyController {
         //설문(주관식 때문에 필요)
         List<SurveyAnswerDTO> surveyAnswerDTOList = surveyAnswerService.findByLessonIdxAndRound(lessonIdx,round);
 
+        log.info("찐 확인 : " + surveyAnswerDTOList);
+
         model.addAttribute("round", round);
         model.addAttribute("lesson", lesson);
         model.addAttribute("surveyDTOList", surveyDTOList);

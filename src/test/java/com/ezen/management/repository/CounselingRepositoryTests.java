@@ -103,47 +103,6 @@ public class CounselingRepositoryTests {
 
 
 
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    public void 상담학생정보확인(){
-
-        Optional<Counseling> result = counselingRepository.findById(2L);
-        Counseling counseling = result.orElseThrow();
-
-        // Counseling 객체에서 studentIdx 가져오기
-        Long studentIdx = counseling.getStudent().getIdx();
-
-        // studentIdx를 사용하여 해당 학생 조회
-        Optional<Student> studentResult = studentRepository.findById(studentIdx);
-        Student student = studentResult.orElseThrow();
-
-        //웩 수동매핑
-        CounselingStudentDTO counselingStudentDTO = CounselingStudentDTO.builder()
-                .counselingIdx(counseling.getIdx())
-                .studentIdx(student.getIdx())
-                .name(student.getName())
-                .fileName(student.getFileName())
-                .phone(student.getPhone())
-                .email(student.getEmail())
-                .counselingDate(counseling.getCounselingDate())
-                .content(counseling.getContent())
-                .method(counseling.getMethod())
-                .modDate(counseling.getModDate())
-                .regDate(counseling.getRegDate())
-                .writer(counseling.getWriter())
-                .round(counseling.getRound())
-                .build();
-
-        log.info("counselingStudentDTO= " + counselingStudentDTO);
-
-
-    }
-
-
-
-
-
 
 
 
