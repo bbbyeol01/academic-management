@@ -4,7 +4,6 @@ import com.ezen.management.domain.Counseling;
 import com.ezen.management.domain.Curriculum;
 import com.ezen.management.domain.Lesson;
 import com.ezen.management.domain.Student;
-import com.ezen.management.dto.CounselingStudentDTO;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 
-import java.io.Console;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

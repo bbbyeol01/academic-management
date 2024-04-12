@@ -4,9 +4,6 @@ package com.ezen.management.service;
 import com.ezen.management.domain.Counseling;
 import com.ezen.management.domain.Student;
 import com.ezen.management.dto.CounselingDTO;
-import com.ezen.management.dto.CounselingStudentDTO;
-import com.ezen.management.dto.PageRequestDTO;
-import com.ezen.management.dto.PageResponseDTO;
 import com.ezen.management.repository.CounselingRepository;
 import com.ezen.management.repository.StudentRepository;
 import jakarta.transaction.Transactional;
@@ -14,13 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -149,64 +143,5 @@ public class CounselingServiceImpl implements CounselingService {
     }
 
 
-    
-    
-    //전체리스트
-    @Override
-    public PageResponseDTO<Counseling> counselingList(PageRequestDTO pageRequestDTO) {
 
-        String[] types = pageRequestDTO.getTypes();
-        String keyword = pageRequestDTO.getKeyword();
-        Pageable pageable = pageRequestDTO.getPageable("idx");
-
-        Page<Counseling> result = counselingRepository.searchAll(types, keyword, pageable);
-        List<Counseling> dtoList = result.getContent().stream()
-                .map(counseling -> modelMapper.map(counseling, Counseling.class)).collect(Collectors.toList());
-
-        return PageResponseDTO.<Counseling>withAll()
-                .pageRequestDTO(pageRequestDTO)
-                .dtoList(dtoList)
-                .total((int)result.getTotalPages())
-                .build();
-
-    }
-
-
-
-    //상세조회
-    @Override
-    public CounselingStudentDTO detail(Long idx) {
-
-        Optional<Counseling> result = counselingRepository.findById(idx);
-        Counseling counseling = result.orElseThrow();
-
-        // Counseling 객체에서 studentIdx 가져오기
-        Long studentIdx = counseling.getStudent().getIdx();
-
-        // studentIdx를 사용하여 해당 학생 조회
-        Optional<Student> studentResult = studentRepository.findById(studentIdx);
-        Student student = studentResult.orElseThrow();
-
-        //웩 수동매핑
-        CounselingStudentDTO counselingStudentDTO = CounselingStudentDTO.builder()
-                .counselingIdx(counseling.getIdx())
-                .studentIdx(student.getIdx())
-                .name(student.getName())
-                .fileName(student.getFileName())
-                .phone(student.getPhone())
-                .counselingDate(counseling.getCounselingDate())
-                .content(counseling.getContent())
-                .method(counseling.getMethod())
-                .modDate(counseling.getModDate())
-                .regDate(counseling.getRegDate())
-                .writer(counseling.getWriter())
-                .round(counseling.getRound())
-                .email(student.getEmail())
-                .build();
-
-        log.info("counselingStudentDTO= " + counselingStudentDTO);
-
-        return counselingStudentDTO;
-
-    }
 }

@@ -10,10 +10,11 @@
     </div>
 
 
-    <!-- content start -->
+<!-- content start -->
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
+<!-- button -->
             <div class="row float-end">
                 <div class="col-auto">
                     <button class="btn btn-outline-success" onclick="printPage()">인쇄</button>
@@ -21,19 +22,22 @@
                     <button type="button" class="btn btn-primary creatBtn">추가</button>
                 </div>
             </div>
-            <h3> 상담 </h3>
+<!-- 출력시 데이터 잘리면 다음페이지로 넘어가게 적용 -->
+            <div id="printStart" style="page-break-inside: avoid;" >
+                <h3> 상담 </h3>
             <hr>
             <br>
             <!-- 학생 정보-->
             <table class="table">
                 <tbody class="col">
                 <tr class="col" style="display: flex; flex-direction: column; min-height: 100%;">
-                    <td style="display: inline-flex; padding-right: 20px; vertical-align: top;">
+                    <td style="display: inline-flex; vertical-align: top; padding-bottom: 50px;" >
                         <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
                              style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
                         <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
                              style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
-                        <table style="margin-left: 20px;"> <!-- 내부 테이블 -->
+            <!-- 사진은 좌측 / 정보는 우측 = 공간나눔 -->
+                        <table class="fs-6" style="margin-left: 20px; font-weight: bold; color: black;">
                             <tr>
                                 <td style="vertical-align: top; margin-bottom: 10px;">&nbsp;이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.name}]]</td>
                             </tr>
@@ -47,7 +51,7 @@
                                 <td style="vertical-align: top; margin-bottom: 10px;">이&nbsp;&nbsp;메&nbsp;&nbsp;일&nbsp;&nbsp;&nbsp;&nbsp;[[${student.email}]]</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top; margin-bottom: 10px;">&nbsp;과&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정&nbsp;&nbsp;&nbsp;&nbsp;[[${student.lesson.curriculum.name}]]</td>
+                                <td style="vertical-align: top; margin-bottom: 10px;">&nbsp;과&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;정&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[[${student.lesson.curriculum.name}]]</td>
                             </tr>
                         </table>
                     </td>
@@ -58,13 +62,21 @@
         <!-- 학생정보 끝 -->
             <br>
             <br>
-
-
+<!-- 상담 내역이 없을 경우 -->
+            <div class="row mt-3" th:if="${student.counseling == 0}">
+                <div class="col">
+                    <div class="alert alert-info" role="alert">
+                        상담 내역이 없습니다.
+                    </div>
+                </div>
+            </div>
+<!-- 상담내역 Start -->
             <div class="row mt-3">
                 <div class="col">
-                    <!-- 여기부터는 상담List로 나오기 -->
+<!-- 여기부터는 상담List로 나오기 -->
                     <div th:each="counseling: ${counselingList}" id="l1" >
-                        <form class="mb-5"> <!-- card 사이의 공백 조절 가능(mb-공백) -->
+<!-- card 사이의 공백 조절 가능(mb-공백사이즈) -->
+                        <form class="mb-5">
                             <div class="card">
                                 <div class="card-header" >
                                     <div class="card-body">
@@ -73,22 +85,22 @@
                                                 <a th:href="|@{/counseling/update}?idx=${counseling.idx}|">
                                                     <button type="button" class="btn btn-secondary modBtn">수정하기</button>
                                                 </a>
-                                                <a th:href="|@{/counseling/delete}?idx=${counseling.idx}|">
-                                                    <button type="button" class="btn btn-danger delBtn">삭제하기</button>
-                                                </a>
+<!--                                                <a th:href="|@{/counseling/delete}?idx=${counseling.idx}|">-->
+<!--                                                    <button type="button" class="btn btn-danger delBtn">삭제하기</button>-->
+<!--                                                </a>-->
                                             </div>
                                             <div class="input-group mb-3">
-                                                <input type="hidden" class="form-control" name="idx" th:value="${counseling.idx}" readonly>
+                                                <input type="hidden" class="form-control" name="idx" id="counselingIdx" th:value="${counseling.idx}" readonly>
                                             </div>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">상담회차</span>
-                                                <input type="text" class="form-control" name="round" th:value="${counseling.round}" readonly>
+                                                <input type="text" class="form-control" id="round" name="round" th:value="${counseling.round}" readonly>
                                             </div>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">상담일자</span>
                                                 <input type="text" class="form-control" name="counselingDate" th:value="${#temporals.format(counseling.counselingDate, 'yyyy-MM-dd')}" readonly>
                                             </div>
-                                            <!-- resize: none; => textarea수정불가 / overflow: hidden => 스크롤 숨기기 -->
+                <!-- resize: none; => textarea 수정불가 / overflow: hidden => 스크롤 숨기기 -->
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">상담내용</span>
                                                 <textarea class="form-control col-sm-5" name="content" id="content" th:text="${counseling.content}" style="resize: none; overflow: hidden;" readonly></textarea>
@@ -116,15 +128,11 @@
                 </div><!-- end col -->
             </div><!-- end row -->
         <!-- 상담정보 끝 -->
-
+        </div><!-- end page break before -->
         </div><!-- end inner-content -->
 
 
-
-
-
     </div><!--end content -->
-
 
 
 
@@ -171,6 +179,14 @@
 
 
 
+    // //상담회차가 없다면 띄워주기
+    // const round = [[${student.counseling}]];
+    // console.log("round= " + round);
+    // if(round === 0){
+    //
+    // }
+
+
 
     //상담 추가하기
     document.querySelector(".creatBtn").addEventListener("click", function (e){
@@ -200,26 +216,26 @@
 
 
 
-    const formObj = document.querySelector("#l1");
-
-    // 삭제하기
-    document.querySelectorAll(".delBtn").forEach(function(btn) {
-        btn.addEventListener("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            // 확인 창 표시
-            const confirmed = confirm("삭제하시겠습니까?");
-
-            if (confirmed) {
-                // 삭제할 form 요소 선택
-                const form = this.closest("form");
-                form.action = `/counseling/delete`;
-                form.method = 'post';
-                form.submit();
-            }
-        });
-    });
+    // const formObj = document.querySelector("#l1");
+    //
+    // // 삭제하기
+    // document.querySelectorAll(".delBtn").forEach(function(btn) {
+    //     btn.addEventListener("click", function (e) {
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //
+    //         // 확인 창 표시
+    //         const confirmed = confirm("삭제하시겠습니까?");
+    //
+    //         if (confirmed) {
+    //             // 삭제할 form 요소 선택
+    //             const form = this.closest("form");
+    //             form.action = `/counseling/delete`;
+    //             form.method = 'post';
+    //             form.submit();
+    //         }
+    //     });
+    // });
 
     // textarea의 높이를 동적으로 조절하는 함수 / list로 여러 값에 적용할 때는 (document.querySelectorAll 사용)
     function TextareaHeight() {
@@ -243,10 +259,27 @@
     });
 
 
+
     //인쇄하기
     function printPage() {
+
+        var printContent = document.getElementById('printStart').outerHTML; // printStart 요소부터의 HTML 시작
+        var originalContent = document.body.innerHTML; // 현재 페이지의 전체 HTML 저장
+
+        // 프린트를 위해 페이지의 HTML을 변경
+        document.body.innerHTML = printContent;
+
+        // 프린트 실행
         window.print();
+
+        // 프린트가 완료되면 페이지의 HTML을 복원
+        document.body.innerHTML = originalContent;
+
+        //페이지 새로 고침해야 나머지 버튼 활성화됨
+        location.href = '/counseling/counselingDetail?idx=' + studentIdx;
     }
+
+
 
 
 
