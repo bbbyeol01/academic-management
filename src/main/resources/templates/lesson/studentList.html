@@ -68,7 +68,7 @@
                 <a th:href="@{/lesson/studentDetail(idx=${student.idx})}" style="color: black">
                     <div>
                         <hr>
-                        <input type="hidden" class="Idx" th:value="${student.idx}">
+                        <input type="hidden" class="Idx" th:value="${student.lesson.idx}">
                         <div style="overflow: auto;display: inline-flex;width: 20%" th:text="${student.name}"></div>
                         <div style="overflow: auto;display: inline-flex;width: 10%">
                             <span th:if="${student.done == 0}">수료</span>

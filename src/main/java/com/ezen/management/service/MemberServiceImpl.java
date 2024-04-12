@@ -2,6 +2,7 @@ package com.ezen.management.service;
 
 import com.ezen.management.domain.Member;
 import com.ezen.management.domain.MemberRole;
+import com.ezen.management.domain.MemberState;
 import com.ezen.management.domain.QMember;
 import com.ezen.management.dto.MemberDTO;
 import com.ezen.management.dto.PageRequestDTO;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLDataException;
 import java.util.*;
 
 @Service
@@ -64,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
                 .name(memberDTO.getName())
                 .build();
 
-        if(!memberDTO.getFileName().isEmpty()){
+        if(memberDTO.getFileName() != null){
             member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
         }
 
@@ -124,46 +126,62 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public void delete(String id) throws IOException {
+    public void delete(String id) throws Exception {
         log.info("id......" + id);
 
         Optional<Member> result = memberRepository.findById(id);
         Member member = result.orElseThrow();
 
-        if(member.getUuid() != null){
-            Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + '_' + member.getFileName());
+//        교사 삭제 시 외래키가 존재하는 경우  수업, 학생에도 영향 -> 삭제하지 않고 상태만 변경
+//
+        try{
+            memberRepository.delete(member);
 
-            try{
-                resource.getFile().delete();
-            }catch (Exception e){
-                throw new IOException();
+//             파일 삭제
+            if(member.getUuid() != null){
+                Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + '_' + member.getFileName());
+
+                try{
+                    resource.getFile().delete();
+                }catch (Exception e){
+                    throw new IOException();
+                }
             }
-        }
 
-        memberRepository.delete(member);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            log.error("삭제되지 않았습니다.");
+            throw new Exception();
+        }finally {
+            member.quit();
+            memberRepository.save(member);
+        }
 
     }
 
     @Override
-    public void update(MemberDTO memberDTO) throws IOException {
+    public void modify(MemberDTO memberDTO) throws IOException {
 
         Optional<Member> result = memberRepository.findById(memberDTO.getId());
         Member member = result.orElseThrow();
 
-        if(member.getUuid() != null){
+//        프로필 사진, 이름만 변경 가능
+        member.changeName(memberDTO.getName());
+
+//        수정 시 주의 : 기존(member)에 사진이 있고, DTO에 사진이 있다면 기존 사진을 서버에서 삭제
+        if(member.getUuid() != null && memberDTO.getUuid() != null){
             Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + '_' + member.getFileName());
 
             try{
                 resource.getFile().delete();
             }catch (Exception e){
+                log.info("delete exception");
                 throw new IOException();
             }
         }
 
-//        프로필 사진, 이름만 변경 가능
-        member.changeName(memberDTO.getName());
 
-        if(!memberDTO.getFileName().isEmpty()){
+        if(memberDTO.getUuid() != null){
             member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
         }
 

@@ -28,20 +28,20 @@
             <div class="flex-wrap" style="max-width: 700px">
 
 
-                <div class="col-sm-6 float-start">
+                <div class="col-sm-6">
                     <form action="/student/question" method="post">
                         <input type="hidden" name="idx" th:value="${student.idx}"/>
                         <input type="hidden" name="name" th:value="${student.name}">
                         <input type="hidden" name="lessonIdx" th:value="${lesson.idx}"/>
 
+                        <button th:if="${!student.pretest}" class="btn btn-primary" type="submit" style="width: 370px; height: 100px; margin: 6px">사전 평가</button>
+                        <button th:if="${student.pretest}" class="btn btn-secondary" type="button" style="width: 370px; height: 100px; margin: 6px" id="pretestDoneBtn">사전 평가(완료)</button>
 
-                        <button th:if="${!student.pretest}" class="btn btn-primary" type="submit" style="width: 300px; height: 400px">사전 평가</button>
-                        <button th:if="${student.pretest}" class="btn btn-secondary" type="reset" style="width: 300px; height: 400px">사전 평가<br>(완료)</button>
                     </form>
                 </div>
 
 
-                <div class="col-sm-6 float-end">
+                <div class="col-sm-6">
                     <form action="/student/survey" method="post">
                         <input type="hidden" name="idx" th:value="${student.idx}"/>
                         <input type="hidden" name="name" th:value="${student.name}">
@@ -81,6 +81,15 @@
 <script>
 
     // document.querySelector(".questionBtn").classList.add("active");
+
+
+    const pretestDoneBtn = document.querySelector("#pretestDoneBtn");
+    pretestDoneBtn.addEventListener("click", function (e){
+        e.preventDefault();
+        e.stopPropagation();
+
+
+    })
 
 </script>
 

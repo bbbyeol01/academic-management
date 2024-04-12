@@ -9,6 +9,16 @@
         max-height: max-content;
         overflow: visible;
     }
+
+    .omrContent{
+        /*border: 1px solid lightgray;*/
+        /*border-radius: 5px;*/
+        /*background-color: white;*/
+        display: inline-flex;
+        width: 60%;
+        margin-left: 20px;
+        margin-bottom: 10px;
+    }
 </style>
 
 <body>
@@ -36,16 +46,143 @@
 
             <br>
 
-            <hr>
+            <hr class="col-md-5">
             <br>
 
-            <form action="/student/question/insert" method="post">
-                <input type="hidden" th:value="${student.idx}" name="studentIdx">
-                <h3>문제</h3>
-                <div style="font-size: 12pt"> 문제를 읽고 정답을 고르세요. </div>
-                <br>
 
-                <div th:each="question : ${questions}" style="margin: 10px;" class="col-md-6">
+            <!--            OMR -->
+
+            <div class="float-end position-fixed form-control align-content-center" style="overflow: auto; border: 1px solid lightgray; border-radius: 5px; height: 600px; width: 25%; left: 60%; top : 75px; position: absolute; background-color: whitesmoke">
+                <div class="statusBar" style="margin: 30px">
+
+                    <div class="col-md-6 float-start">
+
+<!--                        <hr class="vr position-fixed" style="border: 1px solid black; height: 599px; margin-left: 80px; top : 60px;">-->
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">1.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">2.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">3.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">4.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">5.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">6.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">7.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">8.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">9.&nbsp;</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">10.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="col-md-6 float-end">
+
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">11.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">12.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">13.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">14.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">15.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">16.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">17.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">18.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">19.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                        <div class="omrContent">
+                            <div style="margin: 10px; display: inline-flex">20.</div>
+                            <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                        </div>
+
+                    </div>
+
+<!--                    <button class="btn btn-primary col-6 position-fixed" style="position: absolute; height: 5%; width: 30%; top: 80%; left: 55%; bottom: 30%;" type="submit">등록</button>-->
+                </div>
+
+            </div>
+            <!--            OMR 끝 -->
+
+
+            <form action="/student/question/insert" method="post" id="questionAnswerForm" class="col-md-5">
+                <input type="hidden" th:value="${student.idx}" name="studentIdx">
+<!--                <h3>문제</h3>-->
+<!--                <div style="font-size: 12pt"> 문제를 읽고 정답을 고르세요. </div>-->
+<!--                <br>-->
+
+                <div th:each="question : ${questions}" style="margin: 10px;">
 
 
                     <input th:if="${question.number == 1}"
@@ -64,16 +201,17 @@
 
                     <!--                    사진 -->
                     <div th:if="${question.fileName != null}">
-                        <img th:src="'/img/question/' + ${question.fileName}" style="max-width: 270px; margin: 30px">
+                        <img th:src="'/view/' + ${question.uuid} + '_' + ${question.fileName}" style="max-width: 270px; margin: 30px">
                     </div>
 
 
                     <!--                    보기 -->
                     <div>
-                        <input th:name="'an' + ${question.number}" type="radio" value="1"/> [[${question.item1}]]<br>
-                        <input th:name="'an' + ${question.number}" type="radio" value="2"/> [[${question.item2}]]<br>
-                        <input th:name="'an' + ${question.number}" type="radio" value="3"/> [[${question.item3}]]<br>
-                        <input th:name="'an' + ${question.number}" type="radio" value="4"/> [[${question.item4}]]
+                        <input type="radio" value="1" class="studentAnswer" th:name="'select' + ${question.number}" th:id="'studentAnswer' + ${question.number}"/> [[${question.item1}]]<br>
+                        <input type="radio" value="2" class="studentAnswer" th:name="'select' + ${question.number}"/> [[${question.item2}]]<br>
+                        <input type="radio" value="3" class="studentAnswer" th:name="'select' + ${question.number}"/> [[${question.item3}]]<br>
+                        <input type="radio" value="4" class="studentAnswer" th:name="'select' + ${question.number}"/> [[${question.item4}]]
+
                     </div>
 
                     <br>
@@ -81,33 +219,44 @@
                     <br>
                 </div>
 
-                <button type="submit" class="btn btn-primary">제출</button>
+
+                <!-- 임시 -->
+
+                <input name="an1" id="an1" type="hidden"/>
+                <input name="an2" id="an2" type="hidden"/>
+                <input name="an3" id="an3" type="hidden"/>
+                <input name="an4" id="an4" type="hidden"/>
+                <input name="an5" id="an5" type="hidden"/>
+                <input name="an6" id="an6" type="hidden"/>
+                <input name="an7" id="an7" type="hidden"/>
+                <input name="an8" id="an8" type="hidden"/>
+                <input name="an9" id="an9" type="hidden"/>
+                <input name="an10" id="an10" type="hidden"/>
+                <input name="an11" id="an11" type="hidden"/>
+                <input name="an12" id="an12" type="hidden"/>
+                <input name="an13" id="an13" type="hidden"/>
+                <input name="an14" id="an14" type="hidden"/>
+                <input name="an15" id="an15" type="hidden"/>
+                <input name="an16" id="an16" type="hidden"/>
+                <input name="an17" id="an17" type="hidden"/>
+                <input name="an18" id="an18" type="hidden"/>
+                <input name="an19" id="an19" type="hidden"/>
+                <input name="an20" id="an20" type="hidden"/>
+
+                <!-- 임시 끝-->
+
+                <button type="button" class="btn btn-lg btn-primary" id="registerBtn" style="width: 100%">제출</button>
 
             </form>
 
-
-
-
-            <!--            OMR -->
-            <div class="col-md-6">
-
-
-            </div>
-
         </div>
-
-
-
-
+        <!-- content end -->
 
         <br>
         <br>
         <br>
         <br>
         <br>
-        <br>
-
-
 
     </div>
     <!-- content end -->
@@ -129,6 +278,88 @@
 <script>
 
     document.querySelector(".questionBtn").classList.add("active");
+
+
+
+    // 정답 null 검증 & 스크롤 이동 --------------------------------------------------------------------
+    const studentAnswerList = document.querySelectorAll(".studentAnswer");
+    const questionAnswerForm = document.querySelector("#questionAnswerForm");
+
+    const registerBtn = document.querySelector("#registerBtn");
+
+    registerBtn.addEventListener("click", function (e){
+        e.stopPropagation();
+        e.preventDefault();
+
+        for(let i = 0; i < 20; i++){
+            if(answerContainers[i].value === '' || answerContainers[i].value === null){
+                alert((i + 1) + '번 문제의 답이 선택되지 않았습니다.');
+                $('html, body').animate({scrollTop: $('#studentAnswer'+ (i + 1)).offset().top - 150});
+                return;
+            }
+        }
+
+        if(!confirm('제출하시겠습니까?')){
+            return;
+        }
+
+        questionAnswerForm.submit();
+
+    })
+    // 정답 null 검증 & 스크롤 이동 --------------------------------------------------------------------
+
+
+
+
+
+
+    // OMR 체크 --------------------------------------------------------------------
+
+    // const  answerContainers = [an1, an2, an3, an4, an5, an6, an7, an8, an9, an10,
+    //                            an11, an12, an13, an14, an15, an16, an17, an18, an19, an20];
+    const answerContainers = [];
+
+    for (let i = 1; i <= 20; i++) {
+        answerContainers.push(document.querySelector(`#an${i}`));
+    }
+
+    const statusContentList = document.querySelectorAll(".statusContent");
+
+
+    // radio 선택되면 an1~20 input값 변경
+    for (let i = 0; i < 80; i++) {
+        studentAnswerList[i].addEventListener("change", function (e) {
+            let index = Math.floor(i / 4); // 1~4 = an1, 5~8 = an2, 9~12 = an3
+            answerContainers[index].value = studentAnswerList[i].value;
+
+            switch (answerContainers[index].value){
+                case '1' :
+                    statusContentList[index].innerText = "①";
+                    break;
+                case '2' :
+                    statusContentList[index].innerText = "②";
+                    break;
+                case '3' :
+                    statusContentList[index].innerText = "③";
+                    break;
+                case '4' :
+                    statusContentList[index].innerText = "④";
+                    break;
+
+            }
+        });
+
+    }
+
+    for(let i = 0; i < 20; i++){
+        answerContainers[i].addEventListener("change", function(e) {
+
+        })
+    }
+
+    // OMR 체크 끝 --------------------------------------------------------------------
+
+
 
 </script>
 

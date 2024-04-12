@@ -160,6 +160,11 @@
 
         //training.js 에서 insertCategory 불러오기
         categoryInsert(insertName).then(result => {
+            if (result == 1){
+                confirm("이미 존재하는 유형입니다.")
+            }else{
+                confirm("유형 등록 완료")
+            }
             insertModal.hide()
             categoryName.value = ''
             location.reload()
@@ -225,7 +230,8 @@
             updateModal.hide()
             location.reload()
         }).catch(e => {
-            console.log(e)
+            confirm("연관된 과정 혹은 수업이 있어 삭제되지않았습니다.")
+            location.reload()
         })
     }, false)
 

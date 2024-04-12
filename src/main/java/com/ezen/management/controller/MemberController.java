@@ -5,6 +5,7 @@ import com.ezen.management.domain.Member;
 import com.ezen.management.domain.MemberRole;
 import com.ezen.management.domain.Student;
 import com.ezen.management.dto.*;
+import com.ezen.management.repository.MemberRepository;
 import com.ezen.management.service.LessonService;
 import com.ezen.management.service.MemberService;
 import com.ezen.management.service.StudentService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLDataException;
 import java.util.*;
 
 @Controller
@@ -92,14 +95,15 @@ public class MemberController {
     @PostMapping("/admin/update")
     public String adminUpdate(MemberDTO memberDTO, MultipartFile file){
 
-        if(file != null){
-            memberFileSave(memberDTO, file);
-        }
+        log.info("memberDTO : {}", memberDTO);
+
+        memberFileSave(memberDTO, file);
 
         try{
-            memberService.update(memberDTO);
+            memberService.modify(memberDTO);
             return "redirect:/member/admin?code=modify-success";
         }catch (Exception e){
+            log.error(e.getMessage());
             return "redirect:/member/admin?code=modify-fail";
         }
     }
@@ -110,7 +114,12 @@ public class MemberController {
     @PostMapping("/admin/delete")
     @ResponseBody
     public void adminDelete(String id) throws IOException {
-        memberService.delete(id);
+
+        try {
+            memberService.delete(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 //    행정 끝 -----------------------------------------------------------------------------------------------------
 
@@ -148,6 +157,7 @@ public class MemberController {
             memberService.teacherInsert(memberDTO);
             return "redirect:/member/teacher?code=insert-success";
         }catch (Exception e){
+            log.error(e.getMessage());
             return "redirect:/member/teacher?code=insert-fail";
         }
 
@@ -169,12 +179,10 @@ public class MemberController {
     @PostMapping("/teacher/update")
     public String teacherUpdate(MemberDTO memberDTO, MultipartFile file){
 
-        if(file != null){
-            memberFileSave(memberDTO, file);
-        }
+        memberFileSave(memberDTO, file);
 
         try{
-            memberService.update(memberDTO);
+            memberService.modify(memberDTO);
             return "redirect:/member/teacher?code=modify-success";
         }catch (Exception e){
             return "redirect:/member/teacher?code=modify-fail";
@@ -186,14 +194,16 @@ public class MemberController {
 //    교사 삭제
     @PreAuthorize("hasAnyRole('MASTER', 'ADMIN')")
     @PostMapping("/teacher/delete")
-    public String teacherDelete(@RequestParam String id){
+    @ResponseBody
+    public boolean teacherDelete(@RequestParam String id) throws Exception {
 
+//       외래키가 존재하면 삭제되지 않음 -> 삭제에서 QUIT으로 변경
         try{
             memberService.delete(id);
-            return "redirect:/member/teacher?code=delete-success";
+            return true;
         }catch (Exception e){
-            return "redirect:/member/teacher?code=delete-fail";
-
+            log.error(e.getMessage());
+            return false;
         }
 
     }
@@ -207,8 +217,6 @@ public class MemberController {
 //    학생 목록
     @GetMapping("/student")
     public String student(Long lessonIdx, PageRequestDTO pageRequestDTO, Model model){
-
-//        model.addAttribute("students", students);
 
         PageResponseDTO<Student> pageResponseDTO = studentService.searchStudent(lessonIdx, pageRequestDTO);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
@@ -226,7 +234,7 @@ public class MemberController {
         }
 
         try {
-            studentService.insertStudent(studentDTO);
+            studentService.insert(studentDTO);
             return "redirect:/member/student?code=insert-success";
         }catch (Exception e){
             return "redirect:/member/student?code=insert-fail";
@@ -239,12 +247,10 @@ public class MemberController {
     @PostMapping("/student/modify")
     public String studentModify(StudentDTO studentDTO, MultipartFile file){
 
-        if(file != null){
-            studentFileSave(studentDTO, file);
-        }
+        studentFileSave(studentDTO, file);
 
         try {
-            studentService.modifyStudent(studentDTO);
+            studentService.modify(studentDTO);
             return "redirect:/member/student?code=modify-success";
         }catch (Exception e){
             return "redirect:/member/student?code=modify-fail";
@@ -283,7 +289,7 @@ public class MemberController {
     public String deleteStudent(StudentDTO studentDTO){
 
         try{
-            studentService.deleteStudent(studentDTO);
+            studentService.delete(studentDTO);
             return "redirect:/member/student?code=delete-success";
         }catch (Exception e){
             return "redirect:/member/student?code=delete-fail";
@@ -295,6 +301,10 @@ public class MemberController {
 
 
     private void studentFileSave(StudentDTO studentDTO, MultipartFile file){
+
+        if(file.isEmpty()){
+            return;
+        }
 
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();
@@ -315,6 +325,10 @@ public class MemberController {
 
 
     private void memberFileSave(MemberDTO memberDTO, MultipartFile file){
+
+        if(file.isEmpty()){
+            return;
+        }
 
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();

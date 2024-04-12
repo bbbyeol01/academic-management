@@ -24,6 +24,7 @@ public class Question {
 //    보기
     private String example;
 //    사진
+    private String uuid;
     private String fileName;
 
     private int number;
@@ -34,6 +35,7 @@ public class Question {
     private String item2;
     private String item3;
     private String item4;
+
 
     public void changeContent(String content){
         this.content = content;

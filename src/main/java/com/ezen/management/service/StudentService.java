@@ -21,10 +21,10 @@ public interface StudentService {
 
     PageResponseDTO<Student> searchStudent(Long lessonIdx, PageRequestDTO pageRequestDTO);
 
-    void insertStudent(StudentDTO studentDTO);
+    void insert(StudentDTO studentDTO);
 
-    void modifyStudent(StudentDTO studentDTO) throws IOException;
+    void modify(StudentDTO studentDTO) throws IOException;
 
-    void deleteStudent(StudentDTO studentDTO) throws IOException;
+    void delete(StudentDTO studentDTO) throws IOException;
 
 }
