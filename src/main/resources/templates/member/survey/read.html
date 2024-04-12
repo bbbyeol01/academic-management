@@ -26,6 +26,8 @@
 
                 <h1> 설문조사 조회 메뉴 </h1>
 
+                <hr>
+
                 <div class="row g-4">
 
                     <div class="col-sm-12 col-md-6 col-xl-4">
@@ -62,29 +64,22 @@
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <td colspan="8">
+                                            <th colspan="8">
                                                 <span th:name="${survey.number}" th:text="${survey.number}" disabled></span>
                                                 <span>.</span>
                                                 <span th:text="${survey.content}"></span>
-                                            </td>
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th>답변유형</th>
-                                            <td colspan="7" th:name="${survey.type}" th:text="${survey.type}" disabled></td>
+                                            <td colspan="7" th:name="${survey.type}" th:text="${survey.type}" style="width: 648px;" disabled></td>
                                         </tr>
                                         <tr>
-                                            <th>답변보기</th>
-                                            <td th:each="i : ${#numbers.sequence(1, 7)}">
-                                                <span th:if="${survey.type eq '객관식'}">
-                                                    <label th:if="${survey['item' + i]} != 7">
-                                                        <input type="radio" th:text="${survey['item' + i]}" disabled="disabled">
-                                                    </label>
-                                                    <label th:if="${survey['item' + i]} == 7">
-                                                        <input type="radio" th:text="${survey['item' + i]} check">
-                                                    </label>
-                                                </span>
-                                                <span th:if="${survey.type eq '주관식'}">
-                                                </span>
+                                            <th th:if="${survey.type eq '객관식'}">답변보기</th>
+                                            <td th:if="${survey.type eq '객관식'}" th:each="i : ${#numbers.sequence(1, 7)}">
+                                                <label th:if="${survey['item' + i]} != 7">
+                                                    <input type="radio" th:text="${' ' + survey['item' + i]}" disabled="disabled">
+                                                </label>
                                             </td>
                                         </tr>
                                         <!-- 나머지 항목들을 여기에 추가 -->
@@ -100,7 +95,6 @@
                     <div class="col-12" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
                         <div class="btn-group" role="group" style="margin-right: 10px;">
                             <button type="button" class="btn btn-secondary modifyBtn">수정</button>
-                            <!--<button type="button" class="btn btn-danger removeBtn">삭제</button>-->
                         </div>
                     </div><!--end col-12-->
 
@@ -124,16 +118,6 @@
 <div th:replace="/layout/basic :: scriptSet"></div>
 <script >
     document.addEventListener("DOMContentLoaded", function() {
-        const removeButtons = document.querySelectorAll(".removeBtn");
-        removeButtons.forEach(function(button) {
-            button.addEventListener("click", function() {
-                const confirmDelete = confirm("설문을 삭제하시겠습니까?");
-                if (confirmDelete) {
-                    const round = button.closest('.row').querySelector('h2 span').textContent.trim();
-                    window.location.href = "/member/survey/remove?round=" + round;
-                }
-            });
-        });
 
         // 수정 버튼에 대한 이벤트 리스너 추가
         const modifyBtn = document.querySelector(".modifyBtn");

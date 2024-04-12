@@ -3,24 +3,6 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/layout/basic :: head"></head>
-<style>
-    .survey-data-input {
-        display: block;
-        width: 100%;
-        padding: .375rem 2.25rem .375rem .75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #757575;
-        background-color: #fff;
-        background-repeat: no-repeat;
-        background-position: right .75rem center;
-        background-size: 16px 12px;
-        border: 1px solid #ced4da;
-        border-radius: 5px;
-        appearance: none;
-    }
-</style>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
@@ -34,36 +16,41 @@
 
         <div class="container-fluid pt-5 px-5">
 
-            <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
+            <div class="inner-content" style="margin: 2vw 0 20px 20px; max-width: 80%">
 
                 <h1> 설문조사 수정 메뉴에요 </h1>
 
+                <hr>
 
-                <div class="row g-4">
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 p-4">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 p-4">
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-xl-4">
+                        <div class="h-100 p-4">
+                        </div>
+                    </div>
 
-                    <div class="col-sm-12 col-md-6 col-xl-4">
-                        <br>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-xl-4">
-                        <br>
-                    </div>
-                    <div class="col-sm-12 col-md-6 col-xl-4">
-                        <br>
-                    </div>
+
 
                     <form action="/member/survey/modify" method="post">
-                            <!-- 설문회차 출력 -->
-                            <div class="col-12" th:name="surveyTitle">
-                                <div class="bg-light rounded h-100 p-4">
-                                    <div class="table-responsive">
-                                        <h2><span>중간 교육만족도 설문조사서(</span><input type="hidden" name="round" id="round" th:value="${param.round}"><span th:name="${surveys[0].round}" th:text="${param.round}"></span><span>회차)</span></h2>
-                                    </div><!--end table-responsive-->
-                                </div><!--end bg-light rounded h-100 p-4-->
-                            </div><!--end col-12-->
+                        <div class="row g-4">
+                        <!-- 설문회차 출력 -->
+                        <div class="col-12" th:name="surveyTitle">
+                            <div class="bg-light rounded h-100 p-4">
+                                <div class="table-responsive">
+                                    <h2><span>중간 교육만족도 설문조사서(</span><input type="hidden" name="round" id="round" th:value="${param.round}"><span th:name="${surveys[0].round}" th:text="${param.round} + '회차)'"></span></h2>
+                                </div><!--end table-responsive-->
+                            </div><!--end bg-light rounded h-100 p-4-->
+                        </div><!--end col-12-->
 
-                            <!-- 설문항목 반복 출력 -->
-                            <div th:each="i : ${#numbers.sequence(0, 14)}">
-                                <div class="col-12" th:name="'answer' + ${surveys[i].number}">
+                        <!-- 설문항목 반복 출력 -->
+                        <div th:each="i : ${#numbers.sequence(0, 14)}">
+                            <div class="col-12">
                                     <div class="bg-light rounded h-100 p-4">
                                         <div class="table-responsive">
                                             <table class="table">
@@ -86,11 +73,13 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="7" th:name="${surveys[i].type}" style="padding-left: 44px;">
-                                                        <select class="form-select" th:name="'surveyDtoList[' + ${i} + '].type'" onchange="selectType(this)">
-                                                            <option value="선택안함" th:selected="${surveys[i].type eq '선택안함'}">선택안함</option>
-                                                            <option value="객관식" th:selected="${surveys[i].type eq '객관식'}">객관식</option>
-                                                            <option value="주관식" th:selected="${surveys[i].type eq '주관식'}">주관식</option>
-                                                        </select>
+                                                        <label>
+                                                            <select class="form-select" th:name="'surveyDtoList[' + ${i} + '].type'" onchange="selectType(this)">
+                                                                <option value="선택안함" th:selected="${surveys[i].type eq '선택안함'}">선택안함</option>
+                                                                <option value="객관식" th:selected="${surveys[i].type eq '객관식'}">객관식</option>
+                                                                <option value="주관식" th:selected="${surveys[i].type eq '주관식'}">주관식</option>
+                                                            </select>
+                                                        </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -104,7 +93,7 @@
                                                             <div th:each="j : ${#numbers.sequence(1, 7)}">
                                                                 <!--<span th:text="${j}"></span>-->
                                                                 <label>
-                                                                    <input class="survey-data-input" type="text" th:name="'surveyDtoList[' + ${i} + '].item' + ${j}" th:id="'item' + ${j}" th:value="${surveys[i]['item' + j]}" th:placeholder="'옵션값' + ${j}">
+                                                                    <input class="survey-data-input" type="text" th:name="'surveyDtoList[' + ${i} + '].item' + ${j}" th:id="'item' + ${j}" th:value="${surveys[i]['item' + j]}" th:placeholder="${j} + '.보기를 입력해주세요'">
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -112,7 +101,9 @@
                                                         <div class="subjectiveInputs" th:id="'subjectiveInputs' + ${i}" style="display: none;">
                                                             <!-- 주관식 양식 내용 -->
                                                             <div>
-                                                                <input class="survey-data-input" type="text" th:value="''" placeholder="참여자의 답변란" readonly>
+                                                                <label>
+                                                                    <input class="survey-data-input" type="text" th:value="''" placeholder="참여자의 답변란" style="cursor: default;" readonly>
+                                                                </label>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -122,18 +113,17 @@
                                             </table>
                                         </div><!--end table-responsive-->
                                     </div><!--end bg-light rounded h-100 p-4-->
-                                </div><!--end col-12-->
-                            </div>
+                            </div><!--end col-12-->
+                        </div><!--end 설문항목 반복 출력-->
 
-                            <div class="col-12">
-                                <div class="btn-group" role="group">
-                                    <button type="submit" class="btn btn-primary modifyBtn">수정완료</button>
-                                </div>
-                            </div>
-                            <div class="col-12"></div>
-                    </form>
-                </div><!--end row g-4-->
+                        <div class="col-12" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+                                <button type="submit" class="btn btn-primary modifyBtn">수정완료</button>
+                        </div>
+                        </div><!--end row g-4-->
+                    </form><!-- form 태그 닫기 -->
+
             </div><!--inner-content-->
+
         </div><!--end container-fluid pt-4 px-4-->
 
 
@@ -147,8 +137,7 @@
 
 </div>
 <!-- wrapper end-->
-
-
+<div th:replace="/layout/basic :: scriptSet"></div>
 <script th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function() {
         // 페이지가 로드될 때 각 답변보기 영역의 표시 여부 설정
