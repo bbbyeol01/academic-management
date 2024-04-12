@@ -31,19 +31,6 @@ public class SurveyController {
     /*=========================설문관리 CRUD=========================*/
 
     /**
-     * OK
-     */
-    @GetMapping("member/survey/list")
-    public String surveyList(Model model){
-
-        List<SurveyDTO> surveyList = surveyService.surveyList();
-
-        model.addAttribute("surveyList", surveyList);
-
-        return "member/survey/list";
-    }
-
-    /**
      * 템플릿 오류 해결해야 함. 경로 문제 같은데...
      */
     @GetMapping("/member/survey/register")
@@ -126,7 +113,7 @@ public class SurveyController {
 
         Student student = studentService.findById(studentDTO.getIdx());
 
-        int round = student.getSurvey();
+        int round = student.getSurvey() + 1;
 
         log.info("라운드" + round);
 

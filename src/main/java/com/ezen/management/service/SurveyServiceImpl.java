@@ -34,17 +34,6 @@ public class SurveyServiceImpl implements SurveyService{
     }
 
     @Override
-    public List<SurveyDTO> surveyList() {
-
-        List<Survey> surveyList = surveyRepository.findAll();
-        List<SurveyDTO> surveyDTOList = surveyList.stream()
-                .map(this::surveyEntityToDTO)
-                .collect(Collectors.toList());
-
-        return surveyDTOList;
-    }
-
-    @Override
     public int modify(SurveyDtoList surveyDtoList, int round) {
 
         //리스트 조회(엔티티)
@@ -95,17 +84,4 @@ public class SurveyServiceImpl implements SurveyService{
         return result;
     }
 
-
-    //문제1
-    @Override
-    public List<SurveyDTO> findByRoundAndNumber(int round, int number) {
-
-        List<Survey> surveyList = surveyRepository.findByRoundAndNumber(round,number);
-
-        List<SurveyDTO> surveyDTOList = surveyList.stream()
-                .map(this::surveyEntityToDTO)
-                .collect(Collectors.toList());
-
-        return surveyDTOList;
-    }
 }
