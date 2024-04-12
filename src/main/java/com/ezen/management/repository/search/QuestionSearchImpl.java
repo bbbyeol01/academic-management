@@ -37,7 +37,7 @@ public class QuestionSearchImpl extends QuerydslRepositorySupport implements Que
                         //        where name like ...
                         booleanBuilder.or(question.name.contains(keyword));
                         break;
-                    case "i" :
+                    case "c" :
                         //        or content like ...
                         booleanBuilder.or(question.content.contains(keyword));
                         break;

@@ -66,7 +66,7 @@ public class LessonSearchImpl extends QuerydslRepositorySupport implements Lesso
                 }
             }
         }
-
+        query.orderBy(lesson.curriculum.name.asc(), lesson.number.asc());
         query.where(booleanBuilder);
 
         //페이징
@@ -127,7 +127,7 @@ public class LessonSearchImpl extends QuerydslRepositorySupport implements Lesso
                 }
             }
         }
-
+        query.orderBy(lesson.curriculum.name.asc(), lesson.number.asc());
         query.where(booleanBuilder);
 
         //페이징
@@ -187,7 +187,7 @@ public class LessonSearchImpl extends QuerydslRepositorySupport implements Lesso
                 }
             }
         }
-
+        query.orderBy(lesson.curriculum.name.asc(), lesson.number.asc());
         query.where(booleanBuilder);
 
         //페이징

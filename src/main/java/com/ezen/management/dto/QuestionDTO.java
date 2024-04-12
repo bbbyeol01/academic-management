@@ -12,6 +12,7 @@ public class QuestionDTO {
     private String name;
     private String content;
     private String example;
+    private String uuid;
     private String fileName;
     private int number;
     private String item1;

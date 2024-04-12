@@ -52,8 +52,8 @@
             <br>
             <hr>
             <div style="width: 100%">
-                <div style="display: inline-flex;width: 35%; font-weight: bold; font-size: large; color: #0d6efd">훈련유형</div>
-                <div style="display: inline-flex;width: 35%; font-weight: bold; font-size: large; color: #0d6efd">과정명</div>
+                <div style="display: inline-flex;width: 40%; font-weight: bold; font-size: large; color: #0d6efd">과정명</div>
+                <div style="display: inline-flex;width: 25%; font-weight: bold; font-size: large; color: #0d6efd">훈련유형</div>
                 <div style="display: inline-flex;width: 15%; font-weight: bold; font-size: large; color: #0d6efd">훈련시간</div>
                 <div style="display: inline-flex;  font-weight: bold; font-size: large;  color: #0d6efd">훈련일수</div>
             </div>
@@ -73,10 +73,11 @@
                                 this.getAttribute('category_idx'),
                                 this.getAttribute('time'),
                                 this.getAttribute('day'))">
-                    <div style="overflow: auto;display: inline-flex;width: 35%" th:text="${curriculum.category.name}"></div>
-                    <div style="overflow: auto;display: inline-flex;width: 35%" th:text="${curriculum.name}"></div>
+                    <div style="overflow: auto;display: inline-flex;width: 40%" th:text="${curriculum.name}"></div>
+                    <div style="overflow: auto;display: inline-flex;width: 25%" th:text="${curriculum.category.name}"></div>
                     <div style="display: inline-flex;width: 15%" th:text="${curriculum.time}+'시간'"></div>
                     <div style="display: inline-flex" th:text="${curriculum.day}+'일'"></div>
+                    <input type="hidden" class="alertMessage" value="${alertMessage}">
                 </a>
             </div>
 
@@ -237,6 +238,7 @@
     const insertBtn = document.querySelector(".insertBtn")
     const insertClose = document.querySelector(".insertClose")
     const idx = document.querySelector(".idx")
+    const alertMessage = document.querySelector(".alertMessage")
 
     // 과정등록모달 뜨기  -> form action으로 Controller로 보냈음
     insertBtn.addEventListener("click", function (e) {
@@ -291,7 +293,8 @@
             updateModal.hide()
             location.reload()
         }).catch(e =>{
-            console.log(e)
+            confirm("연관된 수업이 있어 삭제되지않았습니다.")
+            location.reload()
         })
     })
 

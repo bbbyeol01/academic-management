@@ -15,7 +15,7 @@
 
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
-      <h3 style="display: inline-flex">사전 평가 문제 리스트</h3>
+      <h3 style="display: inline-flex">사전 평가 문제 관리</h3>
       <div class="float-end">
       <button style="display: inline-flex" class="btn btn-primary insertBtn"> 문제 추가 </button>
       <button style="display: inline-flex" class="btn btn-primary createBtn"> 새 문제 등록 </button>
@@ -32,10 +32,9 @@
             <div class="input-group">
               <div class="input-group-prepend">
                 <select class="form-select type" name="type">
-                  <option value="" selected>---</option>
+                  <option th:selected="${pageRequestDTO.type == 'nc'}" value="nc" selected>분류 | 문제</option>
                   <option th:selected="${pageRequestDTO.type == 'n'}" value="n">분류</option>
                   <option th:selected="${pageRequestDTO.type == 'c'}" value="c">문제</option>
-                  <option th:selected="${pageRequestDTO.type == 'nc'}" value="nc">문제/분류</option>
                 </select>
               </div>
 
@@ -144,7 +143,11 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form>
+
+
+
+
+            <form action="/member/question/modify" method="post" encType="multipart/form-data" id="modifyForm">
 
               <div style="max-width: 300px">
                 <select class="form-select questionKeywordSelect" id="updateQuestionKeyword" name="name" required>
@@ -163,6 +166,21 @@
               <div class="mb-3">
                 <label for="content" class="col-form-label">문제</label>
                 <textarea type="text" rows="2" class="form-control" id="content" name="content"></textarea>
+              </div>
+
+
+              <div class="d-flex justify-content-center">
+                <div class="modifyImage" style="width: 200px; height: 200px;">
+                  <!--                <img class="rounded-circle" src="/images/default_profile.jpg" alt="" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">-->
+                </div>
+              </div>
+              <br>
+              <br>
+
+
+              <div class="mb-3">
+                <label for="modifyFile" class="col-form-label">사진</label>
+                <input type="file" class="form-control" name="file" id="modifyFile"/>
               </div>
 
               <div class="mb-3">
@@ -222,7 +240,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form action="/member/question/insert" method="post" id="insertForm">
+            <form action="/member/question/insert" method="post" id="insertForm" enctype="multipart/form-data">
 
               <input type="hidden" name="number" id="insertNumber"/>
 
@@ -239,6 +257,25 @@
                 <label for="insertContent" class="col-form-label">문제</label>
                 <textarea type="text" rows="2" class="form-control" id="insertContent" name="content" required></textarea>
               </div>
+
+
+
+              <div class="d-flex justify-content-center">
+                <div class="insertImage" style="width: 200px; height: 200px;">
+                  여기에 등록한 이미지 뜨게 할 거임(자바스크립트)
+                  <!--                <img class="rounded-circle" src="/images/default_profile.jpg" alt="" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">-->
+                </div>
+              </div>
+              <br>
+              <br>
+
+
+
+              <div class="mb-3">
+                <label for="inputImage" class="col-form-label">사진</label>
+                <input type="file" class="form-control" name="file" id="inputImage"/>
+              </div>
+
 
 
               <div class="mb-3">
@@ -435,6 +472,7 @@
   const item3 = document.querySelector("#item3");
   const item4 = document.querySelector("#item4");
   const answer = document.querySelector("#answer");
+  const modifyImage = document.querySelector(".modifyImage");
   function questionModify(index){
 
     const paramList = {
@@ -451,11 +489,20 @@
       item4.value = result.item4;
       number.value = result.number;
       idx.value = result.idx;
+
+      if(result.uuid != null){
+        modifyImage.innerHTML = '<img src="/view/' + result.uuid + '_' + result.fileName +'" class="rounded-circle" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">';
+      }else {
+        modifyImage.innerHTML = '<br><br><br><br>등록된 이미지가 없습니다.';
+      }
+
+
       $("select[id=updateQuestionKeyword]").val(result.name).prop("selected", true);
       $("select[id=answer]").val(result.answer).prop("selected", true);
       $("#modifyModal").modal('show');
 
     }).catch( e => {
+      console.log(e);
       console.log('error!');
 
     })
@@ -603,8 +650,11 @@
     // 리스트를 가져와서 그 크기에 +1로 number를 설정
     getQuestionList(param).then(result => {
 
-      console.log(result);
-      console.log(result.length + 1);
+      if(result.length >= 20){
+        alert('[' + insertQuestionKeyword.value + ']의 문제는 이미 20개입니다.\n문제는 20개 이상 등록할 수 없습니다.');
+        return;
+      }
+
       insertNumber.value = result.length + 1;
 
       // trim
@@ -636,65 +686,67 @@
         return;
       }
 
+
+
       // param을 작성 후 /member/question/insert로 Post 요청
       // insertForm.submit();
-      const insertParam = {
-        name : insertQuestionKeyword.value,
-        number : insertNumber.value,
-        content : insertContent.value,
-        example : insertExample.value,
-        item1 : insertItem1.value,
-        item2 : insertItem2.value,
-        item3 : insertItem3.value,
-        item4 : insertItem4.value,
-        answer : insertAnswer.value
-      }
+      // const insertParam = {
+      //   name : insertQuestionKeyword.value,
+      //   number : insertNumber.value,
+      //   content : insertContent.value,
+      //   example : insertExample.value,
+      //   item1 : insertItem1.value,
+      //   item2 : insertItem2.value,
+      //   item3 : insertItem3.value,
+      //   item4 : insertItem4.value,
+      //   answer : insertAnswer.value
+      // }
 
-      console.log(insertParam);
+      // console.log(insertParam);
 
-      let htmls = '';
+      insertForm.submit();
 
-      insertQuestion(insertParam).then(result => {
 
-        console.log("insertQuestion result");
-        console.log(result);
+      // let htmls = '';
+      // insertQuestion(insertParam).then(result => {
 
     //   문제 리스트가 리턴되면 새로운 문제 리스트를 출력하고 모달 초기화한 뒤 모달을 닫음
-        for(const question of result){
-
-          htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
-                  &nbsp;
-                  <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
-                  <div class="float-end" style="display: inline-flex">
-                  <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
-                  &nbsp;
-                  <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
-                  </div>
-                  <hr>`;
-        }// for
+    //     for(const question of result){
+    //
+    //       htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
+    //               &nbsp;
+    //               <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
+    //               <div class="float-end" style="display: inline-flex">
+    //               <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
+    //               &nbsp;
+    //               <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
+    //               </div>
+    //               <hr>`;
+    //     }// for
 
         // [분류] n번 문제가 등록되었습니다.
-        alert('[' + insertQuestionKeyword.value + '] ' + insertNumber.value + '번 문제가 등록되었습니다.');
-
+        // alert('[' + insertQuestionKeyword.value + '] ' + insertNumber.value + '번 문제가 등록되었습니다.');
         // 문제 리스트 교체
-        questionList.innerHTML = htmls;
+        // questionList.innerHTML = htmls;
+
 
         // 모달 초기화
-        insertNumber.value = '';
-        registerBtn.value = '';
-        insertContent.value = '';
-        insertExample.value = '';
-        insertItem1.value = '';
-        insertItem2.value = '';
-        insertItem3.value = '';
-        insertItem4.value = '';
-        insertAnswer.value = '';
-        insertQuestionKeyword.value = '';
+        // insertNumber.value = '';
+        // registerBtn.value = '';
+        // insertContent.value = '';
+        // insertExample.value = '';
+        // insertItem1.value = '';
+        // insertItem2.value = '';
+        // insertItem3.value = '';
+        // insertItem4.value = '';
+        // insertAnswer.value = '';
+        // insertQuestionKeyword.value = '';
+        //
+        // // 모달 닫기
+        // $("#insertModal").modal('hide');
 
-        // 모달 닫기
-        $("#insertModal").modal('hide');
-
-      })
+        // location.reload();
+      // })
 
 
     })
@@ -725,23 +777,26 @@
     let htmls = '';
     deleteQuestion(deleteParams).then(result => {
 
-      for(const question of result){
-
-        htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
-                  &nbsp;
-                  <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
-                  <div class="float-end" style="display: inline-flex">
-                  <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
-                  &nbsp;
-                  <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
-                  </div>
-                  <hr>`;
-      }// for
+      // for(const question of result){
+      //
+      //   htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
+      //             &nbsp;
+      //             <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
+      //             <div class="float-end" style="display: inline-flex">
+      //             <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
+      //             &nbsp;
+      //             <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
+      //             </div>
+      //             <hr>`;
+      // }// for
 
       alert('삭제되었습니다.');
 
       // 문제 리스트 교체
-      questionList.innerHTML = htmls;
+      // questionList.innerHTML = htmls;
+
+      // 페이징 처리를 위해 새로고침
+      location.href = '/member/question';
 
     })
 
@@ -770,13 +825,11 @@
   switch (code){
     case 'success' :
       alert('등록되었습니다.');
-      location.replace("/member/question");
+      history.replaceState({}, null, location.pathname);
       break;
     case 'fail' :
       alert('등록에 실패하였습니다. 다시 시도해주세요.');
   }
-
-
 
 
 </script>

@@ -10,4 +10,6 @@ public interface QuestionNameService {
 
     void save(String name);
 
+    QuestionName findByName(String name);
+
 }

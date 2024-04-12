@@ -78,26 +78,26 @@
       <br>
       <hr>
       <div style="width: 100%">
-        <div style="display: inline-flex;width: 25%; font-weight: bold; font-size: large; color: #0d6efd">훈련유형</div>
-        <div style="display: inline-flex;width: 30%; font-weight: bold; font-size: large; color: #0d6efd">과정명</div>
+        <div style="display: inline-flex;width: 35%; font-weight: bold; font-size: large; color: #0d6efd">과정명</div>
         <div style="display: inline-flex;width: 5%; font-weight: bold; font-size: large; color: #0d6efd">기수</div>
         <div style="display: inline-flex;width: 5%; font-weight: bold; font-size: large; color: #0d6efd">인원</div>
         <div style="display: inline-flex;width: 10%; font-weight: bold; font-size: large; color: #0d6efd">교사</div>
         <div style="display: inline-flex;width: 10%; font-weight: bold; font-size: large; color: #0d6efd">시작일</div>
         <div style="display: inline-flex;width: 10%;  font-weight: bold; font-size: large;  color: #0d6efd">종료일</div>
+        <div style="display: inline-flex;width: 20%; font-weight: bold; font-size: large; color: #0d6efd">훈련유형</div>
       </div>
 
       <div style="width: 100%; " th:each="lesson: ${responseDTO.getDtoList()}">
         <a th:href="@{/lesson/detail(idx=${lesson.idx})}" style="color: black">
           <div>
             <hr>
-            <div style="overflow: auto;display: inline-flex;width: 25%" th:text="${lesson.curriculum.category.name}"></div>
-            <div style="overflow: auto;display: inline-flex;width: 30%" th:text="${lesson.curriculum.name}"></div>
+            <div style="overflow: auto;display: inline-flex;width: 35%" th:text="${lesson.curriculum.name}"></div>
             <div style="overflow: auto;display: inline-flex;width: 5%" th:text="${lesson.number}+'기'"></div>
             <div style="overflow: auto;display: inline-flex;width: 5%" th:text="${lesson.headCount}+'명'"></div>
             <div style="overflow: auto;display: inline-flex;width: 10%" th:text="${lesson.member.name}"></div>
             <div style="overflow: auto;display: inline-flex;width: 10%" th:text="${lesson.startDay}"></div>
             <div style="overflow: auto;display: inline-flex;width: 10%" th:text="${lesson.endDay}"></div>
+            <div style="overflow: auto;display: inline-flex;width: 20%" th:text="${lesson.curriculum.category.name}"></div>
           </div>
         </a>
         <div class="float-end" style="display: inline-flex"></div>

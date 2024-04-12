@@ -8,6 +8,7 @@ import com.ezen.management.dto.PageResponseDTO;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.sql.SQLDataException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,9 +26,9 @@ public interface MemberService {
     PageResponseDTO<Member> findBySpecificRoles(Set<MemberRole> memberRoleSet, PageRequestDTO pageRequestDTO);
 
 
-    void delete(String id) throws IOException;
+    void delete(String id) throws Exception;
 
-    void update(MemberDTO memberDTO) throws IOException;
+    void modify(MemberDTO memberDTO) throws IOException;
 
     Optional<Member> findById(String id);
 

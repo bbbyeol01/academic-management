@@ -10,13 +10,19 @@ import com.ezen.management.service.QuestionNameService;
 import com.ezen.management.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -24,6 +30,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @PreAuthorize("hasAnyRole('MASTER', 'ADMIN', 'TEACHER')")
 public class QuestionController {
+
+
+    @Value("${com.ezen.management.upload.path}")
+    private String uploadPath;
+
 
     private final QuestionNameService questionNameService;
     private final QuestionService questionService;
@@ -85,19 +96,19 @@ public class QuestionController {
 
 
     @PostMapping("/insert")
-    @ResponseBody
-    public List<Question> insertPOST(QuestionDTO questionDTO, Model model, String keyword){
+    public String insertPOST(QuestionDTO questionDTO, MultipartFile file){
 
         log.info("insert question : {}", questionDTO);
 
-        int result = questionService.insert(questionDTO);
+        questionFileSave(questionDTO, file);
 
-        log.info("parameter name : {}", questionDTO.getName());
-        List<Question> questionByName = questionService.findQuestionByName(questionDTO.getName());
+        try{
+            questionService.insert(questionDTO);
+            return "redirect:/member/question?code=success";
+        }catch (Exception e){
+            return "redirect:/member/question?code=fail";
+        }
 
-        log.info("insertPOST result : {}", questionByName);
-
-        return questionByName;
     }
 
     @PostMapping("/update")
@@ -150,12 +161,6 @@ public class QuestionController {
                              @RequestParam("item4") List<String> item4,
                              @RequestParam("answer") List<Integer> answer){
 
-        log.info("!!!!!!!!!!!!!!!!!!! createPOST! !!!!!!!!!!!!!!!!!!!");
-
-        log.info("number : {}", number);
-        log.info("content : {}", content);
-        log.info("answer : {}", answer);
-
         questionNameService.save(name);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
@@ -186,6 +191,38 @@ public class QuestionController {
 
 
 
+    @GetMapping("/isExist")
+    @ResponseBody
+    public boolean isExist(String name){
+        QuestionName byName = questionNameService.findByName(name);
+
+        return byName != null;
+    }
+
+
+    private void questionFileSave(QuestionDTO questionDTO, MultipartFile file){
+
+        if(file.isEmpty()){
+            return;
+        }
+
+        String uuid = UUID.randomUUID().toString();
+        String originalName = file.getOriginalFilename();
+
+        questionDTO.setUuid(uuid);
+        questionDTO.setFileName(originalName);
+
+        Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+
+        try {
+//           이미지 저장
+            file.transferTo(savePath);
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
+
+
+    }
 
 
 

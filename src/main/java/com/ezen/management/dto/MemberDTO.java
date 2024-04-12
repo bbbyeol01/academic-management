@@ -1,5 +1,6 @@
 package com.ezen.management.dto;
 
+import com.ezen.management.domain.MemberState;
 import lombok.*;
 
 @Data
@@ -14,5 +15,6 @@ public class MemberDTO {
     private String name;
     private String uuid;
     private String fileName;
+    private MemberState memberState;
 
 }

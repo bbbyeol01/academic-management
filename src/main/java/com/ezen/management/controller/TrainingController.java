@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -55,8 +56,20 @@ public class TrainingController {
     //유형추가
     @ResponseBody
     @PostMapping(value = "/category/insert")
-    public void categoryInsert(@RequestBody CategoryDTO categoryDTO, BindingResult bindingResult) throws BindException {
-        trainingService.categoryInsert(categoryDTO);
+    public int categoryInsert(@RequestBody CategoryDTO categoryDTO, BindingResult bindingResult) throws BindException {
+        int i = 0;
+        List<Category> categoryList = trainingService.categoryList();
+        for (Category category : categoryList){
+            if(category.getName().equals(categoryDTO.getName())){
+                i = 1;
+            }
+        }
+        if(i == 0) {
+            trainingService.categoryInsert(categoryDTO);
+            return 0;
+        }else{
+            return 1;
+        }
     }
 
     //유형수정
@@ -87,8 +100,21 @@ public class TrainingController {
     //과목추가
     @ResponseBody
     @PostMapping(value = "/subject/insert")
-    public void subjectInsert(@RequestBody SubjectDTO subjectDTO){
-        trainingService.subjectInsert(subjectDTO);
+    public int subjectInsert(@RequestBody SubjectDTO subjectDTO){
+        List<Subject> subjectList = trainingService.subjectList();
+        int i = 0;
+        for(Subject subject : subjectList) {
+            if(subject.getName().equals(subjectDTO.getName())){
+                i = 1;
+            }
+        }
+
+        if(i == 0) {
+            trainingService.subjectInsert(subjectDTO);
+            return 0;
+        }else{
+            return 1;
+        }
     }
 
     //과목수정
@@ -112,8 +138,10 @@ public class TrainingController {
     //과정전체
     @GetMapping("/curriculum")
     public String curriculumIndex(Model model, PageRequestDTO pageRequestDTO){
+
         PageResponseDTO<Curriculum> responseDTO = trainingService.searchCurriculum(pageRequestDTO);
         model.addAttribute("responseDTO", responseDTO);
+
 
         List<Category> category = trainingService.categoryList();
         model.addAttribute("category", category);
@@ -123,18 +151,40 @@ public class TrainingController {
 
     //과정추가
     @PostMapping(value = "/curriculum/insert")
-    public String curriculumInsert(String name, Long category, int time, int day){
+    public String curriculumInsert(String name, Long category, int time, int day,Model model,PageRequestDTO pageRequestDTO){
 
-        Category c = trainingService.getCategoryIdx(category);
+        Category setCategory = trainingService.getCategoryIdx(category);
 
         CurriculumDTO curriculumDTO = new CurriculumDTO();
         curriculumDTO.setName(name);
-        curriculumDTO.setCategory(c);
+        curriculumDTO.setCategory(setCategory);
         curriculumDTO.setTime(time);
         curriculumDTO.setDay(day);
 
-        trainingService.curriculumInsert(curriculumDTO);
-        return "redirect:/training/curriculum";
+        List<Curriculum> curriculumList = trainingService.curriculumList();
+
+
+        //중복 처리
+        int i = 0;
+        for(Curriculum curriculum : curriculumList ){
+
+            log.info("컨트롤러 과정 : " + curriculum.getName());
+            for(Category category1 : trainingService.categoryList()){
+                if (category1.getIdx()==category && curriculum.getName().equals(name)){
+                    i =1;
+                }
+            }
+        }
+
+         if(i == 0){
+            trainingService.curriculumInsert(curriculumDTO);
+         }
+
+        PageResponseDTO<Curriculum> responseDTO = trainingService.searchCurriculum(pageRequestDTO);
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("category", curriculumList);
+
+        return "training/curriculum/index";
     }
 
     //과정수정

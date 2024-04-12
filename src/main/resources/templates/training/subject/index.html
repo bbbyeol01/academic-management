@@ -204,6 +204,11 @@
 
         //training.js 에서 insertSubject 불러오기
         subjectInsert(insertName).then(result => {
+            if (result == 1){
+                confirm("이미 존재하는 과목입니다.")
+            }else{
+                confirm("과목 등록 완료")
+            }
             insertModal.hide()
             subjectName.value = ''
             subjectMethod.value = ''
@@ -268,7 +273,8 @@
             updateModal.hide()
             location.reload()
         }).catch(e =>{
-            console.log(e)
+            confirm("연관된 수업이 있어 삭제되지않았습니다.")
+            location.reload()
         })
     })
 

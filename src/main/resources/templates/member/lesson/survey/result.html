@@ -55,7 +55,7 @@
                     <!-- 검색 끝-->
 
                     <!-- 설문 결과 그래프 -->
-                    <div th:each="i : ${#numbers.sequence(0, 14)}">
+                    <div th:each="i : ${#numbers.sequence(0, 19)}">
                         <div class="bg-light rounded h-100 p-4">
                             <h6 class="mb-4" th:text="${surveyDTOList[i].number} + '.' + ${surveyDTOList[i].content}"></h6>
                             <div>
@@ -92,8 +92,6 @@
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Chart.js Annotation Plugin -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.2.1/chartjs-plugin-annotation.min.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
     document.addEventListener('DOMContentLoaded', function() {

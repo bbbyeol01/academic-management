@@ -31,7 +31,9 @@
   <div class="content">
     <div th:replace="/layout/basic :: navbar"></div>
 
-      <form action="/member/question/create" method="post">
+
+
+    <form action="/member/question/create" method="post" id="createForm">
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
         <h3 style="display: inline-flex">문제 등록</h3>
@@ -111,7 +113,7 @@
           <div class="col-5 float-end position-fixed form-control statusBarDiv" style="overflow: auto; border: 1px solid lightgray; border-radius: 5px; height: 600px; width: 30%; left: 55%; position: absolute; background-color: whitesmoke">
 
               <div>
-                  <input class="" style="margin: 40px 40px 0 40px; width: 85%; border : none; border-bottom: 1px solid lightgray; background-color: transparent; font-size: 15pt" name="name" placeholder="분류를 입력하세요.">
+                  <input class="" style="margin: 40px 40px 0 40px; width: 85%; border : none; border-bottom: 1px solid lightgray; background-color: transparent; font-size: 15pt" name="name" placeholder="분류를 입력하세요." id="questionName">
               </div>
 
               <div class="statusBar" style="margin: 40px">
@@ -119,18 +121,11 @@
                       <div style="margin: 10px; display: inline-flex">1.</div>
                       <div style="margin: 10px; display: inline-flex; white-space: nowrap; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
                   </div>
-              <button class="btn btn-primary col-6 position-fixed" style="position: absolute; height: 5%; width: 30%; top: 88%; left: 55%; bottom: 30%;" type="submit">등록</button>
+              <button class="btn btn-primary col-6 position-fixed" style="position: absolute; height: 5%; width: 30%; top: 88%; left: 55%; bottom: 30%;" type="submit" id="registerBtn" >등록</button>
               </div>
           </div>
 
           <!-- 상태 카드 끝-->
-
-
-
-
-
-
-
 
 
     </div>
@@ -142,15 +137,11 @@
   <!-- content end -->
 
 
-  <!-- 진짜 개 천천히 top으로 올라가네요-->
-  <!--    좀 빠르게 고침 -->
   <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
   <a th:replace="/layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
-
-
 
 <div th:replace="/layout/basic :: scriptSet">
 </div>
@@ -158,6 +149,7 @@
 <script>
 
 
+    // 문제 이름 - 상태 바 연동
     document.addEventListener( "DOMContentLoaded", function () {
         connectionContent();
     });
@@ -165,13 +157,15 @@
 
   const plusBtn = document.querySelector(".plusBtn");
   const questionList = document.querySelector(".questionList");
+  const statusBarDiv = document.querySelector(".statusBarDiv");
 
-    const statusBarDiv = document.querySelector(".statusBarDiv");
-
+  // 맨 밑으로 내림
   const scrollToBottom = (element) => element.scrollIntoView({ behavior: "smooth", block: "end" });
 
-  let i = 2;
+  // 1번 문제는 이미 존재하기 때문에 2부터 시작
+  let count = 2;
 
+  // 추가 버튼
   plusBtn.addEventListener("click", function (e) {
 
     e.preventDefault();
@@ -179,7 +173,7 @@
 
     deleteBtn.style.display = 'block';
 
-    if(i > 20){
+    if(count > 20){
       alert('문제는 최대 20개입니다.');
       return;
     }
@@ -191,8 +185,8 @@
                     <br>
                      <div class="card">
                     <div class="card-header" style="display: inline-flex">
-                      <input type="hidden" name="number" value="${i}"/>
-                      <span style="font-weight: bolder; font-size: 14pt; margin-top: 9px; margin-right: 5px"><strong>${i}. </strong></span>
+                      <input type="hidden" name="number" value="${count}"/>
+                      <span style="font-weight: bolder; font-size: 14pt; margin-top: 9px; margin-right: 5px"><strong>${count}. </strong></span>
                         <input name="content" class="card-title form-control questionContent" id="content" placeholder="문제를 입력하세요." style="border: none; background: transparent; margin-top: 5px"/>
 
                     </div>
@@ -222,12 +216,12 @@
 
 
       $(".statusBar").append(`<div style="border: 1px solid lightgray; border-radius: 5px; background-color: white; margin-top: 5px" class="questionStatus">
-                      <div style="margin: 10px; display: inline-flex">${i}.</div>
+                      <div style="margin: 10px; display: inline-flex">${count}.</div>
                       <div style="margin: 10px; display: inline-flex; white-space: nowrap; max-width: 80%; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
                   </div>`);
 
 
-        i++;
+        count++;
 
 
       contentList = Array.from(document.querySelectorAll(".questionContent"));
@@ -249,7 +243,7 @@
   const deleteBtn = document.querySelector(".deleteBtn");
 
 
-  if(i === 2){
+  if(count === 2){
       deleteBtn.style.display = 'none';
   }
 
@@ -271,26 +265,17 @@
       console.log(questionDivs);
       questionDivs[questionDivs.length - 1].remove();
       questionStatusList[questionStatusList.length - 1].remove();
-      // statusContentList[statusContentList.length - 1].remove();
-
 
       console.log('done');
 
-      i--;
+      count--;
 
-      if(i === 2){
+      if(count === 2){
           deleteBtn.style.display = 'none';
       }
 
   })
 
-
-  const statusBar = document.querySelector(".statusBar");
-  const statusContent = document.querySelector(".statusContent");
-  // const content = document.querySelector("#content");
-  // content.addEventListener("input", function (){
-  //     statusContent.innerText = content.value;
-  // })
 
   let contentList = Array.from(document.querySelectorAll(".questionContent"));
   let statusContentList = Array.from(document.querySelectorAll(".statusContent"));
@@ -302,10 +287,10 @@
   console.log(statusContentList[0]);
 
 
+  /* 입력 문제와 상태 바 연동 */
   function connectionContent(){
     for(let i = 0; i < contentList.length; i++){
       contentList[i].addEventListener("input", function (){
-          console.log("changed!");
           statusContentList[i].innerText = contentList[i].value;
       })
     }
@@ -313,8 +298,45 @@
 
 
 
+  const createForm = document.querySelector("#createForm");
+  const questionName = document.querySelector("#questionName");
+  const registerBtn = document.querySelector("#registerBtn");
+
+  registerBtn.addEventListener("click", function (e){
+      e.stopPropagation();
+      e.preventDefault();
+
+      if(questionName.value === ''){
+          alert('분류가 등록되지 않았습니다.');
+          return;
+      }
 
 
+      const params = {
+          name : questionName.value
+      }
+
+      isExistQuestionName(params).then(result => {
+          if(result){
+              alert('이미 존재하는 문제 분류입니다.\n개별 추가를 원할 경우 \'문제 추가\'를 이용해주세요.');
+              return;
+          }
+
+          createForm.submit();
+
+      }).catch(e => {
+          alert('오류가 발생했습니다.\n지속될 경우 관리자에게 문의해주세요.');
+      })
+
+  });
+
+
+  /* 문제 분류 존재 여부 */
+  async function isExistQuestionName(paramList){
+      const response = await axios.get("/member/question/isExist", {params : paramList});
+      return response.data;
+
+  }
 
 
 </script>
