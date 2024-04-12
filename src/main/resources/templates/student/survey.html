@@ -62,13 +62,27 @@
                     <!--                    보기 -->
 
                     <div th:if="${survey.type} == '객관식'">
-                        <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="1" /> [[${survey.item1}]]
-                        <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="2" /> [[${survey.item2}]]
-                        <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="3" /> [[${survey.item3}]]
-                        <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="4" /> [[${survey.item4}]]
-                        <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="5" /> [[${survey.item5}]]
-                        <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="6" /> [[${survey.item6}]]
-                        <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="7" checked /> [[${survey.item7}]]
+                        <label th:if="${survey.item1 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="1" />
+                        </label> [[${survey.item1}]]
+                        <label th:if="${survey.item2 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="2" checked/>
+                        </label> [[${survey.item2}]]
+                        <label th:if="${survey.item3 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="3" />
+                        </label> [[${survey.item3}]]
+                        <label th:if="${survey.item4 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="4" />
+                        </label> [[${survey.item4}]]
+                        <label th:if="${survey.item5 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="5" />
+                        </label> [[${survey.item5}]]
+                        <label th:if="${survey.item6 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="6" />
+                        </label> [[${survey.item6}]]
+                        <label th:if="${survey.item7 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="7" checked />
+                        </label> [[${survey.item7}]]
                     </div>
 
                     <div th:if="${survey.type} == '주관식'">

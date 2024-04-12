@@ -169,8 +169,16 @@
               </div>
 
 
+              <div class="mb-3">
+                <label for="example" class="col-form-label">보기</label>
+                <textarea type="text" rows="2" class="form-control" id="example" name="content"></textarea>
+              </div>
+
+
+
+
               <div class="d-flex justify-content-center">
-                <div class="modifyImage" style="width: 200px; height: 200px;">
+                <div class="modifyImage" style="width: 400px; height: 300px;">
                   <!--                <img class="rounded-circle" src="/images/default_profile.jpg" alt="" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">-->
                 </div>
               </div>
@@ -185,22 +193,22 @@
 
               <div class="mb-3">
                 <label for="item1" class="col-form-label">1번:</label>
-                <textarea class="form-control" rows="1"  id="item1"></textarea>
+                <textarea class="form-control" rows="1"  id="item1" name="item1"></textarea>
               </div>
 
               <div class="mb-3">
                 <label for="item2" class="col-form-label">2번:</label>
-                <textarea class="form-control" rows="1"  id="item2"></textarea>
+                <textarea class="form-control" rows="1"  id="item2" name="item2"></textarea>
               </div>
 
               <div class="mb-3">
                 <label for="item3" class="col-form-label">3번:</label>
-                <textarea class="form-control" rows="1"  id="item3"></textarea>
+                <textarea class="form-control" rows="1"  id="item3" name="item3"></textarea>
               </div>
 
               <div class="mb-3">
                 <label for="item4" class="col-form-label">4번: </label>
-                <textarea class="form-control" rows="1"  id="item4"></textarea>
+                <textarea class="form-control" rows="1"  id="item4" name="item4"></textarea>
               </div>
 
               <label for="answer" class="col-form-label">정답</label>
@@ -466,6 +474,7 @@
   const idx = document.querySelector("#idx");
   const number = document.querySelector("#number");
   const name = document.querySelector("#updateQuestionKeyword");
+  const example = document.querySelector("#example");
   const content = document.querySelector("#content");
   const item1 = document.querySelector("#item1");
   const item2 = document.querySelector("#item2");
@@ -488,14 +497,14 @@
       item3.value = result.item3;
       item4.value = result.item4;
       number.value = result.number;
+      example.value = result.example;
       idx.value = result.idx;
 
       if(result.uuid != null){
-        modifyImage.innerHTML = '<img src="/view/' + result.uuid + '_' + result.fileName +'" class="rounded-circle" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">';
+        modifyImage.innerHTML = '<img src="/view/' + result.uuid + '_' + result.fileName +'" class="" style="width: 100%; height:100%; object-fit: contain; cursor: pointer">';
       }else {
         modifyImage.innerHTML = '<br><br><br><br>등록된 이미지가 없습니다.';
       }
-
 
       $("select[id=updateQuestionKeyword]").val(result.name).prop("selected", true);
       $("select[id=answer]").val(result.answer).prop("selected", true);
@@ -557,43 +566,45 @@
       return;
     }
 
-    const modifyParam = {
-      idx : idx.value,
-      name : name.value,
-      content : content.value,
-      item1 : item1.value,
-      item2 : item2.value,
-      item3 : item3.value,
-      item4 : item4.value,
-      answer : answer.value
-    }
+    // const modifyParam = {
+    //   idx : idx.value,
+    //   name : name.value,
+    //   content : content.value,
+    //   item1 : item1.value,
+    //   item2 : item2.value,
+    //   item3 : item3.value,
+    //   item4 : item4.value,
+    //   answer : answer.value
+    // }
 
-    updateQuestion(modifyParam).then(result => {
+    modifyForm.submit();
 
-      console.log("update result");
-      console.log(result);
-
-      for(const question of result){
-
-        htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
-                  &nbsp;
-                  <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
-                  <div class="float-end" style="display: inline-flex">
-                  <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
-                  &nbsp;
-                  <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
-                  </div>
-                  <hr>`;
-      }// for
-
-      location.reload();
-
-      alert('[' + name.value + '] ' + number.value + '번 문제가 수정되었습니다.');
-      $("#modifyModal").modal('hide');
-
-
-
-    })
+    // updateQuestion(modifyParam).then(result => {
+    //
+    //   console.log("update result");
+    //   console.log(result);
+    //
+    //   for(const question of result){
+    //
+    //     htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
+    //               &nbsp;
+    //               <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
+    //               <div class="float-end" style="display: inline-flex">
+    //               <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
+    //               &nbsp;
+    //               <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
+    //               </div>
+    //               <hr>`;
+    //   }// for
+    //
+    //   location.reload();
+    //
+    //   alert('[' + name.value + '] ' + number.value + '번 문제가 수정되었습니다.');
+    //   $("#modifyModal").modal('hide');
+    //
+    //
+    //
+    // })
 
   })
 

@@ -55,12 +55,16 @@ public class QuestionServiceImpl implements QuestionService{
     @Override
     public int update(QuestionDTO questionDTO) {
 
+        log.error("" + questionDTO);
+
         Question byId = findById(questionDTO.getIdx());
         byId.changeContent(questionDTO.getContent());
         byId.changeExample(questionDTO.getExample());
         byId.changeAnswer(questionDTO.getAnswer());
 //        파일 고치는 로직은 따로?
         byId.changeItem(questionDTO.getItem1(), questionDTO.getItem2(), questionDTO.getItem3(), questionDTO.getItem4());
+        byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName());
+
 
         Question save = questionRepository.save(byId);
 
@@ -83,7 +87,7 @@ public class QuestionServiceImpl implements QuestionService{
             Question question = Question.builder()
                     .name(questionDTO.getName())
                     .item1(questionDTO.getItem1())
-                    .item2(questionDTO.getItem3())
+                    .item2(questionDTO.getItem2())
                     .item3(questionDTO.getItem3())
                     .item4(questionDTO.getItem4())
                     .content(questionDTO.getContent())

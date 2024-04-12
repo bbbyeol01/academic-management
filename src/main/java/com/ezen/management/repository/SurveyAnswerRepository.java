@@ -4,6 +4,7 @@ import com.ezen.management.domain.SurveyAnswer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -163,6 +164,56 @@ public interface SurveyAnswerRepository extends JpaRepository<SurveyAnswer, Long
             "SUM(CASE WHEN an15 = 5 THEN 1 ELSE 0 END) AS item5, " +
             "SUM(CASE WHEN an15 = 6 THEN 1 ELSE 0 END) AS item6, " +
             "SUM(CASE WHEN an15 = 7 THEN 1 ELSE 0 END) AS item7 " +
+            "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
+            "UNION ALL " +
+            "(SELECT 'an16' AS an, " +
+            "SUM(CASE WHEN an16 = 1 THEN 1 ELSE 0 END) AS item1, " +
+            "SUM(CASE WHEN an16 = 2 THEN 1 ELSE 0 END) AS item2, " +
+            "SUM(CASE WHEN an16 = 3 THEN 1 ELSE 0 END) AS item3, " +
+            "SUM(CASE WHEN an16 = 4 THEN 1 ELSE 0 END) AS item4, " +
+            "SUM(CASE WHEN an16 = 5 THEN 1 ELSE 0 END) AS item5, " +
+            "SUM(CASE WHEN an16 = 6 THEN 1 ELSE 0 END) AS item6, " +
+            "SUM(CASE WHEN an16 = 7 THEN 1 ELSE 0 END) AS item7 " +
+            "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
+            "UNION ALL " +
+            "(SELECT 'an17' AS an, " +
+            "SUM(CASE WHEN an17 = 1 THEN 1 ELSE 0 END) AS item1, " +
+            "SUM(CASE WHEN an17 = 2 THEN 1 ELSE 0 END) AS item2, " +
+            "SUM(CASE WHEN an17 = 3 THEN 1 ELSE 0 END) AS item3, " +
+            "SUM(CASE WHEN an17 = 4 THEN 1 ELSE 0 END) AS item4, " +
+            "SUM(CASE WHEN an17 = 5 THEN 1 ELSE 0 END) AS item5, " +
+            "SUM(CASE WHEN an17 = 6 THEN 1 ELSE 0 END) AS item6, " +
+            "SUM(CASE WHEN an17 = 7 THEN 1 ELSE 0 END) AS item7 " +
+            "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
+            "UNION ALL " +
+            "(SELECT 'an18' AS an, " +
+            "SUM(CASE WHEN an18 = 1 THEN 1 ELSE 0 END) AS item1, " +
+            "SUM(CASE WHEN an18 = 2 THEN 1 ELSE 0 END) AS item2, " +
+            "SUM(CASE WHEN an18 = 3 THEN 1 ELSE 0 END) AS item3, " +
+            "SUM(CASE WHEN an18 = 4 THEN 1 ELSE 0 END) AS item4, " +
+            "SUM(CASE WHEN an18 = 5 THEN 1 ELSE 0 END) AS item5, " +
+            "SUM(CASE WHEN an18 = 6 THEN 1 ELSE 0 END) AS item6, " +
+            "SUM(CASE WHEN an18 = 7 THEN 1 ELSE 0 END) AS item7 " +
+            "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
+            "UNION ALL " +
+            "(SELECT 'an19' AS an, " +
+            "SUM(CASE WHEN an19 = 1 THEN 1 ELSE 0 END) AS item1, " +
+            "SUM(CASE WHEN an19 = 2 THEN 1 ELSE 0 END) AS item2, " +
+            "SUM(CASE WHEN an19 = 3 THEN 1 ELSE 0 END) AS item3, " +
+            "SUM(CASE WHEN an19 = 4 THEN 1 ELSE 0 END) AS item4, " +
+            "SUM(CASE WHEN an19 = 5 THEN 1 ELSE 0 END) AS item5, " +
+            "SUM(CASE WHEN an19 = 6 THEN 1 ELSE 0 END) AS item6, " +
+            "SUM(CASE WHEN an19 = 7 THEN 1 ELSE 0 END) AS item7 " +
+            "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
+            "UNION ALL " +
+            "(SELECT 'an20' AS an, " +
+            "SUM(CASE WHEN an20 = 1 THEN 1 ELSE 0 END) AS item1, " +
+            "SUM(CASE WHEN an20 = 2 THEN 1 ELSE 0 END) AS item2, " +
+            "SUM(CASE WHEN an20 = 3 THEN 1 ELSE 0 END) AS item3, " +
+            "SUM(CASE WHEN an20 = 4 THEN 1 ELSE 0 END) AS item4, " +
+            "SUM(CASE WHEN an20 = 5 THEN 1 ELSE 0 END) AS item5, " +
+            "SUM(CASE WHEN an20 = 6 THEN 1 ELSE 0 END) AS item6, " +
+            "SUM(CASE WHEN an20 = 7 THEN 1 ELSE 0 END) AS item7 " +
             "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
             ") AS result", nativeQuery = true)
     List<Object[]> calculateSumOfAnswers(@Param("round") int round, @Param("lessonIdx") Long lessonIdx);
