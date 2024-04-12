@@ -21,7 +21,7 @@ public class SurveyRepositoryTests {
     @Test
     public void testSaveSurveys() {
         for (int round = 1; round <= 3; round++) {
-            for (int i = 1; i <= 15; i++) {
+            for (int i = 1; i <= 20; i++) {
                 if (i == 10) {
                     Survey survey = Survey.builder()
                             .number(i)

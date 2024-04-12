@@ -113,7 +113,7 @@ public class SurveyController {
 
         Student student = studentService.findById(studentDTO.getIdx());
 
-        int round = student.getSurvey();
+        int round = student.getSurvey() + 1;
 
         log.info("라운드" + round);
 
