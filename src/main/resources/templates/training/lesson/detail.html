@@ -360,7 +360,8 @@
         lessonDelete(idx).then(result => {
             window.location.href ='/training/lesson';
         }).catch(e => {
-            console.log(e)
+            confirm("연관된 학생 혹은 교사가 있어 삭제되지않았습니다.")
+            location.reload()
         })
     }
 

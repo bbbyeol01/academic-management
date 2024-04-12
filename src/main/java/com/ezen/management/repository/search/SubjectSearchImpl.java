@@ -39,6 +39,8 @@ public class SubjectSearchImpl extends QuerydslRepositorySupport implements Subj
                 }
             }
         }
+
+        query.orderBy(subject.name.asc());
         query.where(booleanBuilder);
 
         //페이징

@@ -46,7 +46,7 @@ public class CurriculumSearchImpl extends QuerydslRepositorySupport implements C
                 }
             }
         }
-
+        query.orderBy(curriculum.name.asc());
         query.where(booleanBuilder);
 
         //페이징
