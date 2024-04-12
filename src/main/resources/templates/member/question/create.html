@@ -15,6 +15,11 @@
       display: table-row;
     }
 
+    /*스크롤바 지우기*/
+    ::-webkit-scrollbar{
+        display: none;
+    }
+
 
 
 
@@ -217,7 +222,7 @@
 
       $(".statusBar").append(`<div style="border: 1px solid lightgray; border-radius: 5px; background-color: white; margin-top: 5px" class="questionStatus">
                       <div style="margin: 10px; display: inline-flex">${count}.</div>
-                      <div style="margin: 10px; display: inline-flex; white-space: nowrap; max-width: 80%; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                      <div style="margin: 10px; display: inline-flex; white-space: nowrap; max-width: 80%; overflow: scroll; text-overflow: ellipsis; overflow: hidden" class="statusContent"></div>
                   </div>`);
 
 

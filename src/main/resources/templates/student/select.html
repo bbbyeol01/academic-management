@@ -46,8 +46,8 @@
                         <input type="hidden" name="idx" th:value="${student.idx}"/>
                         <input type="hidden" name="name" th:value="${student.name}">
                         <input type="hidden" name="lessonIdx" th:value="${lesson.idx}"/>
-                        <button th:if="${student.survey < 3}" class="btn btn-primary" type="submit" style="width: 300px; height: 400px">설문 조사</button>
-                        <button th:if="${student.survey == 3}" class="btn btn-secondary" type="reset" style="width: 300px; height: 400px">설문 조사<br>(완료)</button>
+                        <button th:if="${student.survey < 3}" class="btn btn-primary" type="submit" style="width: 370px; height: 100px; margin: 6px">설문 조사</button>
+                        <button th:if="${student.survey == 3}" class="btn btn-secondary" type="reset" style="width: 370px; height: 100px; margin: 6px">설문 조사<br>(완료)</button>
                     </form>
                 </div>
 
