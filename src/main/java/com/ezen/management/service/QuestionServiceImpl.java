@@ -63,8 +63,10 @@ public class QuestionServiceImpl implements QuestionService{
         byId.changeAnswer(questionDTO.getAnswer());
 //        파일 고치는 로직은 따로?
         byId.changeItem(questionDTO.getItem1(), questionDTO.getItem2(), questionDTO.getItem3(), questionDTO.getItem4());
-        byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName());
 
+        if(questionDTO.getFileName() != null){
+            byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName());
+        }
 
         Question save = questionRepository.save(byId);
 

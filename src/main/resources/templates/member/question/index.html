@@ -168,10 +168,12 @@
                 <textarea type="text" rows="2" class="form-control" id="content" name="content"></textarea>
               </div>
 
+<!--              <textarea id="content" name="content"></textarea>-->
+
 
               <div class="mb-3">
                 <label for="example" class="col-form-label">보기</label>
-                <textarea type="text" rows="2" class="form-control" id="example" name="content"></textarea>
+                <textarea type="text" rows="2" class="form-control" id="example" name="example"></textarea>
               </div>
 
 
@@ -491,6 +493,9 @@
     getQuestion(paramList).then( result => {
       console.log(result);
       console.log(result.idx);
+      console.log(result.content);
+
+
       content.value = result.content;
       item1.value = result.item1;
       item2.value = result.item2;
@@ -508,6 +513,7 @@
 
       $("select[id=updateQuestionKeyword]").val(result.name).prop("selected", true);
       $("select[id=answer]").val(result.answer).prop("selected", true);
+
       $("#modifyModal").modal('show');
 
     }).catch( e => {
@@ -521,21 +527,24 @@
 
 //   문제 수정
 //   수정 모달에 작성된 모든 값 파라미터로 보내서 수정 후 해당 분류 이름의 문제들 리턴 받으면 리스트 교체
-  async function updateQuestion(paramList){
-    const response = await axios.post(`/member/question/update`, null, {params : paramList});
-    return response.data;
-  }
+//   async function updateQuestion(paramList){
+//     const response = await axios.post(`/member/question/update`, null, {params : paramList});
+//     return response.data;
+//   }
 
 
   const modifyBtn = document.querySelector("#modifyBtn");
   modifyBtn.addEventListener("click", function (){
 
-    let htmls = '';
+    // let htmls = '';
 
     if(name.value === ''){
       alert('분류가 선택되지 않았습니다.');
       return;
     }
+
+    console.log(content.value);
+
 
     // trim
     content.value = content.value.trim();
@@ -543,6 +552,8 @@
     item2.value = item2.value.trim();
     item3.value = item3.value.trim();
     item4.value = item4.value.trim();
+
+    console.log(content.value);
 
     // 공백 검증
     if(content.value === ''){
@@ -765,12 +776,12 @@
 
   })// registerBtn.addEventListener
 
-  async function insertQuestion(paramList){
-    const response = await axios.post(`/member/question/insert`, null, {params : paramList});
-    console.log(response);
-
-    return response.data;
-  }
+  // async function insertQuestion(paramList){
+  //   const response = await axios.post(`/member/question/insert`, null, {params : paramList});
+  //   console.log(response);
+  //
+  //   return response.data;
+  // }
 
 
   // 삭제

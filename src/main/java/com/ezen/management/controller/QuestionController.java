@@ -113,9 +113,6 @@ public class QuestionController {
 
     @PostMapping("/modify")
     public String modify(QuestionDTO questionDTO, MultipartFile file){
-//        해당 문제 수정한 다음 그 문제 키워드로 가져온 문제 리스트 반환
-
-        log.info("file : {}", file.getOriginalFilename());
 
         questionFileSave(questionDTO, file);
 
@@ -203,10 +200,6 @@ public class QuestionController {
 
 
     private void questionFileSave(QuestionDTO questionDTO, MultipartFile file){
-
-        if(file == null){
-            return;
-        }
 
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();

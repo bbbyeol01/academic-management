@@ -410,3 +410,14 @@ footer{
     border-radius: 5px;
     appearance: none;
 }
+
+
+/*스크롤 비활성화*/
+::-webkit-scrollbar{
+    display: none;
+}
+
+/*페이지 링크 버튼에 마우스 올리면 커서 변경*/
+.page-link{
+    cursor: pointer;
+}
