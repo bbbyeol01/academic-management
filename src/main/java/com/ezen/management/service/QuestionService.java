@@ -9,6 +9,7 @@ import com.ezen.management.dto.QuestionAnswerDTO;
 import com.ezen.management.dto.QuestionDTO;
 
 
+import java.io.IOException;
 import java.util.List;
 
 public interface QuestionService {
@@ -22,7 +23,7 @@ public interface QuestionService {
 
     int update(QuestionDTO questionDTO);
 
-    void delete(Long questionIdx);
+    void delete(Long questionIdx) throws IOException;
 
     void multiSave(List<QuestionDTO> questionDTOList);
 

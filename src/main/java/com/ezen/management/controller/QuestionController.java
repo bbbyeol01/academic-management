@@ -130,16 +130,16 @@ public class QuestionController {
 
     @PostMapping("/delete")
     @ResponseBody
-    public List<Question> deletePOST(Long questionIdx){
+    public Boolean deletePOST(Long questionIdx){
 
-        log.info("questionIdx : {}", questionIdx);
-        log.info("question : {}", questionService.findById(questionIdx));
+//        String name = questionService.findById(questionIdx).getName();
 
-        String name = questionService.findById(questionIdx).getName();
-
-        questionService.delete(questionIdx);
-
-        return questionService.findQuestionByName(name);
+        try{
+            questionService.delete(questionIdx);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
 
 
     }
@@ -158,7 +158,8 @@ public class QuestionController {
                              @RequestParam("item2") List<String> item2,
                              @RequestParam("item3") List<String> item3,
                              @RequestParam("item4") List<String> item4,
-                             @RequestParam("answer") List<Integer> answer){
+                             @RequestParam("answer") List<Integer> answer,
+                             @RequestParam("file") List<MultipartFile> file){
 
         questionNameService.save(name);
 
@@ -178,6 +179,10 @@ public class QuestionController {
 
             if(example != null && example.get(i) != null){
                 questionDTO.setExample(example.get(i));
+            }
+
+            if(file.get(i) != null){
+                questionFileSave(questionDTO, file.get(i));
             }
 
             questionDTOList.add(questionDTO);
