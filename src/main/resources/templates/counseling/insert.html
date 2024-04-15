@@ -41,11 +41,17 @@
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">상담 방법</span>
-                                    <input type="text" id="numberOnly1" class="form-control" name="method" oninput="checkMethodNumber()" placeholder="0:대면, 1:온라인, 2:전화 중 맞는 방법을 입력하세요" required>
+<!--                                    <input type="text" id="numberOnly1" class="form-control" name="method" oninput="checkMethodNumber()" placeholder="0:대면, 1:온라인, 2:전화 중 맞는 방법을 입력하세요" required>-->
+                                    <select class="form-select form-select-sm" id="method" name="method" aria-label="상담방법을 선택하세요">
+                                        <option selected>상담방법</option>
+                                        <option value="0">대면</option>
+                                        <option value="1">온라인</option>
+                                        <option value="2">전화</option>
+                                    </select>
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">담당자</span>
-                                    <input type="text" class="form-control" name="writer" placeholder="담당자를 입력하세요" required>
+                                    <input type="text" class="form-control" id="writer" name="writer" placeholder="담당자를 입력하세요" required>
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">날짜</span>
@@ -116,13 +122,31 @@
         e.preventDefault()
         e.stopPropagation()
 
-        alert("추가되었습니다");
+        // 상담 내용과 담당자 필드 가져오기
+        const content = document.querySelector("#content").value.trim();
+        const writer = document.querySelector("#writer").value.trim();
+        const method = document.querySelector("#method").value.trim();
 
-        formObj.action = `/counseling/insert`
-        formObj.method = 'post'
-        formObj.submit()
+        // 상담 내용 + 담당자 + 상담방식 유효성 검사
+        if(content !== "" && writer !== "" && (method === "0" || method === "1" || method === "2")){
+            alert("추가되었습니다");
 
-    }, false)
+            const formObj = document.querySelector("#i1");
+            formObj.action = `/counseling/insert`;
+            formObj.method = 'post';
+            formObj.submit();
+
+        } else if (content === ""){
+            alert("상담 내용을 입력하세요.");
+
+        } else if (writer === ""){
+            alert("담당자를 입력하세요.");
+
+        } else if (method !== "0" && method !== "1" && method !== "2") {
+            alert("상담방법을 선택하세요.");
+        }
+
+    }, false);
 
 
     //List 돌아가기
@@ -136,29 +160,6 @@
         self.location ='/counseling/counselingDetail?idx=' + studentIdx;
 
     }, false)
-
-
-
-
-    //유효성검사 / 상담회차, 상담방법 number로 받기
-    $("#numberOnly").on("keyup", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
-    $("#numberOnly1").on("keyup", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
-
-
-    //상담방법 0,1,2 입력 가능
-    function checkMethodNumber(){
-        var methodInput = document.getElementById('numberOnly1');
-        var method = methodInput.value;
-
-        if (!(method === '0' || method === '1' || method === '2')){
-            alert("맞는 번호를 입력하세요")
-            // 잘못된 값 입력 시 입력값을 지우기
-            methodInput.value = "";
-        }else{
-            console.log("method= " + method);
-        }
-    }
-
 
 
     //입력된 글자 수 표시
@@ -178,20 +179,39 @@
     }
 
 
+    //유효성검사 / 상담회차, 상담방법 number로 받기
+    // $("#numberOnly").on("keyup", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
+    // $("#numberOnly1").on("keyup", function() {$(this).val( $(this).val().replace(/[^0-9]/gi,"") );})
+
+
+    //상담방법 0,1,2 입력 가능
+    // function checkMethodNumber(){
+    //     var methodInput = document.getElementById('numberOnly1');
+    //     var method = methodInput.value;
+    //
+    //     if (!(method === '0' || method === '1' || method === '2')){
+    //         alert("맞는 번호를 입력하세요")
+    //         // 잘못된 값 입력 시 입력값을 지우기
+    //         methodInput.value = "";
+    //     }else{
+    //         console.log("method= " + method);
+    //     }
+    // }
+
 
     //상담회차 1~6으로 제한
-    function checkRoundNumber(){
-        var roundInput = document.getElementById('numberOnly');
-        var round = roundInput.value;
-
-        if (!(round === '1' || round === '2' || round === '3' || round === '4'|| round === '5'|| round === '6')){
-            alert("맞는 번호를 입력하세요")
-            // 잘못된 값 입력 시 입력값을 지우기
-            roundInput.value = "";
-        }else{
-            console.log("round= " + round);
-        }
-    }
+    // function checkRoundNumber(){
+    //     var roundInput = document.getElementById('numberOnly');
+    //     var round = roundInput.value;
+    //
+    //     if (!(round === '1' || round === '2' || round === '3' || round === '4'|| round === '5'|| round === '6')){
+    //         alert("맞는 번호를 입력하세요")
+    //         // 잘못된 값 입력 시 입력값을 지우기
+    //         roundInput.value = "";
+    //     }else{
+    //         console.log("round= " + round);
+    //     }
+    // }
 
 
 

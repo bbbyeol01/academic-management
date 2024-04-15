@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns="http://www.w3.org/1999/html">
 <head th:replace="/layout/basic :: head"></head>
 <body>
 <!-- warpper start -->
@@ -23,7 +23,7 @@
                 </div>
             </div>
 <!-- 출력시 데이터 잘리면 다음페이지로 넘어가게 적용 -->
-            <div id="printStart" style="page-break-inside: avoid;" >
+            <div id="printStart" style="page-break-inside: avoid;">
                 <h3> 상담 </h3>
             <hr>
             <br>
@@ -81,20 +81,23 @@
                                 <div class="card-header" >
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col text-end">
-                                                <a th:href="|@{/counseling/update}?idx=${counseling.idx}|">
+                                            <div class="col text-end" style="display: flex; align-items: center;">
+<!--                                                <input type="text" class="bs-light-border-subtle border-0" name="round" id="round" th:value="${counseling.round}" style="width: 40px; margin-right: 10px; text-align: center; color: #757575;" readonly>회차</input>-->
+<!--           버튼 자체에 값을 넣으려면 span으로 넣어야 한다                                    -->
+                                                <button type="button" class="btn btn-success">
+                                                    <span id="round" th:text="${counseling.round}"></span>회차
+                                                </button>
+                                                <a th:href="@{/counseling/update(idx=${counseling.idx})}" style="margin-left: auto;">
                                                     <button type="button" class="btn btn-secondary modBtn">수정하기</button>
                                                 </a>
 <!--                                                <a th:href="|@{/counseling/delete}?idx=${counseling.idx}|">-->
 <!--                                                    <button type="button" class="btn btn-danger delBtn">삭제하기</button>-->
 <!--                                                </a>-->
                                             </div>
+                                            <br>
+                                            <br>
                                             <div class="input-group mb-3">
                                                 <input type="hidden" class="form-control" name="idx" id="counselingIdx" th:value="${counseling.idx}" readonly>
-                                            </div>
-                                            <div class="input-group mb-3">
-                                                <span class="input-group-text">상담회차</span>
-                                                <input type="text" class="form-control" id="round" name="round" th:value="${counseling.round}" readonly>
                                             </div>
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text">상담일자</span>
@@ -159,33 +162,13 @@
     console.log("안녕 여기 상담 상세");
 
 
-    //에러메세지 띄워주기
-    const errors = [[${errors}]]
-    console.log(errors)
-
-    let errorMsg = ''
-
-    if(errors){
-        for(let i=0; i<errors.length; i++){
-            errorMsg += `${errors[i].field}는 ${errors[i].code} \n`
-        }
-        alert(errorMsg)
-    }
-
-
     //학생정보확인
     const studentIdx = [[${student.idx}]]
     console.log("studentIdx= " + studentIdx);
 
-
-
-    // //상담회차가 없다면 띄워주기
-    // const round = [[${student.counseling}]];
-    // console.log("round= " + round);
-    // if(round === 0){
-    //
-    // }
-
+    //상담회차 정보 확인
+    let round = document.getElementById("round").innerText;
+    console.log("round = " + round);
 
 
     //상담 추가하기
@@ -193,10 +176,16 @@
         e.preventDefault()
         e.stopPropagation()
 
+        if (round === "6") {
+            // 버튼 비활성화
+            document.querySelector(".creatBtn").disabled = true;
+            // 사용자에게 메시지 표시
+            alert("6회차를 초과하여 상담을 추가할 수 없습니다.");
+        } else {
+            location.href = '/counseling/insert?idx=' + studentIdx;
+        }
 
-        location.href = '/counseling/insert?idx=' + studentIdx;
-
-    }, false)
+    }, false);
 
 
 
@@ -215,27 +204,6 @@
 
 
 
-
-    // const formObj = document.querySelector("#l1");
-    //
-    // // 삭제하기
-    // document.querySelectorAll(".delBtn").forEach(function(btn) {
-    //     btn.addEventListener("click", function (e) {
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //
-    //         // 확인 창 표시
-    //         const confirmed = confirm("삭제하시겠습니까?");
-    //
-    //         if (confirmed) {
-    //             // 삭제할 form 요소 선택
-    //             const form = this.closest("form");
-    //             form.action = `/counseling/delete`;
-    //             form.method = 'post';
-    //             form.submit();
-    //         }
-    //     });
-    // });
 
     // textarea의 높이를 동적으로 조절하는 함수 / list로 여러 값에 적용할 때는 (document.querySelectorAll 사용)
     function TextareaHeight() {
@@ -260,6 +228,7 @@
 
 
 
+
     //인쇄하기
     function printPage() {
 
@@ -275,12 +244,32 @@
         // 프린트가 완료되면 페이지의 HTML을 복원
         document.body.innerHTML = originalContent;
 
-        //페이지 새로 고침해야 나머지 버튼 활성화됨
+        //인쇄 후 페이지 새로 고침해야 나머지 버튼 활성화됨
         location.href = '/counseling/counselingDetail?idx=' + studentIdx;
     }
 
 
 
+    // const formObj = document.querySelector("#l1");
+    //
+    // // 삭제하기
+    // document.querySelectorAll(".delBtn").forEach(function(btn) {
+    //     btn.addEventListener("click", function (e) {
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //
+    //         // 확인 창 표시
+    //         const confirmed = confirm("삭제하시겠습니까?");
+    //
+    //         if (confirmed) {
+    //             // 삭제할 form 요소 선택
+    //             const form = this.closest("form");
+    //             form.action = `/counseling/delete`;
+    //             form.method = 'post';
+    //             form.submit();
+    //         }
+    //     });
+    // });
 
 
 
