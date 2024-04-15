@@ -14,36 +14,36 @@
         <br>
         <br>
         <br>
-            <div class="inner-content" style="margin: 0 4vw 0 12vh; max-width: 80%">
+        <div class="inner-content" style="margin: 0 4vw 0 12vh; max-width: 80%">
 
-                <h3>학생 정보 입력</h3>
-                <div style="font-size: 12pt"> 참여하고 있는 과정과 이름을 입력해주세요. </div>
+            <h3>학생 정보 입력</h3>
+            <div style="font-size: 12pt"> 참여하고 있는 과정과 이름을 입력해주세요. </div>
 
-                <br>
-                <br>
+            <br>
+            <br>
 
-                <div style="max-width: 500px">
-                    <div class="alert alert-danger" role="alert" style="width: 100%; display: none" id="alertDiv">
+            <div style="max-width: 500px">
+                <div class="alert alert-danger" role="alert" style="width: 100%; display: none" id="alertDiv">
 
-                        <button type="button" class="btn-close float-end" data-dismiss="alert" aria-label="Close" id="alertCloseBtn">
-                        </button>
-                    </div>
-
-                    <form action="/student/select" method="post">
-                        <select class="form-select" name="lessonIdx">
-                            <option th:value="${lesson.idx}" th:each="lesson : ${lessonList}">[[${lesson.curriculum.name}]] [[${lesson.number}]]회차</option>
-                        </select>
-
-                        <input class="form-control" type="text" name="name" placeholder="이름"/>
-                        <!--                        <input class="form-control" type="text" name="birthday" placeholder="생년월일"/>-->
-
-                        <br>
-                        <button class="btn btn-primary" type="submit">입력</button>
-                        <button class="btn btn-secondary" type="reset">초기화</button>
-                    </form>
+                    <button type="button" class="btn-close float-end" data-dismiss="alert" aria-label="Close" id="alertCloseBtn">
+                    </button>
                 </div>
 
+                <form action="/student/select" method="post">
+                    <select class="form-select" name="lessonIdx">
+                        <option th:value="${lesson.idx}" th:each="lesson : ${lessonList}">[[${lesson.curriculum.name}]] [[${lesson.number}]]회차</option>
+                    </select>
+
+                    <input class="form-control" type="text" name="name" placeholder="이름"/>
+                    <!--                        <input class="form-control" type="text" name="birthday" placeholder="생년월일"/>-->
+
+                    <br>
+                    <button class="btn btn-primary" type="submit">입력</button>
+                    <button class="btn btn-secondary" type="reset">초기화</button>
+                </form>
             </div>
+
+        </div>
 
 
 

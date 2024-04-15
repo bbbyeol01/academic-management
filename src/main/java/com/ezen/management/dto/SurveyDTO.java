@@ -28,4 +28,5 @@ public class SurveyDTO {
 
     private String content;
     private String type;
+
 }

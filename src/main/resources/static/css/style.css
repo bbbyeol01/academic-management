@@ -411,6 +411,10 @@ footer{
     appearance: none;
 }
 
+<<<<<<< HEAD
+.hidden {
+    display: none; /* 요소를 화면에 표시하지 않음 */
+=======
 
 /*스크롤 비활성화*/
 ::-webkit-scrollbar{
@@ -420,4 +424,5 @@ footer{
 /*페이지 링크 버튼에 마우스 올리면 커서 변경*/
 .page-link{
     cursor: pointer;
+>>>>>>> 909cbdd8a68e00843916fb9aa3e693f61ca1bcc1
 }

@@ -50,7 +50,7 @@
 
                     <div th:if="${survey.type} != '선택안함'">
                         <strong th:text="${survey.number} + '.'"></strong>
-                        <strong>[[${survey.content}]]</strong>
+                        <strong th:text="${survey.content}"></strong>
                     </div>
                     <br th:if="${survey.type} != '선택안함'">
 
@@ -144,12 +144,6 @@
 
 <div th:replace="/layout/student/basic :: scriptSet">
 </div>
-
-<script>
-
-    document.querySelector(".questionBtn").classList.add("active");
-
-</script>
 
 </body>
 </html>

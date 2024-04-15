@@ -1,11 +1,9 @@
 package com.ezen.management.service;
 
-import com.ezen.management.domain.Lesson;
-import com.ezen.management.domain.Survey;
 import com.ezen.management.domain.SurveyAnswer;
 import com.ezen.management.dto.*;
+import org.apache.commons.lang3.StringEscapeUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface SurveyAnswerService {
@@ -20,6 +18,9 @@ public interface SurveyAnswerService {
 
 
     default SurveyAnswer surveyAnswerDtoToEntity(SurveyAnswerDTO surveyAnswerDTO){
+
+        // SurveyAnswerDTO에서 필드 값을 가져와서 HTML 이스케이프 처리
+        surveyAnswerDTO = escapeHtmlInSurveyAnswerDTO(surveyAnswerDTO);
 
         SurveyAnswer surveyAnswer = SurveyAnswer.builder()
                 .idx(surveyAnswerDTO.getIdx())
@@ -68,6 +69,50 @@ public interface SurveyAnswerService {
                 .build();
 
         return surveyAnswer;
+    }
+
+    private SurveyAnswerDTO escapeHtmlInSurveyAnswerDTO(SurveyAnswerDTO surveyAnswerDTO) {
+        String escapedCom1 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom1());
+        String escapedCom2 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom2());
+        String escapedCom3 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom3());
+        String escapedCom4 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom4());
+        String escapedCom5 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom5());
+        String escapedCom6 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom6());
+        String escapedCom7 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom7());
+        String escapedCom8 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom8());
+        String escapedCom9 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom9());
+        String escapedCom10 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom10());
+        String escapedCom11 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom11());
+        String escapedCom12 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom12());
+        String escapedCom13 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom13());
+        String escapedCom14 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom14());
+        String escapedCom15 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom15());
+        String escapedCom16 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom16());
+        String escapedCom17 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom17());
+        String escapedCom18 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom18());
+        String escapedCom19 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom19());
+        String escapedCom20 = StringEscapeUtils.escapeHtml4(surveyAnswerDTO.getCom20());
+        surveyAnswerDTO.setCom1(escapedCom1);
+        surveyAnswerDTO.setCom2(escapedCom2);
+        surveyAnswerDTO.setCom3(escapedCom3);
+        surveyAnswerDTO.setCom4(escapedCom4);
+        surveyAnswerDTO.setCom5(escapedCom5);
+        surveyAnswerDTO.setCom6(escapedCom6);
+        surveyAnswerDTO.setCom7(escapedCom7);
+        surveyAnswerDTO.setCom8(escapedCom8);
+        surveyAnswerDTO.setCom9(escapedCom9);
+        surveyAnswerDTO.setCom10(escapedCom10);
+        surveyAnswerDTO.setCom11(escapedCom11);
+        surveyAnswerDTO.setCom12(escapedCom12);
+        surveyAnswerDTO.setCom13(escapedCom13);
+        surveyAnswerDTO.setCom14(escapedCom14);
+        surveyAnswerDTO.setCom15(escapedCom15);
+        surveyAnswerDTO.setCom16(escapedCom16);
+        surveyAnswerDTO.setCom17(escapedCom17);
+        surveyAnswerDTO.setCom18(escapedCom18);
+        surveyAnswerDTO.setCom19(escapedCom19);
+        surveyAnswerDTO.setCom20(escapedCom20);
+        return surveyAnswerDTO;
     }
 
     default SurveyAnswerDTO surveyAnswerEntityToDTO(SurveyAnswer surveyAnswer){
