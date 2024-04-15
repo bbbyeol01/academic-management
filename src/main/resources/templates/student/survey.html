@@ -50,7 +50,7 @@
 
                     <div th:if="${survey.type} != '선택안함'">
                         <strong th:text="${survey.number} + '.'"></strong>
-                        <strong>[[${survey.content}]]</strong>
+                        <strong th:text="${survey.content}"></strong>
                     </div>
                     <br th:if="${survey.type} != '선택안함'">
 
