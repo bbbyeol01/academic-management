@@ -21,7 +21,7 @@ public interface QuestionService {
     Question findById(Long questionIdx);
     int insert(QuestionDTO questionDTO);
 
-    int update(QuestionDTO questionDTO);
+    void update(QuestionDTO questionDTO) throws IOException;
 
     void delete(Long questionIdx) throws IOException;
 

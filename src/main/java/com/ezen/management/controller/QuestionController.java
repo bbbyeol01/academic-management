@@ -161,7 +161,6 @@ public class QuestionController {
                              @RequestParam("answer") List<Integer> answer,
                              @RequestParam("file") List<MultipartFile> file){
 
-        questionNameService.save(name);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -177,7 +176,7 @@ public class QuestionController {
                     .answer(answer.get(i))
                     .build();
 
-            if(example != null && example.get(i) != null){
+            if(!example.isEmpty() && example.get(i) != null){
                 questionDTO.setExample(example.get(i));
             }
 
@@ -188,7 +187,13 @@ public class QuestionController {
             questionDTOList.add(questionDTO);
         }
 
-        questionService.multiSave(questionDTOList);
+        try{
+            questionService.multiSave(questionDTOList);
+            questionNameService.save(name);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return "redirect:/member/question?code=fail";
+        }
 
         return "redirect:/member/question?code=success";
     }

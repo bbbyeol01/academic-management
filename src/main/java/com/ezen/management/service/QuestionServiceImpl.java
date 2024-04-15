@@ -65,7 +65,7 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public int update(QuestionDTO questionDTO) {
+    public void update(QuestionDTO questionDTO) throws IOException {
 
         log.error("" + questionDTO);
 
@@ -77,12 +77,20 @@ public class QuestionServiceImpl implements QuestionService{
         byId.changeItem(questionDTO.getItem1(), questionDTO.getItem2(), questionDTO.getItem3(), questionDTO.getItem4());
 
         if(questionDTO.getFileName() != null){
+
+            try{
+                Resource resource = new FileSystemResource(uploadPath + File.separator + byId.getUuid() + '_' + byId.getFileName());
+                resource.getFile().delete();
+            }catch (IOException e){
+                log.error(e.getMessage());
+                throw new IOException("파일이 삭제되지 않았습니다.");
+            }
+
             byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName());
         }
 
         Question save = questionRepository.save(byId);
 
-        return 1;
     }
 
     @Override
