@@ -2,17 +2,24 @@ package com.ezen.management.service;
 
 import com.ezen.management.domain.Question;
 
+import com.ezen.management.domain.QuestionName;
 import com.ezen.management.dto.PageRequestDTO;
 import com.ezen.management.dto.PageResponseDTO;
 import com.ezen.management.dto.QuestionDTO;
+import com.ezen.management.repository.QuestionNameRepository;
 import com.ezen.management.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +28,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService{
 
+    @Value("${com.ezen.management.upload.path}")
+    private String uploadPath;
+
+
     private final QuestionRepository questionRepository;
+    private final QuestionNameRepository questionNameRepository;
 
     private final ModelMapper modelMapper;
 
@@ -53,7 +65,7 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public int update(QuestionDTO questionDTO) {
+    public void update(QuestionDTO questionDTO) throws IOException {
 
         log.error("" + questionDTO);
 
@@ -63,18 +75,49 @@ public class QuestionServiceImpl implements QuestionService{
         byId.changeAnswer(questionDTO.getAnswer());
 //        파일 고치는 로직은 따로?
         byId.changeItem(questionDTO.getItem1(), questionDTO.getItem2(), questionDTO.getItem3(), questionDTO.getItem4());
-        byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName());
 
+        if(questionDTO.getFileName() != null){
+
+            try{
+                Resource resource = new FileSystemResource(uploadPath + File.separator + byId.getUuid() + '_' + byId.getFileName());
+                resource.getFile().delete();
+            }catch (IOException e){
+                log.error(e.getMessage());
+                throw new IOException("파일이 삭제되지 않았습니다.");
+            }
+
+            byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName());
+        }
 
         Question save = questionRepository.save(byId);
 
-        return 1;
     }
 
     @Override
-    public void delete(Long questionIdx) {
+    public void delete(Long questionIdx) throws IOException {
         Optional<Question> byId = questionRepository.findById(questionIdx);
         Question question = byId.orElseThrow();
+
+        String name = question.getName();
+
+        List<Question> questionsByName = questionRepository.getQuestionsByName(question.getName());
+
+//        분류가 하나 남았으면 분류도 삭제
+        if (questionsByName.size() <= 1){
+            QuestionName byName = questionNameRepository.findByName(name);
+            questionNameRepository.delete(byName);
+        }
+
+        if(question.getUuid() != null){
+            Resource resource = new FileSystemResource(uploadPath + File.separator + question.getUuid() + '_' + question.getFileName());
+
+            try{
+                resource.getFile().delete();
+            }catch (IOException e){
+                log.error("파일이 삭제되지 않았습니다.");
+                throw new IOException();
+            }
+        }
 
         questionRepository.delete(question);
 
@@ -93,6 +136,7 @@ public class QuestionServiceImpl implements QuestionService{
                     .content(questionDTO.getContent())
                     .number(questionDTO.getNumber())
                     .answer(questionDTO.getAnswer())
+                    .uuid(questionDTO.getUuid())
                     .fileName(questionDTO.getFileName())
                     .example(questionDTO.getExample())
                     .build();
