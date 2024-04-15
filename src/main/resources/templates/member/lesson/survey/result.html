@@ -56,7 +56,7 @@
 
                     <!-- 설문 결과 그래프 -->
                     <div th:each="i : ${#numbers.sequence(0, 19)}">
-                        <div class="bg-light rounded h-100 p-4">
+                        <div th:if="${surveyDTOList[i].content} != ''" class="bg-light rounded h-100 p-4">
                             <h6 class="mb-4" th:text="${surveyDTOList[i].number} + '.' + ${surveyDTOList[i].content}"></h6>
                             <div>
                                 <th:block th:each="surveyAnswerDTO : ${surveyAnswerDTOList}">
@@ -69,8 +69,8 @@
                                 <!-- 여기에 차트 생성 -->
                                 <canvas th:id="'bar-chart-' + ${surveyDTOList[i].number}"></canvas>
                             </div>
+                            <br>
                         </div>
-                        <br>
                     </div><!--반복문의 끝-->
                 </div><!--end row g-4-->
             </div>
@@ -93,7 +93,7 @@
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
-    /*<![CDATA[*/
+
     document.addEventListener('DOMContentLoaded', function() {
         /* Thymeleaf를 통해 전달받은 데이터 */
         var surveyDTOList = [[${surveyDTOList}]];
@@ -154,7 +154,6 @@
             }
         });
     });
-    /*]]>*/
 
     document.querySelector('.firstBtn').addEventListener('click', function() {
         var  round = 1;
