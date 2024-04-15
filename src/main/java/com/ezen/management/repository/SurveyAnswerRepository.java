@@ -164,6 +164,16 @@ public interface SurveyAnswerRepository extends JpaRepository<SurveyAnswer, Long
             "SUM(CASE WHEN an15 = 6 THEN 1 ELSE 0 END) AS item6, " +
             "SUM(CASE WHEN an15 = 7 THEN 1 ELSE 0 END) AS item7 " +
             "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
+            "UNION ALL " +
+            "(SELECT 'an16' AS an, " +
+            "SUM(CASE WHEN an16 = 1 THEN 1 ELSE 0 END) AS item1, " +
+            "SUM(CASE WHEN an16 = 2 THEN 1 ELSE 0 END) AS item2, " +
+            "SUM(CASE WHEN an16 = 3 THEN 1 ELSE 0 END) AS item3, " +
+            "SUM(CASE WHEN an16 = 4 THEN 1 ELSE 0 END) AS item4, " +
+            "SUM(CASE WHEN an16 = 5 THEN 1 ELSE 0 END) AS item5, " +
+            "SUM(CASE WHEN an16 = 6 THEN 1 ELSE 0 END) AS item6, " +
+            "SUM(CASE WHEN an16 = 7 THEN 1 ELSE 0 END) AS item7 " +
+            "FROM survey_answer WHERE round = :round AND lesson_idx = :lessonIdx) " +
             ") AS result", nativeQuery = true)
     List<Object[]> calculateSumOfAnswers(@Param("round") int round, @Param("lessonIdx") Long lessonIdx);
 

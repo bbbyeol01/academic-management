@@ -410,3 +410,7 @@ footer{
     border-radius: 5px;
     appearance: none;
 }
+
+.hidden {
+    display: none; /* 요소를 화면에 표시하지 않음 */
+}
