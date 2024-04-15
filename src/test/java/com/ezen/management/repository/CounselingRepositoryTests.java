@@ -4,7 +4,6 @@ import com.ezen.management.domain.Counseling;
 import com.ezen.management.domain.Curriculum;
 import com.ezen.management.domain.Lesson;
 import com.ezen.management.domain.Student;
-import com.ezen.management.dto.CounselingStudentDTO;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 
-import java.io.Console;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -102,47 +100,6 @@ public class CounselingRepositoryTests {
             log.info("counseling : {}", counseling);
         });
     }
-
-
-
-    @Test
-    @Transactional
-    @Rollback(value = false)
-    public void 상담학생정보확인(){
-
-        Optional<Counseling> result = counselingRepository.findById(2L);
-        Counseling counseling = result.orElseThrow();
-
-        // Counseling 객체에서 studentIdx 가져오기
-        Long studentIdx = counseling.getStudent().getIdx();
-
-        // studentIdx를 사용하여 해당 학생 조회
-        Optional<Student> studentResult = studentRepository.findById(studentIdx);
-        Student student = studentResult.orElseThrow();
-
-        //웩 수동매핑
-        CounselingStudentDTO counselingStudentDTO = CounselingStudentDTO.builder()
-                .counselingIdx(counseling.getIdx())
-                .studentIdx(student.getIdx())
-                .name(student.getName())
-                .fileName(student.getFileName())
-                .phone(student.getPhone())
-                .email(student.getEmail())
-                .counselingDate(counseling.getCounselingDate())
-                .content(counseling.getContent())
-                .method(counseling.getMethod())
-                .modDate(counseling.getModDate())
-                .regDate(counseling.getRegDate())
-                .writer(counseling.getWriter())
-                .round(counseling.getRound())
-                .build();
-
-        log.info("counselingStudentDTO= " + counselingStudentDTO);
-
-
-    }
-
-
 
 
 

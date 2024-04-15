@@ -30,7 +30,7 @@ public class Lesson extends BaseEntity{
     @JsonIgnore
     private Member member;
 
-    //기수
+    //회차
     @Column(nullable = false)
     private int number;
 

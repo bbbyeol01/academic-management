@@ -70,19 +70,6 @@ public class CounselingServiceTests {
     }
 
 
-    @Test
-    public void testList(){
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .type("tcwn")
-                .keyword("1")
-                .page(1)
-                .size(1)
-                .build();
-
-        PageResponseDTO<Counseling> responseDTO = counselingService.counselingList(pageRequestDTO);
-
-        log.info("responseDTO= " + responseDTO);
-    }
 
 
     //왜 안됨

@@ -69,10 +69,12 @@ public class CounselingController {
     public void insert(Model model, CounselingDTO counselingDTO, @RequestParam("idx") Long studentIdx){
 
         log.info("안녕 여기 추가화면 가는 중");
+
         //학생 단일 정보 보내기
         Student student = studentService.findById(studentIdx);
         model.addAttribute("student", student);
         log.info("student= " + student);
+
 
     }
     @PostMapping("/insert")
@@ -141,6 +143,7 @@ public class CounselingController {
 
 
 
+
     //삭제하기
     @PostMapping("/delete")
     public String delete(@RequestParam("idx") Long idx
@@ -161,93 +164,6 @@ public class CounselingController {
         return "redirect:/counseling/counselingDetail";
 
     }
-
-
-
-
-
-
-
-    //전체목록
-    @GetMapping("/list")
-    public void counselingList(PageRequestDTO pageRequestDTO
-            , Model model){
-
-        //상담목록
-        PageResponseDTO<Counseling> responseDTO = counselingService.counselingList(pageRequestDTO);
-        model.addAttribute("responseDTO", responseDTO);
-
-        log.info("responseDTO= " + responseDTO);
-
-    }
-
-
-    //학생 상세조회
-    @GetMapping("/detail")
-    public void detail(Long idx, Student student, Model model, PageRequestDTO pageRequestDTO){
-
-        log.info("------가자가자가자 상세페이지------");
-
-        CounselingStudentDTO counselingStudentDTO = counselingService.detail(idx);
-        log.info("counselingStudentDTO= " + counselingStudentDTO);
-        model.addAttribute("dto", counselingStudentDTO);
-    }
-
-
-
-// 한개의 상담을 단일적으로 가져옴
-//    @GetMapping("/counselingDetail")
-//    public String counselingDetail(Model model
-//                                    ,@RequestParam("idx")Long idx
-//                                    ,RedirectAttributes redirectAttributes){
-//
-//        log.info("안녕 여기 상담자세히");
-//
-//       //값이 null인지 아닌지부터 확인
-//        if (idx == null) {
-//            redirectAttributes.addFlashAttribute("errors", "idx값이 null null 하네요"); //에러 메시지 반환
-//            log.info("idx null null");
-//            return "redirect:/lesson";
-//
-//        }
-//
-//        //학생 정보가 없다면
-//        Student student = studentService.findById(idx);
-//
-//        if(student == null){
-//            redirectAttributes.addFlashAttribute("errors", "학생 정보를 찾을 수 없습니다.");
-//            log.info("student null null");
-//            return "redirect:/lesson";
-//
-//        }
-//
-//        // 학생의 counseling 횟수가 0보다 크거나 같으면서 counseling 정보도 있는 경우
-//
-//        // 학생 정보가 있는 상태에서 예약 정보가 없는 경우
-//        Counseling counseling = counselingService.findById(idx);
-//
-//        // counseling 정보가 없는 경우에도 계속 진행
-//        if (counseling == null) {
-//            log.info("counseling null null");
-//            log.info("studentIdx= " + student.getIdx());
-//            return "/counseling/counselingDetail";
-//
-//        } else {
-//            // 상담 정보 찾기 위한 학생
-//            model.addAttribute("counseling", counseling);
-//            log.info("counseling= " + counseling);
-//
-//            // 학생정보로 수업 찾아오기
-//            model.addAttribute("student", student);
-//            log.info("student= " + student);
-//
-//            redirectAttributes.addAttribute("idx", student.getIdx());
-//            log.info("idx=" + idx);
-//
-//            return "/counseling/counselingDetail";
-//        }
-//    }
-
 
 
 
