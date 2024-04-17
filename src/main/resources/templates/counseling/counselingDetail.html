@@ -22,8 +22,8 @@
                     <button type="button" class="btn btn-primary creatBtn">추가</button>
                 </div>
             </div>
-<!-- 출력시 데이터 잘리면 다음페이지로 넘어가게 적용 -->
-            <div id="printStart" style="page-break-inside: avoid;">
+<!-- 프린터 시작부분 -->
+            <div id="printStart" >
                 <h3> 상담 </h3>
             <hr>
             <br>
@@ -73,8 +73,8 @@
 <!-- 상담내역 Start -->
             <div class="row mt-3">
                 <div class="col">
-<!-- 여기부터는 상담List로 나오기 -->
-                    <div th:each="counseling: ${counselingList}" id="l1" >
+<!-- 여기부터는 상담List로 나오기 / 출력시 데이터 잘리면 다음페이지로 넘어가게 적용 -->
+                    <div th:each="counseling: ${counselingList}" id="l1" style="page-break-inside: avoid;" >
 <!-- card 사이의 공백 조절 가능(mb-공백사이즈) -->
                         <form class="mb-5">
                             <div class="card">
@@ -246,6 +246,7 @@
 
         //인쇄 후 페이지 새로 고침해야 나머지 버튼 활성화됨
         location.href = '/counseling/counselingDetail?idx=' + studentIdx;
+
     }
 
 
