@@ -433,7 +433,8 @@ footer{
 
     .sidebar, .navbar, #hidden_div { display: none; }
 
-    #print canvas {
+    /* 차트가 잘리는 것을 방지하기 위해 차트의 부모 요소에 page-break-inside: avoid; 속성 추가 */
+    #divide {
         page-break-inside: avoid;
     }
 
