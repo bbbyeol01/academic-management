@@ -34,8 +34,12 @@ ModelMapper 3.1.0<br>
 Thymeleaf<br>
 BootStrap<br>
 
+<br>
+<br>
+<br>
 
+<img src="https://github.com/bbbyeol01/ezenmanagement/assets/145461705/021a6b4d-a3dd-4b0f-932b-e89407fab95b">
 <img src="https://github.com/bbbyeol01/ezenmanagement/assets/145461705/c0836d5a-0916-4482-81ef-e1ff63c6a55c">
 <img src="https://github.com/bbbyeol01/ezenmanagement/assets/145461705/55cb3448-8ce1-4aa8-8f30-4834cbe180d4">
-<img src="https://github.com/bbbyeol01/ezenmanagement/assets/145461705/021a6b4d-a3dd-4b0f-932b-e89407fab95b">
+
 
