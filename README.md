@@ -6,8 +6,8 @@
 
 
 # 🧑‍🤝‍🧑 팀
-[Debugging Dragons]
-조장: 임새별
+**[Debugging Dragons]**<br>
+조장: 임새별<br>
 조원: 윤지영, 박혜연, 김지혜
 
 <br>
