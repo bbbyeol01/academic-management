@@ -26,7 +26,7 @@ public class CounselingDTO {
 
     private String content;                     //내용
 
-    @Size(min = 1, max = 3)
+    @Size(min = 0, max = 2)
     private int method;                         //방식
 
     private String writer;                      //담당자

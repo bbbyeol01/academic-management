@@ -6,13 +6,13 @@
 <body>
 <!-- wrapper start -->
 <div class="wrapper">
-    <div th:replace="/layout/basic :: sidebar">
+    <div id="sidebar" th:replace="/layout/basic :: sidebar">
 
     </div>
 
     <!-- content start -->
     <div class="content">
-        <div th:replace="/layout/basic :: navbar"></div>
+        <div id="navbar" th:replace="/layout/basic :: navbar"></div>
 
         <div class="container-fluid pt-5 px-5">
 
@@ -22,7 +22,7 @@
 
 
 
-                <div class="row g-4">
+                <div class="row g-4" id="hidden_div">
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <button class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차">
                         </button>
@@ -35,12 +35,16 @@
                         <button class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차">
                         </button>
                     </div>
-
                     <hr>
+                    <button class="btn btn-primary" id="printBtn" type="button" th:text="인쇄하기">
+                    </button>
+                </div>
+                <br>
+                <div class="row g-4" id="print">
                     <div class="bg-light rounded h-100 p-4">
                         <h6>훈련과정 : [[ ${lesson.curriculum.name} ]]</h6>
                         <h6>훈련기간 : [[ ${lesson.startDay} ]] ~ [[ ${lesson.endDay} ]]</h6>
-                        <h6>훈련기수 : [[ ${lesson.number} ]]기</h6>
+                        <h6>훈련회차 : [[ ${lesson.number} ]]회차</h6>
                         <h6>훈련교사 : [[ ${lesson.member.name} ]]</h6>
                         <h6>설문일자 : [[ ${lesson.survey1} ]]</h6>
                         <h6>설문회차 : [[ ${round} ]]회차</h6>
@@ -55,8 +59,8 @@
                     <!-- 검색 끝-->
 
                     <!-- 설문 결과 그래프 -->
-                    <div th:each="i : ${#numbers.sequence(0, 14)}">
-                        <div class="bg-light rounded h-100 p-4">
+                    <div id="divide" th:each="i : ${#numbers.sequence(0, 19)}" style="page-break-inside: avoid;">
+                        <div th:if="${surveyDTOList[i].content} != ''" class="bg-light rounded h-100 p-4" style="page-break-inside: avoid; max-width: 100%;">
                             <h6 class="mb-4" th:text="${surveyDTOList[i].number} + '.' + ${surveyDTOList[i].content}"></h6>
                             <div>
                                 <th:block th:each="surveyAnswerDTO : ${surveyAnswerDTOList}">
@@ -67,12 +71,12 @@
                             </div>
                             <div th:if="${surveyDTOList[i].type} == '객관식'">
                                 <!-- 여기에 차트 생성 -->
-                                <canvas th:id="'bar-chart-' + ${surveyDTOList[i].number}"></canvas>
+                                <canvas th:id="'bar-chart-' + ${surveyDTOList[i].number}" style="max-width: 100%;"></canvas>
                             </div>
                         </div>
-                        <br>
                     </div><!--반복문의 끝-->
                 </div><!--end row g-4-->
+                <br>
             </div>
             <!-- inner content end -->
         </div><!--end container-fluid pt-4 px-4-->
@@ -92,10 +96,8 @@
 
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Chart.js Annotation Plugin -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.2.1/chartjs-plugin-annotation.min.js"></script>
 <script th:inline="javascript">
-    /*<![CDATA[*/
+
     document.addEventListener('DOMContentLoaded', function() {
         /* Thymeleaf를 통해 전달받은 데이터 */
         var surveyDTOList = [[${surveyDTOList}]];
@@ -145,18 +147,20 @@
                             }]
                         },
                         options: {
+                            maintainAspectRatio: false, // 가로 세로 비율을 자유롭게 조정
+                            responsive: true, // 차트가 반응형으로 크기 조정되도록 설정
                             scales: {
                                 y: {
-                                    beginAtZero: true
+                                    beginAtZero: true // y축 시작값을 0으로 설정
                                 }
                             }
                         }
                     });
+
                 }
             }
         });
     });
-    /*]]>*/
 
     document.querySelector('.firstBtn').addEventListener('click', function() {
         var  round = 1;
@@ -171,6 +175,13 @@
     document.querySelector('.thirdBtn').addEventListener('click', function() {
         var  round = 3;
         window.location.href = '/member/lesson/survey/result?lessonIdx=' + [[${lesson.idx}]] + '&round=' + round;
+    });
+
+    const printBtn = document.querySelector("#printBtn");
+
+    printBtn.addEventListener("click", function () {
+
+        window.print();
     });
 </script>
 </body>

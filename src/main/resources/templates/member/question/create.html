@@ -15,6 +15,11 @@
       display: table-row;
     }
 
+    /*스크롤바 지우기*/
+    ::-webkit-scrollbar{
+        display: none;
+    }
+
 
 
 
@@ -33,7 +38,7 @@
 
 
 
-    <form action="/member/question/create" method="post" id="createForm">
+    <form action="/member/question/create" method="post" id="createForm" enctype="multipart/form-data">
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
         <h3 style="display: inline-flex">문제 등록</h3>
@@ -63,8 +68,9 @@
                     </div>
                     <div class="card-body">
 
+                        <input type="file" name="file" class="form-control">
+                    <br>
                         <textarea name="example" class="card-title form-control" id="example" placeholder="보기"></textarea>
-
                     <br>
                       <input name="item1" class="card-title form-control" id="item1" placeholder="문항 1"/>
                       <input name="item2" class="card-title form-control" id="item2" placeholder="문항 2"/>
@@ -191,8 +197,9 @@
 
                     </div>
                     <div class="card-body">
+                        <input type="file" name="file" class="form-control">
+                    <br>
                         <textarea name="example" class="card-title form-control" id="example" placeholder="보기"></textarea>
-
                     <br>
                       <input name="item1" class="card-title form-control" id="item1" placeholder="문항 1"/>
                       <input name="item2" class="card-title form-control" id="item2" placeholder="문항 2"/>
@@ -217,7 +224,7 @@
 
       $(".statusBar").append(`<div style="border: 1px solid lightgray; border-radius: 5px; background-color: white; margin-top: 5px" class="questionStatus">
                       <div style="margin: 10px; display: inline-flex">${count}.</div>
-                      <div style="margin: 10px; display: inline-flex; white-space: nowrap; max-width: 80%; overflow: scroll; text-overflow: ellipsis;" class="statusContent"></div>
+                      <div style="margin: 10px; display: inline-flex; white-space: nowrap; max-width: 80%; overflow: scroll; text-overflow: ellipsis; overflow: hidden" class="statusContent"></div>
                   </div>`);
 
 

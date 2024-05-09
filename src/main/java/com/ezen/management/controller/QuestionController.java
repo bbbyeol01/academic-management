@@ -111,36 +111,35 @@ public class QuestionController {
 
     }
 
-    @PostMapping("/update")
-    @ResponseBody
-    public List<Question> updatePOST(QuestionDTO questionDTO){
-//        해당 문제 수정한 다음 그 문제 키워드로 가져온 문제 리스트 반환
+    @PostMapping("/modify")
+    public String modify(QuestionDTO questionDTO, MultipartFile file){
 
-        int update = questionService.update(questionDTO);
-        String name = questionDTO.getName();
+        questionFileSave(questionDTO, file);
 
-        List<Question> questionByName = questionService.findQuestionByName(name);
+        try{
+            questionService.update(questionDTO);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return "redirect:/member/question?code=modify-fail";
+        }
 
-        log.info("update result");
-        log.info("" + questionByName);
 
-        return questionByName;
-
+        return "redirect:/member/question?code=modify-success";
 
     }
 
     @PostMapping("/delete")
     @ResponseBody
-    public List<Question> deletePOST(Long questionIdx){
+    public Boolean deletePOST(Long questionIdx){
 
-        log.info("questionIdx : {}", questionIdx);
-        log.info("question : {}", questionService.findById(questionIdx));
+//        String name = questionService.findById(questionIdx).getName();
 
-        String name = questionService.findById(questionIdx).getName();
-
-        questionService.delete(questionIdx);
-
-        return questionService.findQuestionByName(name);
+        try{
+            questionService.delete(questionIdx);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
 
 
     }
@@ -159,9 +158,9 @@ public class QuestionController {
                              @RequestParam("item2") List<String> item2,
                              @RequestParam("item3") List<String> item3,
                              @RequestParam("item4") List<String> item4,
-                             @RequestParam("answer") List<Integer> answer){
+                             @RequestParam("answer") List<Integer> answer,
+                             @RequestParam("file") List<MultipartFile> file){
 
-        questionNameService.save(name);
 
         List<QuestionDTO> questionDTOList = new ArrayList<>();
 
@@ -177,14 +176,24 @@ public class QuestionController {
                     .answer(answer.get(i))
                     .build();
 
-            if(example != null && example.get(i) != null){
+            if(!example.isEmpty() && example.get(i) != null){
                 questionDTO.setExample(example.get(i));
+            }
+
+            if(file.get(i) != null){
+                questionFileSave(questionDTO, file.get(i));
             }
 
             questionDTOList.add(questionDTO);
         }
 
-        questionService.multiSave(questionDTOList);
+        try{
+            questionService.multiSave(questionDTOList);
+            questionNameService.save(name);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return "redirect:/member/question?code=fail";
+        }
 
         return "redirect:/member/question?code=success";
     }
@@ -201,10 +210,6 @@ public class QuestionController {
 
 
     private void questionFileSave(QuestionDTO questionDTO, MultipartFile file){
-
-        if(file.isEmpty()){
-            return;
-        }
 
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();

@@ -15,17 +15,11 @@ public interface SurveyService {
     //설문 1건 조회
     List<SurveyDTO> readAllByRound(int round);
 
-    //설문 전체 조회
-    List<SurveyDTO> surveyList();
-
     //설문 수정
     int modify(SurveyDtoList surveyDtoList, int round);
 
     //설문 삭제
     int deleteAllByRound(int round);
-
-    //문제
-    List<SurveyDTO> findByRoundAndNumber(int round, int number);
 
 
     default Survey surveyDtoToEntity(SurveyDTO surveyDTO){

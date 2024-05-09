@@ -33,6 +33,8 @@ public class SurveyAnswerServiceImpl implements SurveyAnswerService{
     @Override
     public int insert(SurveyAnswerDTO surveyAnswerDTO, StudentDTO studentDTO) {
 
+        log.info("surveyAnswerDTO : {}", surveyAnswerDTO);
+
         // SurveyAnswerDTO에서 lesson_idx를 가져와서 Lesson 엔티티를 조회
         Optional<Lesson> lessonOptional = lessonRepository.findById(studentDTO.getLessonIdx());
 

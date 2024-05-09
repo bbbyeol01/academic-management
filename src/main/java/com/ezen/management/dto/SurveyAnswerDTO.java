@@ -34,6 +34,11 @@ public class SurveyAnswerDTO {
     private int an13;
     private int an14;
     private int an15;
+    private int an16;
+    private int an17;
+    private int an18;
+    private int an19;
+    private int an20;
 
 
     // 주관식 답변
@@ -52,6 +57,11 @@ public class SurveyAnswerDTO {
     private String com13;
     private String com14;
     private String com15;
+    private String com16;
+    private String com17;
+    private String com18;
+    private String com19;
+    private String com20;
 
     private Lesson lesson;
 

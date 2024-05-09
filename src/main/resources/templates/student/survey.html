@@ -36,15 +36,21 @@
             <form action="/student/survey/insert" method="post" style="width: 660px;">
                 <input type="hidden" th:value="${student.lesson.idx}" name="lessonIdx">
                 <input type="hidden" th:value="${student.idx}" name="idx">
-                <div style="font-size: 12pt"> ■본 설문은 교육 진행 중 훈련생의 의견을 수렴하여 수업의 질적 향상을 도모하고 교육만족도를 향상하기 위하여 활용되며, 무기명 진행으로 성실 답변 부탁드립니다. 또한, 본 조사는 훈련기관 자체 조사이며, 조사 이외 목적으로 사용되지 않음도 알려 드립니다. </div>
+                <div style="font-size: 12pt">
+                    <span>■ 본 설문은 교육 진행 중 훈련생의 의견을 수렴하여 수업의 질적 향상을 도모하고 교육만족도를 향상하기 위하여 활용되며, 무기명 진행으로 성실 답변 부탁드립니다.</span>
+                    <span>또한, 본 조사는 훈련기관 자체 조사이며, 조사 이외 목적으로 사용되지 않음도 알려 드립니다.</span>
+                </div>
+                <br>
+
+                <hr style="width: 660px;">
                 <br>
 
                 <div th:each="survey : ${surveys}" style="margin: 10px;">
                     <input type="hidden" name="round" th:value="${round}">
 
                     <div th:if="${survey.type} != '선택안함'">
-                        <span th:text="${survey.number} + '.'"></span>
-                        <strong>[[${survey.content}]]</strong>
+                        <strong th:text="${survey.number} + '.'"></strong>
+                        <strong th:text="${survey.content}"></strong>
                     </div>
                     <br th:if="${survey.type} != '선택안함'">
 
@@ -56,24 +62,38 @@
                     <!--                    보기 -->
 
                     <div th:if="${survey.type} == '객관식'">
-                        <input th:name="'an' + ${survey.number}" type="radio" th:value="1" /> [[${survey.item1}]]
-                        <input th:name="'an' + ${survey.number}" type="radio" th:value="2"/> [[${survey.item2}]]
-                        <input th:name="'an' + ${survey.number}" type="radio" th:value="3"/> [[${survey.item3}]]
-                        <input th:name="'an' + ${survey.number}" type="radio" th:value="4"/> [[${survey.item4}]]
-                        <input th:name="'an' + ${survey.number}" type="radio" th:value="5"/> [[${survey.item5}]]
-                        <input th:name="'an' + ${survey.number}" type="radio" th:value="6"/> [[${survey.item6}]]
-                        <input th:name="'an' + ${survey.number}" type="radio" th:value="7" checked/> [[${survey.item7}]]
+                        <label th:if="${survey.item1 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="1" />
+                        </label> [[${survey.item1}]]
+                        <label th:if="${survey.item2 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="2" checked/>
+                        </label> [[${survey.item2}]]
+                        <label th:if="${survey.item3 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="3" />
+                        </label> [[${survey.item3}]]
+                        <label th:if="${survey.item4 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="4" />
+                        </label> [[${survey.item4}]]
+                        <label th:if="${survey.item5 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="5" />
+                        </label> [[${survey.item5}]]
+                        <label th:if="${survey.item6 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="6" />
+                        </label> [[${survey.item6}]]
+                        <label th:if="${survey.item7 != ''}">
+                            <input class="survey-item" th:name="'an' + ${survey.number}" type="radio" th:value="7" checked />
+                        </label> [[${survey.item7}]]
                     </div>
 
                     <div th:if="${survey.type} == '주관식'">
-                        <input th:name="'com' + ${survey.number}" type="text" placeholder="내 답변.." style="resize: none; width: 660px;"/>
+                        <textarea class="survey-student-textarea" th:name="'com' + ${survey.number}" type="text" placeholder="내 답변.." style="resize: none; width: 630px; margin-left: 10px;"></textarea>
                     </div>
 
                     <br th:if="${survey.type} != '선택안함'">
 
                     <div th:if="${survey.type} != '선택안함' and ${survey.type} != '주관식'">
-                        <h6>추가로 남기고 싶은 의견이 있다면..</h6>
-                        <textarea th:name="'com' + ${survey.number}" type="text" placeholder="작성해주세요.." style="resize: none; width: 640px;"></textarea>
+                        <span style="margin-left: 10px;">추가로 남기고 싶은 의견이 있다면..</span>
+                        <textarea class="survey-student-textarea" th:name="'com' + ${survey.number}" type="text" placeholder="작성해주세요.." style="resize: none; width: 630px; margin-left: 10px;"></textarea>
                     </div>
 
                     <br th:if="${survey.type} != '선택안함'">
@@ -124,12 +144,6 @@
 
 <div th:replace="/layout/student/basic :: scriptSet">
 </div>
-
-<script>
-
-    document.querySelector(".questionBtn").classList.add("active");
-
-</script>
 
 </body>
 </html>

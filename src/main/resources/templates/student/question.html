@@ -19,6 +19,10 @@
         margin-left: 20px;
         margin-bottom: 10px;
     }
+
+    ::-webkit-scrollbar{
+        display: none;
+    }
 </style>
 
 <body>
@@ -192,7 +196,7 @@
                     <br>
 
                     <!--                    예 -->
-                    <div th:if="${question.example != null}"
+                    <div th:if="${question.example != null && question.example != ''}"
                          style="border: 1px solid #2a2d34; border-radius: 5px; max-width: 270px; margin: 30px">
                         <div style="margin: 10px">
                             [[${question.example}]]
@@ -200,7 +204,7 @@
                     </div>
 
                     <!--                    사진 -->
-                    <div th:if="${question.fileName != null}">
+                    <div th:if="${question.fileName != null && question.fileName != ''}">
                         <img th:src="'/view/' + ${question.uuid} + '_' + ${question.fileName}" style="max-width: 270px; margin: 30px">
                     </div>
 
