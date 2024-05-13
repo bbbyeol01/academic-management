@@ -5,6 +5,7 @@ import com.ezen.management.domain.NoticeCategory;
 import com.ezen.management.dto.NoticeDTO;
 import com.ezen.management.dto.PageRequestDTO;
 import com.ezen.management.dto.PageResponseDTO;
+import com.ezen.management.repository.MemberRepository;
 import com.ezen.management.repository.NoticeCategoryRepository;
 import com.ezen.management.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,16 +27,62 @@ public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
     private final NoticeCategoryRepository noticeCategoryRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public PageResponseDTO<Notice> findAll(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<NoticeDTO> findAll(PageRequestDTO pageRequestDTO, NoticeCategory category) {
 
         Pageable pageable = pageRequestDTO.getPageable();
-        Page<Notice> all = noticeRepository.findAll(pageable);
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
 
-        List<Notice> dtoList = all.getContent();
+        Page<Notice> all = noticeRepository.searchNotice(types, keyword, pageable, category);
 
-        return PageResponseDTO.<Notice>withAll()
+        List<Notice> noticeList = all.getContent();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        List<NoticeDTO> dtoList = new ArrayList<>();
+        noticeList.forEach( notice -> {
+
+            LocalDateTime regDate = notice.getRegDate();
+            String writeDate = "";
+
+                Duration duration = Duration.between(regDate, now);
+                long minutes = duration.toMinutes();
+
+                if (minutes < 1) {
+                    writeDate = "지금 막";
+                } else if (minutes < 60) {
+                    writeDate = minutes + "분 전";
+                } else if (minutes < 1440) {
+                    writeDate =  minutes / 60 + "시간 전";
+                } else if (minutes < 10080) {
+                    writeDate =  minutes / 1440 + "일 전";
+                } else if (minutes < 43800) {
+                    writeDate =  minutes / 10080 + "주 전";
+                } else if (minutes < 525600) {
+                    writeDate =  minutes / 43800 + "달 전";
+                } else {
+                    writeDate =  minutes / 525600 + "년 전";
+                }
+
+            NoticeDTO noticeDTO = NoticeDTO.builder()
+                    .idx(notice.getIdx())
+                    .title(notice.getTitle())
+                    .content(notice.getContent())
+                    .writer(notice.getWriter())
+                    .writerName(memberRepository.findById(notice.getWriter()).get().getName())
+                    .modDate(notice.getModDate())
+                    .writeDate(writeDate)
+                    .categoryIdx(notice.getCategory().getIdx())
+                    .categoryName(notice.getCategory().getName())
+                    .build();
+
+            dtoList.add(noticeDTO);
+        });
+
+        return PageResponseDTO.<NoticeDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)
                 .total((int)all.getTotalElements())
@@ -58,10 +108,96 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public Notice findById(int idx) {
+    public NoticeDTO findById(int idx) {
 
-        return noticeRepository.findByIdWithCategory(idx);
+        Notice notice = noticeRepository.findByIdWithCategory(idx);
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime regDate = notice.getRegDate();
+        String writeDate = "";
+
+        Duration duration = Duration.between(regDate, now);
+        long minutes = duration.toMinutes();
+
+        if (minutes < 1) {
+            writeDate = "지금 막";
+        } else if (minutes < 60) {
+            writeDate = minutes + "분 전";
+        } else if (minutes < 1440) {
+            writeDate =  minutes / 60 + "시간 전";
+        } else if (minutes < 10080) {
+            writeDate =  minutes / 1440 + "일 전";
+        } else if (minutes < 43800) {
+            writeDate =  minutes / 10080 + "주 전";
+        } else if (minutes < 525600) {
+            writeDate =  minutes / 43800 + "달 전";
+        } else {
+            writeDate =  minutes / 525600 + "년 전";
+        }
+
+        NoticeDTO noticeDTO = NoticeDTO.builder()
+                .idx(notice.getIdx())
+                .title(notice.getTitle())
+                .content(notice.getContent())
+                .writer(notice.getWriter())
+                .writerName(memberRepository.findById(notice.getWriter()).get().getName())
+                .modDate(notice.getModDate())
+                .writeDate(writeDate)
+                .categoryIdx(notice.getCategory().getIdx())
+                .categoryName(notice.getCategory().getName())
+                .build();
 
 
+        return noticeDTO;
+    }
+
+    @Override
+    public List<NoticeDTO> getIndexList() {
+        List<Notice> noticeLimit = noticeRepository.getNoticeLimit();
+
+        List<NoticeDTO> noticeDTOList = new ArrayList<>();
+        for (Notice notice : noticeLimit) {
+
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime regDate = notice.getRegDate();
+            String writeDate = "";
+
+            Duration duration = Duration.between(regDate, now);
+            long minutes = duration.toMinutes();
+
+            if (minutes < 1) {
+                writeDate = "지금 막";
+            } else if (minutes < 60) {
+                writeDate = minutes + "분 전";
+            } else if (minutes < 1440) {
+                writeDate =  minutes / 60 + "시간 전";
+            } else if (minutes < 10080) {
+                writeDate =  minutes / 1440 + "일 전";
+            } else if (minutes < 43800) {
+                writeDate =  minutes / 10080 + "주 전";
+            } else if (minutes < 525600) {
+                writeDate =  minutes / 43800 + "달 전";
+            } else {
+                writeDate =  minutes / 525600 + "년 전";
+            }
+
+
+            NoticeDTO noticeDTO = NoticeDTO.builder()
+                    .idx(notice.getIdx())
+                    .title(notice.getTitle())
+                    .content(notice.getContent())
+                    .writer(notice.getWriter())
+                    .writerName(memberRepository.findById(notice.getWriter()).get().getName())
+                    .modDate(notice.getModDate())
+                    .writeDate(writeDate)
+                    .categoryIdx(notice.getCategory().getIdx())
+                    .categoryName(notice.getCategory().getName())
+                    .build();
+
+            noticeDTOList.add(noticeDTO);
+        }
+
+
+        return noticeDTOList;
     }
 }

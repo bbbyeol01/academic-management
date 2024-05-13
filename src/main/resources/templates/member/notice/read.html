@@ -18,7 +18,7 @@
 
       <br>
       <div style="display: inline-flex; align-items: center">
-        <button class="btn btn-outline-secondary" th:text="공지사항 + '/' + ${noticeDTO.categoryName}"></button>
+        <button class="btn btn-outline-secondary" th:text="${noticeDTO.categoryName}"></button>
         &nbsp;
         &nbsp;
         <div style="font-size: 20pt; font-weight: bold; color: black" th:text="${noticeDTO.title}"></div>
@@ -38,7 +38,7 @@
         &nbsp;
         <div>
           <div th:text="${noticeDTO.writerName}"></div>
-          <div th:text="${noticeDTO.modDate}"></div>
+          <div th:text="${noticeDTO.writeDate}"></div>
         </div>
       </div>
       <br>

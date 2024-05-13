@@ -15,6 +15,7 @@ public class NoticeDTO {
     private int categoryIdx;
 //    private LocalDateTime regDate;
     private LocalDateTime modDate;
+    private String writeDate;
     private String categoryName;
     private String title;
     private String content;

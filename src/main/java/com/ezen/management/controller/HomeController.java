@@ -1,9 +1,15 @@
 package com.ezen.management.controller;
 
 import com.ezen.management.domain.MemberRole;
+import com.ezen.management.domain.Notice;
 import com.ezen.management.dto.NoticeDTO;
 import com.ezen.management.dto.PageRequestDTO;
+import com.ezen.management.repository.NoticeRepository;
+import com.ezen.management.service.NoticeService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +23,10 @@ import java.util.*;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class HomeController {
+
+    private final NoticeService noticeService;
 
     @GetMapping("/")
     public String index(){
@@ -33,7 +42,7 @@ public class HomeController {
 
     @PreAuthorize("hasAnyRole('MASTER', 'ADMIN', 'TEACHER')")
     @GetMapping("/member")
-    public String memberIndex(){
+    public String memberIndex(Model model){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserDetails userDetails = (UserDetails)principal;
         String username = ((UserDetails) principal).getUsername();
@@ -49,6 +58,12 @@ public class HomeController {
             log.info("MemberRole.MASTER.toString() {} ", MemberRole.MASTER.toString());
             log.info("is that MASTER? {}", auth.toString().equals(MemberRole.MASTER.toString()));
         });
+
+
+//        공지사항
+        List<NoticeDTO> indexList = noticeService.getIndexList();
+
+        model.addAttribute("noticeList", indexList);
 
         return "/member/index";
     }

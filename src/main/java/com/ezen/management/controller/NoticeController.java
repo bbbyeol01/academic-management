@@ -1,9 +1,11 @@
 package com.ezen.management.controller;
 
 import com.ezen.management.domain.Notice;
+import com.ezen.management.domain.NoticeCategory;
 import com.ezen.management.dto.MemberDTO;
 import com.ezen.management.dto.NoticeDTO;
 import com.ezen.management.dto.PageRequestDTO;
+import com.ezen.management.dto.PageResponseDTO;
 import com.ezen.management.repository.MemberRepository;
 import com.ezen.management.repository.NoticeCategoryRepository;
 import com.ezen.management.service.NoticeService;
@@ -17,6 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.ezen.management.domain.Member;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,9 +36,13 @@ public class NoticeController {
 
 
     @GetMapping("")
-    public String notice(Model model, PageRequestDTO pageRequestDTO){
+    public String notice(Model model, PageRequestDTO pageRequestDTO, @RequestParam(required = false) NoticeCategory category){
 
-//        model.addAttribute("pageResponseDTO", )
+        PageResponseDTO<NoticeDTO> all = noticeService.findAll(pageRequestDTO, category);
+
+        log.info("noticeDtoList : {}", all.getDtoList());
+
+        model.addAttribute("pageResponseDTO", all);
 
         return "/member/notice/index";
     }
@@ -51,32 +60,18 @@ public class NoticeController {
 
 
     @GetMapping("/write")
-    public String writeGet(){
+    public String writeGet(Model model){
+
+        List<NoticeCategory> all = noticeCategoryRepository.findAll();
+        model.addAttribute("noticeCategoryList", all);
+
         return "member/notice/write";
     }
 
     @GetMapping("/read")
     public String read(@RequestParam int idx, Model model){
 
-        Notice byId = noticeService.findById(idx);
-
-        log.info("notice : {}", byId);
-
-        Optional<Member> memberById = memberRepository.findById(byId.getWriter());
-        Member member = memberById.get();
-
-        log.info("getCategory() : {}", byId.getCategory());
-
-        NoticeDTO noticeDTO = NoticeDTO.builder()
-                        .title(byId.getTitle())
-                        .content(byId.getContent())
-                        .writer(member.getId())
-                        .writerName(member.getName())
-                        .categoryName(byId.getCategory().getName())
-                        .modDate(byId.getModDate())
-                        .build();
-
-        log.info("noticeDTO : {}", noticeDTO);
+        NoticeDTO noticeDTO = noticeService.findById(idx);
 
         model.addAttribute("noticeDTO", noticeDTO);
 
