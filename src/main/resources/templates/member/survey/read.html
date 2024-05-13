@@ -32,17 +32,21 @@
 
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 p-4">
-                            <button class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차" />
+                            <button th:if="${round == 1}" class="btn btn-primary w-100 m-2 firstBtn clicked" type="button" th:text="1회차"></button>
+                            <button th:if="${round != 1}" class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차"></button>
+
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 p-4">
-                            <button class="btn btn-outline-primary w-100 m-2 secondBtn" type="button" th:text="2회차" />
+                            <button th:if="${round == 2}" class="btn btn-primary w-100 m-2 secondBtn" type="button" th:text="2회차"></button>
+                            <button th:if="${round != 2}" class="btn btn-outline-primary w-100 m-2 secondBtn" type="button" th:text="2회차"></button>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 p-4">
-                            <button class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차" />
+                            <button th:if="${round == 3}" class="btn btn-primary w-100 m-2 thirdBtn" type="button" th:text="3회차"></button>
+                            <button th:if="${round != 3}" class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차"></button>
                         </div>
                     </div>
 
@@ -160,9 +164,7 @@
                 const round = 1;
                 window.location.href = '/member/survey/read?round=' + round;
             });
-        }
 
-        if (secondBtn) {
             secondBtn.addEventListener("click", function() {
                 // 버튼의 클래스를 변경하여 클릭된 상태를 표시
                 secondBtn.classList.add("clicked");
@@ -172,9 +174,7 @@
                 const round = 2;
                 window.location.href = '/member/survey/read?round=' + round;
             });
-        }
 
-        if (thirdBtn) {
             thirdBtn.addEventListener("click", function() {
                 // 버튼의 클래스를 변경하여 클릭된 상태를 표시
                 thirdBtn.classList.add("clicked");

@@ -63,6 +63,7 @@ public class SurveyController {
 
         // 조회된 Survey 목록을 모델에 추가
         model.addAttribute("surveys", surveyList);
+        model.addAttribute("round", round);
 
         log.info("안찍???????" + surveyList);
 
