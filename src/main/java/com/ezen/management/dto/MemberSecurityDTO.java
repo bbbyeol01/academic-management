@@ -19,8 +19,18 @@ import java.util.Set;
 public class MemberSecurityDTO extends User {
 
     private String name;
+
+//    public MemberSecurityDTO(String username, String password, String name, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+//        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+//
+//        this.name = name;
+
     private String uuid;
     private String fileName;
+
+//    public MemberSecurityDTO(String username, String password, String name, Collection<? extends GrantedAuthority> authorities) {
+//        super(username, password, authorities);
+//        this.name = name;
 
     public MemberSecurityDTO(String username, String password, String name, String uuid, String fileName, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
