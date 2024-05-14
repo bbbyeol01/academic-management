@@ -32,20 +32,20 @@
 
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 p-4">
-                            <button th:if="${round == 1}" class="btn btn-primary w-100 m-2 firstBtn clicked" type="button" th:text="1회차"></button>
+                            <button th:if="${round == 1}" class="btn btn-primary w-100 m-2 firstBtn" type="button" th:text="1회차"></button>
                             <button th:if="${round != 1}" class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차"></button>
 
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 p-4">
-                            <button th:if="${round == 2}" class="btn btn-primary w-100 m-2 secondBtn clicked" type="button" th:text="2회차"></button>
+                            <button th:if="${round == 2}" class="btn btn-primary w-100 m-2 secondBtn" type="button" th:text="2회차"></button>
                             <button th:if="${round != 2}" class="btn btn-outline-primary w-100 m-2 secondBtn" type="button" th:text="2회차"></button>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 p-4">
-                            <button th:if="${round == 3}" class="btn btn-primary w-100 m-2 thirdBtn clicked" type="button" th:text="3회차"></button>
+                            <button th:if="${round == 3}" class="btn btn-primary w-100 m-2 thirdBtn" type="button" th:text="3회차"></button>
                             <button th:if="${round != 3}" class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차"></button>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
 <!-- wrapper end-->
 <div th:replace="/layout/basic :: scriptSet"></div>
 
-<script th:src="/js/member/survey/read.js"></script>
+<script src="/js/member/survey/read.js"></script>
 
 </body>
 </html>

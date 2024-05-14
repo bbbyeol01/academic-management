@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="/layout/basic :: head"></head>
+<body>
+<!-- warpper start -->
+<div class="wrapper">
+  <div th:replace="/layout/basic :: sidebar">
+
+  </div>
+
+  <!-- content start -->
+  <div class="content">
+    <div th:replace="/layout/basic :: navbar"></div>
+
+    <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
+
+      <br>
+      <h3 style="display: inline-flex">공지사항</h3>
+      <button style="display: inline-flex" class="btn btn-primary float-end insertBtn"> 작성 </button>
+
+      <hr>
+      <br>
+
+      <!-- 검색 -->
+      <div class="row mt-3 float-end" style="max-width: 500px; display: inline-flex">
+        <form action="/member/notice" method="get">
+          <div class="col">
+            <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <select class="form-select type" name="type">
+                  <option th:selected="${pageRequestDTO.type == 'tc'}" value="tc">제목 | 내용</option>
+                  <option th:selected="${pageRequestDTO.type == 't'}" value="t">제목</option>
+                  <option th:selected="${pageRequestDTO.type == 'c'}" value="c">내용</option>
+                </select>
+              </div>
+
+              &nbsp;&nbsp;
+              <input type="text" class="form-control keyword" name="keyword" th:value="${pageRequestDTO.keyword}" style="border-radius: 5px">
+              &nbsp;&nbsp;
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-primary searchBtn">검색</button>
+                <button type="button" class="btn btn-outline-secondary clearBtn">초기화</button>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <!-- 검색 끝-->
+
+
+      <br>
+      <div style="display: inline-flex">총 [[${pageResponseDTO.total}]]개</div>
+      <div th:each="notice : ${pageResponseDTO.getDtoList()}">
+
+        <hr>
+        <div style="display: flex" class="align-items-center">
+          <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px"> [[${notice.categoryName}]]</p></div>
+          &nbsp;&nbsp;
+          <div th:text="${notice.title}" style="cursor: pointer" th:data="${notice.idx}" onclick="read(this.getAttribute('data'))"></div>
+          <div style="margin-left: auto;" th:text="${notice.writeDate}"></div>
+
+        </div>
+
+      </div>
+
+
+
+
+
+
+      <!--      페이지 -->
+      <hr>
+      <br>
+      <div class="">
+        <ul class="pagination flex-wrap">
+          <li class="page-item" th:if="${pageResponseDTO.prev}">
+            <a class="page-link" th:data-num="${pageResponseDTO.start -1}">이전</a>
+          </li>
+
+          <th:block th:each="i : ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+            <li th:class="${pageResponseDTO.page == i} ? 'page-item active' : 'page-item'">
+              <a class="page-link" th:data-num="${i}" >[[${i}]]</a>
+            </li>
+          </th:block>
+
+          <li class="page-item" th:if="${pageResponseDTO.next}">
+            <a class="page-link" th:data-num="${pageResponseDTO.end + 1}">다음</a>
+          </li>
+
+        </ul>
+      </div>
+
+      <br>
+
+    </div>
+    <!--    inner content end-->
+
+  </div>
+  <!-- content end -->
+
+
+  <!-- 진짜 개 천천히 top으로 올라가네요-->
+  <!--    좀 빠르게 고침 -->
+  <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
+  <a th:replace="/layout/basic :: back-to-top"></a>
+
+</div>
+<!-- wrapper end-->
+
+
+
+
+<div th:replace="/layout/basic :: scriptSet"></div>
+
+<script src="/js/member/teacher.js"></script>
+
+<script>
+
+  const insertBtn = document.querySelector(".insertBtn");
+  insertBtn.addEventListener("click", function () {
+    // alert("click!");
+    location.href = "/member/notice/write";
+  })
+
+  function read(idx){
+    location.href = "/member/notice/read?idx=" + idx;
+  }
+
+
+</script>
+</body>
+</html>
