@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="/layout/basic :: head"></head>
+<body>
+<!-- warpper start -->
+<div class="wrapper">
+    <div th:replace="/layout/basic :: sidebar">
+
+    </div>
+
+    <!-- content start -->
+    <div class="content">
+        <div th:replace="/layout/basic :: navbar"></div>
+
+        <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
+            <br>
+
+            <h3 style="display: inline-flex">공지사항 작성</h3>
+            <div class="float-end">
+                <button style="display: inline-flex" class="btn btn-primary insertBtn"> 작성 </button>
+                <button style="display: inline-flex" class="btn btn-secondary listBtn"> 목록 </button>
+            </div>
+
+            <hr>
+            <br>
+
+<!--            <label for="admin">회원 전용</label>-->
+<!--            <select class="form-control" name="admin" id="admin">-->
+<!--                <option value="false">전체 공개</option>-->
+<!--                <option value="true" selected>회원 전용</option>-->
+<!--            </select>-->
+
+            <div style="display: flex; align-items: center">
+                <select class="form-control" name="categoryIdx" id="categoryIdx" style="width: 20%">
+                    <option value="0" selected>카테고리 선택</option>
+                    <option th:each="item : ${noticeCategoryList}" th:value="${item.idx}" th:text="${item.name}"></option>
+                </select>
+
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <div class="form-check form-switch">
+                    <input class="form-check-input" name="admin" type="checkbox" role="switch" id="admin" checked value="true">
+                    <label class="form-check-label" for="admin">회원 전용</label>
+                </div>
+            </div>
+
+
+            <br>
+
+            <input name="title" id="title" class="form-control" placeholder="제목"/>
+
+            <br>
+            <textarea name="content" id="content" class="form-control" rows="15" placeholder="1000자 이내로 입력하세요."></textarea>
+
+            <input type="hidden" id="writer" name="writer"/>
+
+            <br>
+<!--            <button class="btn btn-primary">작성</button>-->
+
+            <br>
+            <br>
+            <br>
+
+        </div>
+        <!--    inner content end-->
+
+    </div>
+    <!-- content end -->
+
+
+    <!-- 진짜 개 천천히 top으로 올라가네요-->
+    <!--    좀 빠르게 고침 -->
+    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
+    <a th:replace="/layout/basic :: back-to-top"></a>
+
+</div>
+<!-- wrapper end-->
+
+
+
+
+<div th:replace="/layout/basic :: scriptSet"></div>
+
+<script src="/js/member/teacher.js"></script>
+
+<script>
+
+
+    const principal = '[[${#authentication.principal.username}]]';
+    console.log(principal);
+
+
+    const username = '[[${#authentication.principal.username}]]';
+    const insertBtn = document.querySelector(".insertBtn");
+    const title = document.querySelector("#title");
+    const content = document.querySelector("#content");
+    const categoryIdx = document.querySelector("#categoryIdx");
+    const admin = document.querySelector("#admin");
+    insertBtn.addEventListener("click", function () {
+        // alert("click!");
+
+        console.log("categoryIdx : " + categoryIdx.value);
+
+        if(categoryIdx.value === '0'){
+            alert('카테고리가 선택되지 않았습니다.');
+            return;
+        }
+
+        if(title.value === null || title.value === ''){
+            alert("제목이 입력되지 않았습니다.");
+            return;
+        }
+
+        if(content.value === null || content.value === ''){
+            alert('내용이 입력되지 않았습니다.');
+            return;
+        }
+
+        const paramList = {
+            title : title.value,
+            content : content.value,
+            writer : username,
+            categoryIdx : categoryIdx.value,
+            admin : admin.value
+        }
+
+        postStudent(paramList).then( result => {
+
+            console.log("notice index : " + result);
+
+
+        }).catch( e => {
+            console.log(e);
+
+        });
+
+
+
+    })
+
+    async function postStudent(paramList) {
+        const response = await axios.post('/member/notice/write', null, {params : paramList} );
+        return response.data;
+    }
+
+
+    const listBtn = document.querySelector(".listBtn");
+    listBtn.addEventListener("click", function () {
+        // alert("click!");
+        location.href = "/member/notice";
+    })
+
+
+
+
+</script>
+</body>
+</html>

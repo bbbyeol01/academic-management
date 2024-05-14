@@ -35,6 +35,8 @@ public class CustomUserDetailService implements UserDetailsService {
 
         Member member = result.get();
 
+        log.info("member : {}", member);
+
         return new MemberSecurityDTO(
                 member.getId(),
                 member.getPwd(),
@@ -49,5 +51,15 @@ public class CustomUserDetailService implements UserDetailsService {
                         .stream()
                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                         .collect(Collectors.toList()));
+//
+//        return new MemberSecurityDTO(
+//                member.getId(),
+//                member.getPwd(),
+//                member.getName(),
+//                member.getRoleSet()
+//                        .stream()
+//                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+//                        .collect(Collectors.toList()));
+
     }
 }
