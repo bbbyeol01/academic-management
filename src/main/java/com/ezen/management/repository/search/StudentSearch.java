@@ -7,4 +7,6 @@ import org.springframework.data.domain.Pageable;
 public interface StudentSearch {
 
     Page<Student> searchStudent(Long lessonIdx ,String[] types, String keyword, Pageable pageable);
+
+    Page<Student> searchStudentName(Long lessonIdx, String[] types, String keyword, Pageable pageable);
 }

@@ -131,7 +131,10 @@ public class LessonServiceImpl implements LessonService{
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
 
-        Page<Student> studentPage = studentRepository.searchStudent(lessonIdx, types, keyword, pageable);
+        log.info("KEYWORD : " + keyword);
+        log.info("TYPE : " + types);
+
+        Page<Student> studentPage = studentRepository.searchStudentName(lessonIdx, types, keyword, pageable);
         List<Student> dtoList = studentPage.getContent();
 
         return PageResponseDTO.<Student>withAll()
