@@ -23,6 +23,20 @@
                         <h5>진행 중인 수업</h5>
                         <hr>
 
+                        <div th:each="lesson : ${LessonList}">
+                            <div style="display: flex" class="align-items-center">
+                                <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px"> [[${lesson.curriculum.category.name}]]</p></div>
+                                &nbsp;&nbsp;
+                                <div th:text="${lesson.curriculum.name}" style="cursor: pointer; width: 65%"></div>
+                                <div style="margin-left: auto;" th:text="${lesson.member.name}"></div>
+
+                                <br>
+
+                            </div>
+
+                        </div>
+
+
                     </div>
 
                 </div>
@@ -78,7 +92,7 @@
 <div th:replace="/layout/basic :: scriptSet">
 </div>
 <script>
-    
+
     function read(idx){
         location.href = "/member/notice/read?idx=" + idx;
     }

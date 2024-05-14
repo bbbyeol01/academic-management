@@ -1,10 +1,13 @@
 package com.ezen.management.controller;
 
+import com.ezen.management.domain.Lesson;
 import com.ezen.management.domain.MemberRole;
 import com.ezen.management.domain.Notice;
 import com.ezen.management.dto.NoticeDTO;
 import com.ezen.management.dto.PageRequestDTO;
+import com.ezen.management.dto.PageResponseDTO;
 import com.ezen.management.repository.NoticeRepository;
+import com.ezen.management.service.LessonService;
 import com.ezen.management.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,7 @@ import java.util.*;
 public class HomeController {
 
     private final NoticeService noticeService;
+    private final LessonService lessonService;
 
     @GetMapping("/")
     public String index(){
@@ -64,6 +68,12 @@ public class HomeController {
         List<NoticeDTO> indexList = noticeService.getIndexList();
 
         model.addAttribute("noticeList", indexList);
+
+
+//        진행중 수업
+        PageRequestDTO pageRequestDTO = new PageRequestDTO();
+        PageResponseDTO<Lesson> responseDTO = lessonService.ongoingLesson(pageRequestDTO, username);
+        model.addAttribute("LessonList", responseDTO.getDtoList());
 
         return "/member/index";
     }
