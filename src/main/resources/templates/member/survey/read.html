@@ -20,94 +20,97 @@
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
 
-        <div class="container-fluid pt-5 px-5">
+        <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%;">
 
-            <div class="inner-content" style="margin: 2vw 0 20px 20px; max-width: 80%">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 id="survey_read_title">설문 조사(문제 관리)</h3>
+                <button class="btn btn-outline-primary" id="printBtn" type="button" th:text="인쇄하기"></button>
+            </div>
+            <hr id="hidden_line">
 
-                <h1> 설문조사 조회 메뉴 </h1>
 
-                <hr>
-
-                <div class="row g-4">
-
-                    <div class="col-sm-12 col-md-6 col-xl-4">
-                        <div class="h-100 p-4">
-                            <button th:if="${round == 1}" class="btn btn-primary w-100 m-2 firstBtn" type="button" th:text="1회차"></button>
-                            <button th:if="${round != 1}" class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차"></button>
-
-                        </div>
+            <!--상단 버튼-->
+            <div class="round-btn" style="max-width: 98%;">
+                <div class="row" id="hidden_div">
+                    <div class="col">
+                        <button th:if="${round} == 1" class="btn btn-primary w-100 m-2 firstBtn" type="button" th:text="1회차">
+                        </button>
+                        <button th:if="${round} != 1" class="btn btn-outline-primary w-100 m-2 firstBtn" type="button" th:text="1회차">
+                        </button>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-xl-4">
-                        <div class="h-100 p-4">
-                            <button th:if="${round == 2}" class="btn btn-primary w-100 m-2 secondBtn" type="button" th:text="2회차"></button>
-                            <button th:if="${round != 2}" class="btn btn-outline-primary w-100 m-2 secondBtn" type="button" th:text="2회차"></button>
-                        </div>
+                    <div class="col">
+                        <button th:if="${round} == 2" class="btn btn-primary w-100 m-2 secondBtn" type="button" th:text="2회차">
+                        </button>
+                        <button th:if="${round} != 2" class="btn btn-outline-primary w-100 m-2 secondBtn" type="button" th:text="2회차">
+                        </button>
                     </div>
-                    <div class="col-sm-12 col-md-6 col-xl-4">
-                        <div class="h-100 p-4">
-                            <button th:if="${round == 3}" class="btn btn-primary w-100 m-2 thirdBtn" type="button" th:text="3회차"></button>
-                            <button th:if="${round != 3}" class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차"></button>
-                        </div>
+                    <div class="col">
+                        <button th:if="${round} == 3" class="btn btn-primary w-100 m-2 thirdBtn" type="button" th:text="3회차">
+                        </button>
+                        <button th:if="${round} != 3" class="btn btn-outline-primary w-100 m-2 thirdBtn" type="button" th:text="3회차">
+                        </button>
                     </div>
+                </div><!--end row justify-content-center-->
+            </div>
+            <!--상단 버튼 끝-->
+            <hr id="hidden_line2">
 
-                    <!-- 설문회차 출력 -->
-                    <div class="col-12" th:name="surveyTitle">
-                        <div class="bg-light rounded h-100 p-4">
-                            <div class="table-responsive">
-                                <h2>중간 교육만족도 설문조사서(<span th:name="round" th:text="${param.round}"></span>회차)</h2>
-                            </div><!--end table-responsive-->
-                        </div><!--end bg-light rounded h-100 p-4-->
-                    </div><!--end col-12-->
+            <!-- 설문회차 출력 -->
+            <div class="col-12" th:name="surveyTitle">
+                <div class="bg-light rounded h-100 p-4">
+                    <div class="table-responsive text-center">
+                        <h2>중간 교육만족도 설문조사서(<span th:name="round" th:text="${param.round}"></span>회차)</h2>
+                    </div><!--end table-responsive-->
+                </div><!--end bg-light rounded h-100 p-4-->
+            </div><!--end col-12-->
+            <br>
+            <br>
+
+            <!-- 설문항목 반복 출력 -->
+            <div th:each="survey : ${surveys}">
+                <div class="col-12">
+                    <div class="bg-light rounded h-100 p-4">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th colspan="8">
+                                        <span th:name="${survey.number}" th:text="${survey.number}" disabled></span>
+                                        <span>.</span>
+                                        <span th:text="${survey.content}"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>답변유형</th>
+                                    <td colspan="7" th:name="${survey.type}" th:text="${survey.type}" style="width: 648px;" disabled></td>
+                                </tr>
+                                <tr>
+                                    <th th:if="${survey.type eq '객관식'}">답변보기</th>
+                                    <td th:if="${survey.type eq '객관식'}" th:each="i : ${#numbers.sequence(1, 7)}">
+                                        <label th:if="${survey['item' + i]} != 7">
+                                            <input type="radio" th:text="${' ' + survey['item' + i]}" disabled="disabled">
+                                        </label>
+                                    </td>
+                                </tr>
+                                <!-- 나머지 항목들을 여기에 추가 -->
+                                </thead>
+                            </table>
+                        </div><!--end table-responsive-->
+                    </div><!--end bg-light rounded h-100 p-4-->
+                    <br>
+                    <br>
+                </div><!--end col-12-->
+            </div><!--survey : ${surveys}-->
 
 
-                    <!-- 설문항목 반복 출력 -->
-                    <div th:each="survey : ${surveys}">
-                        <div class="col-12">
-                            <div class="bg-light rounded h-100 p-4">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th colspan="8">
-                                                <span th:name="${survey.number}" th:text="${survey.number}" disabled></span>
-                                                <span>.</span>
-                                                <span th:text="${survey.content}"></span>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <th>답변유형</th>
-                                            <td colspan="7" th:name="${survey.type}" th:text="${survey.type}" style="width: 648px;" disabled></td>
-                                        </tr>
-                                        <tr>
-                                            <th th:if="${survey.type eq '객관식'}">답변보기</th>
-                                            <td th:if="${survey.type eq '객관식'}" th:each="i : ${#numbers.sequence(1, 7)}">
-                                                <label th:if="${survey['item' + i]} != 7">
-                                                    <input type="radio" th:text="${' ' + survey['item' + i]}" disabled="disabled">
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <!-- 나머지 항목들을 여기에 추가 -->
-                                        </thead>
-                                    </table>
-                                </div><!--end table-responsive-->
-                            </div><!--end bg-light rounded h-100 p-4-->
-                        </div><!--end col-12-->
-                    </div><!--survey : ${surveys}-->
 
+            <div class="col-12" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+                <div class="btn-group" role="group" style="margin-right: 10px;">
+                    <button type="button" class="btn btn-secondary modifyBtn">수정</button>
+                </div>
+            </div><!--end col-12-->
 
-
-                    <div class="col-12" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
-                        <div class="btn-group" role="group" style="margin-right: 10px;">
-                            <button type="button" class="btn btn-secondary modifyBtn">수정</button>
-                        </div>
-                    </div><!--end col-12-->
-
-                </div><!--end row g-4-->
-
-            </div><!--end inner-content-->
-
-        </div><!--end container-fluid pt-4 px-4-->
-
+        </div><!--end inner-content-->
 
     </div>
     <!-- content end -->

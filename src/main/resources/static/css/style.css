@@ -428,15 +428,16 @@ footer{
 @media print {
     @page {
         size: A4;
-        margin: 30mm 0 10mm 10mm;
+        margin: 15mm 0 10mm 10mm;
     }
 
-    .sidebar, .navbar, #hidden_div, .back-to-top, #hidden_line, #printBtn { display: none; }
+    .sidebar, .navbar, #hidden_div, .back-to-top, #hidden_line, #printBtn, #survey_read_title, #hidden_line2, .modifyBtn { display: none; }
 
     body {
         /*div css(배경그래픽) 적용*/
         -webkit-print-color-adjust: exact;
         page-break-inside: auto;
+        overflow: hidden;
     }
 
     .divide {

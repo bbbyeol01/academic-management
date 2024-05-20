@@ -63,3 +63,9 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+const printBtn = document.querySelector("#printBtn");
+
+printBtn.addEventListener("click", function () {
+
+    window.print();
+});
