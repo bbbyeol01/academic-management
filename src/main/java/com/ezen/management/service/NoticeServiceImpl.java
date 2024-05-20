@@ -18,6 +18,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -77,6 +78,8 @@ public class NoticeServiceImpl implements NoticeService {
                     .writeDate(writeDate)
                     .categoryIdx(notice.getCategory().getIdx())
                     .categoryName(notice.getCategory().getName())
+                    .admin(notice.isAdmin())
+                    .hold(notice.isHold())
                     .build();
 
             dtoList.add(noticeDTO);
@@ -99,6 +102,7 @@ public class NoticeServiceImpl implements NoticeService {
                 .content(noticeDTO.getContent())
                 .writer(noticeDTO.getWriter())
                 .admin(noticeDTO.isAdmin())
+                .hold(noticeDTO.isHold())
                 .category(noticeCategoryById.get())
                 .build();
 
@@ -145,6 +149,8 @@ public class NoticeServiceImpl implements NoticeService {
                 .writeDate(writeDate)
                 .categoryIdx(notice.getCategory().getIdx())
                 .categoryName(notice.getCategory().getName())
+                .admin(notice.isAdmin())
+                .hold(notice.isHold())
                 .build();
 
 
@@ -192,6 +198,8 @@ public class NoticeServiceImpl implements NoticeService {
                     .writeDate(writeDate)
                     .categoryIdx(notice.getCategory().getIdx())
                     .categoryName(notice.getCategory().getName())
+                    .admin(notice.isAdmin())
+                    .hold(notice.isHold())
                     .build();
 
             noticeDTOList.add(noticeDTO);
@@ -199,5 +207,40 @@ public class NoticeServiceImpl implements NoticeService {
 
 
         return noticeDTOList;
+    }
+
+    @Override
+    public int update(NoticeDTO noticeDTO) {
+
+        Optional<Notice> byId = noticeRepository.findById(noticeDTO.getIdx());
+
+        if(byId.isEmpty()){
+            throw new NoSuchElementException("존재하지 않는 공지사항입니다.");
+        }
+
+        Notice notice = byId.get();
+
+        Optional<NoticeCategory> byId1 = noticeCategoryRepository.findById(noticeDTO.getCategoryIdx());
+        NoticeCategory noticeCategory = byId1.get();
+
+        notice.modify(noticeCategory, noticeDTO.getTitle(), notice.getContent(), noticeDTO.isAdmin(), noticeDTO.isHold());
+
+        Notice save = noticeRepository.save(notice);
+
+        return save.getIdx();
+    }
+
+    @Override
+    public int delete(int idx) throws NoSuchElementException {
+
+        Optional<Notice> byId = noticeRepository.findById(idx);
+
+        Notice notice = byId.get();
+        notice.delete();
+
+        Notice save = noticeRepository.save(notice);
+
+        return save.getIdx();
+
     }
 }

@@ -55,9 +55,27 @@
 
       <br>
       <div style="display: inline-flex">총 [[${pageResponseDTO.total}]]개</div>
-      <div th:each="notice : ${pageResponseDTO.getDtoList()}">
 
+      <div th:each="notice : ${pageResponseDTO.getDtoList()}" th:if="${notice.isHold()}">
         <hr>
+        <div style="display: flex" class="align-items-center">
+          <div style="border-radius: 5px; border: solid #dc3545 1px; background-color: #dc3545; color: white; max-width: 100px; display: inline-flex"><p style="margin: 5px">필독</p></div>
+          &nbsp;&nbsp;
+          <div th:text="${notice.title}" style="cursor: pointer; font-weight: bold" th:data="${notice.idx}" onclick="read(this.getAttribute('data'))"></div>
+          <div style="margin-left: auto; display: flex">
+            <div th:text="${notice.writerName}"></div>
+            &nbsp;
+            &nbsp;
+            <div th:text="${notice.writeDate}"></div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div th:each="notice : ${pageResponseDTO.getDtoList()}">
+      <hr>
+
         <div style="display: flex" class="align-items-center">
           <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px"> [[${notice.categoryName}]]</p></div>
           &nbsp;&nbsp;
