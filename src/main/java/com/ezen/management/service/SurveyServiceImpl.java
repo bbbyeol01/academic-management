@@ -22,18 +22,6 @@ public class SurveyServiceImpl implements SurveyService{
     private final SurveyAnswerRepository surveyAnswerRepository;
 
     @Override
-    public int register(SurveyDtoList surveyDtoList) {
-
-        // Entity 변환
-        List<Survey> surveyList = surveyDtoListToEntityList(surveyDtoList);
-
-        // DB 저장
-        List<Survey> savedSurveys = surveyRepository.saveAll(surveyList);
-
-        return savedSurveys.get(0).getRound();
-    }
-
-    @Override
     public int modify(SurveyDtoList surveyDtoList, int round) {
 
         // 리스트 조회(엔티티)
@@ -94,14 +82,6 @@ public class SurveyServiceImpl implements SurveyService{
         
         // Survey를 SurveyDTO로 변환하여 리스트로 반환
         return surveys.stream().map(this::surveyEntityToDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public int deleteAllByRound(int round) {
-
-        int result = surveyRepository.deleteAllByRound(round);
-
-        return result;
     }
 
 }
