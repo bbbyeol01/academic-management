@@ -209,13 +209,43 @@
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-2 profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px;">
+                        <img id="profileImage2" class="rounded-circle me-lg-2 profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px;">
                         <span class="d-none d-lg-inline-flex name"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                         <a href="#" class="dropdown-item">프로필</a>
                         <a href="#" class="dropdown-item">설정</a>
                         <a href="/logout" class="dropdown-item">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 프로필 모달 -->
+            <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true" data-bs-backdrop="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="profileModalLabel">프로필</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <img id="profileImage" class="rounded-circle mb-3" src="/images/default_profile.jpg" alt="Profile Image" style="width: 100px; height: 100px;">
+                            </div>
+                            <form id="profileForm">
+                                <div class="mb-3">
+                                    <label for="profileId" class="form-label">아이디</label>
+                                    <input type="text" class="form-control" id="profileId" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profileName" class="form-label">이름</label>
+                                    <input type="text" class="form-control" id="profileName" readonly>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -306,6 +336,76 @@
 //    })
 
 </script>
+
+<!--프로필 스크립트-->
+<script>
+    $(document).ready(function() {
+        // 문서가 로드될 때 프로필 이미지 변경
+        loadProfileImage();
+
+        // 프로필 버튼 클릭 이벤트
+        $(".dropdown-item").on("click", function(e) {
+            if ($(this).text() === "프로필") {
+                e.preventDefault();
+                $('#profileModal').modal('show'); // 클릭 시 모달 열기
+            }
+        });
+
+        // 모달이 열릴 때의 이벤트
+        $('#profileModal').on('shown.bs.modal', function (e) {
+            $('body').addClass('modal-open'); // 모달이 열릴 때 스크롤 비활성화
+            $('.modal-backdrop').show(); // 모달이 열릴 때 배경 보이기
+            loadProfile(); // 모달이 열릴 때만 프로필 정보를 로드
+        });
+
+        // 모달이 닫힐 때의 이벤트
+        $('#profileModal').on('hidden.bs.modal', function (e) {
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').hide();
+        });
+
+        function loadProfile() {
+            $.ajax({
+                type: "GET",
+                url: "/member/profile",
+                success: function(response) {
+                    console.log(response);
+                    $("#profileId").val(response.id);
+                    $("#profileName").val(response.name);
+                    // 프로필 이미지 변경
+                    if (response.uuid !== null && response.uuid !== '') {
+                        $("#profileImage").attr("src", `/view/${response.uuid}_${response.fileName}`);
+                    } else {
+                        $("#profileImage").attr("src", `/images/default_profile.jpg`);
+                    }
+                },
+                error: function(error) {
+                    console.log("Error: ", error);
+                }
+            });
+        }
+
+        function loadProfileImage() {
+            $.ajax({
+                type: "GET",
+                url: "/member/profile",
+                success: function(response) {
+                    console.log(response);
+                    // 프로필 이미지 변경
+                    if (response.uuid !== null && response.uuid !== '') {
+                        $("#profileImage2").attr("src", `/view/${response.uuid}_${response.fileName}`);
+                    } else {
+                        $("#profileImage2").attr("src", `/images/default_profile.jpg`);
+                    }
+                },
+                error: function(error) {
+                    console.log("Error: ", error);
+                }
+            });
+        }
+    });
+</script>
+
 </div>
 
 
