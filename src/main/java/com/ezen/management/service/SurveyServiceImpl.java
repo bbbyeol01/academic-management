@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @Service
 @Log4j2
 @RequiredArgsConstructor
-//@Transactional //일단 보류해놓자
 public class SurveyServiceImpl implements SurveyService{
 
     private final SurveyRepository surveyRepository;

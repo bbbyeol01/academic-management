@@ -449,3 +449,9 @@ footer{
         page-break-before: always;
     }
 }
+
+.disabled-btn {
+    pointer-events: none; /* 클릭 비활성화 */
+    opacity: 0.6; /* 흐리게 표시 */
+    cursor: not-allowed; /* 마우스 커서 변경 */
+}
