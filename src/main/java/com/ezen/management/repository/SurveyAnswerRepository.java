@@ -46,7 +46,8 @@ public interface SurveyAnswerRepository extends JpaRepository<SurveyAnswer, Long
             "UNION ALL SELECT 'an20', an20, round, lesson_Idx FROM survey_answer " +
             ") AS result " +
             "WHERE result.round = :round AND result.lesson_Idx = :lessonIdx " +
-            "GROUP BY result.an", nativeQuery = true)
+            "GROUP BY result.an " +
+            "ORDER BY CAST(SUBSTRING_INDEX(result.an, 'an', -1) AS UNSIGNED)", nativeQuery = true)
     List<Object[]> calculateSumOfAnswers(@Param("round") int round, @Param("lessonIdx") Long lessonIdx);
 
 }
