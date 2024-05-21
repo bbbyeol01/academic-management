@@ -3,6 +3,7 @@ package com.ezen.management.controller;
 import com.ezen.management.domain.Lesson;
 import com.ezen.management.domain.MemberRole;
 import com.ezen.management.domain.Notice;
+import com.ezen.management.dto.LessonDTO;
 import com.ezen.management.dto.NoticeDTO;
 import com.ezen.management.dto.PageRequestDTO;
 import com.ezen.management.dto.PageResponseDTO;
@@ -20,8 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -75,7 +77,35 @@ public class HomeController {
         PageResponseDTO<Lesson> responseDTO = lessonService.ongoingLesson(pageRequestDTO, username);
         model.addAttribute("LessonList", responseDTO.getDtoList());
 
+//        캘린더
+        List<Lesson> lessonDate = lessonService.findAll();
+        model.addAttribute("lessonDate", lessonDate);
+
         return "/member/index";
+    }
+
+//      캘린더 해당 날짜에 시작하거나 끝나는 수업 있나 확인 후 있으면 true 없으면 false 를 training.js -> findLessonDate로 보냄
+    @ResponseBody
+    @PostMapping(value = "/findLessonDate")
+    public String lessonDate(@RequestBody String today ){
+        if(!lessonService.lessonDateStart(LocalDate.parse(today)).isEmpty() || !lessonService.lessonDateEnd(LocalDate.parse(today)).isEmpty()){
+            return "true";
+        }else {
+            return "false";
+        }
+    }
+
+//    캘린더 해당 날짜에 시작하거나 끝나는 수업 정보 가져오기
+    @ResponseBody
+    @PostMapping(value = "/calendarStartDay/{today}")
+    public List<Lesson> calendarStartDay(@PathVariable String today){
+        return lessonService.lessonDateStart(LocalDate.parse(today));
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/calendarEndDay/{today}")
+    public List<Lesson> calendarEndDay(@PathVariable String today){
+        return lessonService.lessonDateEnd(LocalDate.parse(today));
     }
 
 

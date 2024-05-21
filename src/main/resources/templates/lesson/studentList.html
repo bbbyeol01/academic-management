@@ -32,16 +32,16 @@
 
             <!-- 검색 -->
             <div class="row mt-3 float-end" style="max-width: 500px; display: inline-flex">
-                <form action="/training/subject" method="get">
+                <form action="/lesson/studentList" method="get">
                     <div class="col">
                         <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <select class="form-select type" name="type">
-                                    <option value="">---</option>
                                     <option th:selected="${pageRequestDTO.type == 'n'}" value="n">이름</option>
                                 </select>
                             </div> &nbsp;
+                            <input type="hidden" name="idx" th:value="${lesson.idx}">
                             <input type="text" class="form-control keyword" name="keyword" th:value="${pageRequestDTO.keyword}" style="border-radius: 5px"> &nbsp;
                             <button style="border-radius: 5px" type="submit" class="btn btn-outline-primary searchBtn">검색</button> &nbsp;
                             <button style="border-radius: 5px" type="button" class="btn btn-outline-secondary clearBtn">초기화</button>
@@ -186,15 +186,8 @@
         e.stopPropagation();
         e.preventDefault();
 
-        self.location = '/training/lesson';
-
+        self.location = '/lesson/studentList?idx=' + Idx.value;
     }, false)
-
-
-
-
-
-
 
 </script>
 </html>
