@@ -173,10 +173,12 @@
         location.href = "/member/notice/read?idx=" + idx;
     }
 
-    const lessonTitle = document.querySelector(".lessonTitle");
-    lessonTitle.addEventListener("click", function () {
-        let idx = this.getAttribute("data");
-        location.href = "/lesson/detail?idx=" + idx;
+    const lessonTitle = document.querySelectorAll(".lessonTitle");
+    lessonTitle.forEach(lessonTitle => {
+        lessonTitle.addEventListener("click", function () {
+            let idx = this.getAttribute("data");
+            location.href = "/lesson/detail?idx=" + idx;
+        })
     })
 
     document.addEventListener("DOMContentLoaded", function () {
