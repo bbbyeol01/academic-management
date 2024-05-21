@@ -15,11 +15,67 @@
 
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
-                <h1> 멤버 홈 </h1>
-                <h1> 뭐넣죠여기? </h1>
+            <br>
+<!--                <h1> 멤버 홈 </h1>-->
+<!--                <h1> 뭐넣죠여기? </h1>-->
+
+                <div class="col-md-6 float-start">
+                    <div class="row">
+                        <h5>공지사항</h5>
+                        <hr>
+                        <div th:each="notice : ${noticeList}">
+                            <div style="display: flex" class="align-items-center">
+                                <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px"> [[${notice.categoryName}]]</p></div>
+                                &nbsp;&nbsp;
+                                <div th:text="${notice.title}" style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" th:data="${notice.idx}" onclick="read(this.getAttribute('data'))"></div>
+                                <div style="margin-left: auto;" th:text="${notice.writeDate}"></div>
+                                <br>
+                                <br>
+
+
+                            </div>
 
                         </div>
 
+                    </div>
+
+                    <br>
+
+                    <div class="row">
+                        <h5>일정</h5>
+
+                    </div>
+
+                </div>
+
+            <div class="col-md-5 float-end">
+
+                <div class="row">
+                    <h5>진행 중인 수업</h5>
+                    <hr>
+
+                    <div th:each="lesson : ${LessonList}">
+                        <div style="display: flex" class="align-items-center">
+                            <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px"> [[${lesson.curriculum.category.name}]]</p></div>
+                            &nbsp;&nbsp;
+                            <div th:text="${lesson.curriculum.name}" style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "></div>
+                            <div style="margin-left: auto;" th:text="${lesson.member.name}"></div>
+
+                            <br>
+                            <br>
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <br>
+
+            </div>
+
+        </div>
 
 
 
@@ -40,6 +96,16 @@
 
 <div th:replace="/layout/basic :: scriptSet">
 </div>
+
+<script>
+
+    function read(idx){
+        location.href = "/member/notice/read?idx=" + idx;
+    }
+
+    
+
+</script>
 
 </body>
 </html>

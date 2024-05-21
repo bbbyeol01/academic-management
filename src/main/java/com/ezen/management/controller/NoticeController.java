@@ -1,5 +1,6 @@
 package com.ezen.management.controller;
 
+import com.ezen.management.domain.MemberRole;
 import com.ezen.management.domain.Notice;
 import com.ezen.management.domain.NoticeCategory;
 import com.ezen.management.dto.MemberDTO;
@@ -14,13 +15,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.AccessDeniedException;
 import com.ezen.management.domain.Member;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,24 +74,54 @@ public class NoticeController {
     }
 
     @GetMapping("/read")
-    public String read(@RequestParam int idx, Model model){
+    public String read(@RequestParam int idx, Model model) throws AccessDeniedException {
 
         NoticeDTO noticeDTO = noticeService.findById(idx);
 
-        model.addAttribute("noticeDTO", noticeDTO);
+        if(noticeDTO.isAdmin()){
+            //        권한 확인 (MASTER, ADMIN)
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserDetails userDetails = (UserDetails)principal;
 
+            Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+            for (GrantedAuthority authority : authorities) {
+                if(authority.getAuthority().equals("ROLE_TEACHER")){
+                    throw new AccessDeniedException("접근 권한이 없습니다.");
+                }
+            }
+        }
+
+        model.addAttribute("noticeDTO", noticeDTO);
         return "/member/notice/read";
     }
 
-    @PutMapping("/write")
-    public String modify(NoticeDTO noticeDTO) {
+    @PutMapping("/modify")
+    @ResponseBody
+    public Integer modify(NoticeDTO noticeDTO) {
 
-//        여기에 수정 로직
+        return noticeService.update(noticeDTO);
+    }
 
-        return "member/notice/read";
+    @GetMapping("/modify")
+    public String modify(int idx, Model model){
+
+        NoticeDTO byId = noticeService.findById(idx);
+
+        List<NoticeCategory> all = noticeCategoryRepository.findAll();
+        model.addAttribute("noticeCategoryList", all);
+
+        model.addAttribute("noticeDTO", byId);
+
+        return "/member/notice/modify";
     }
 
 
+    @DeleteMapping("/delete/{idx}")
+    @ResponseBody
+    public Integer delete(@PathVariable int idx){
+
+        return noticeService.delete(idx);
+    }
 
 
 }

@@ -35,4 +35,18 @@ public class Notice extends BaseEntity{
     @Builder.Default
     private boolean hold = false;
 
+    @Builder.Default
+    private boolean del = false;
+
+    public void modify(NoticeCategory category, String title, String content, boolean admin, boolean hold){
+        this.category = category;
+        this.title = title;
+        this.content = content;
+        this.admin = admin;
+        this.hold = hold;
+    }
+
+    public void delete(){
+        this.del = true;
+    }
 }
