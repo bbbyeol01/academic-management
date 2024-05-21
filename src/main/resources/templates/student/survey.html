@@ -110,6 +110,7 @@
 
                 <br>
                 <div style="display: flex; justify-content: flex-end;">
+                    <button type="button"></button>
                     <button type="submit" class="btn btn-primary" style="width: 90px; margin-right: 10px;">제출</button>
                 </div>
 
@@ -144,6 +145,10 @@
 
 <div th:replace="/layout/student/basic :: scriptSet">
 </div>
+
+<script>
+    document.querySelector(".surveyBtn").classList.add("active", "disabled-btn");
+</script>
 
 </body>
 </html>

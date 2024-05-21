@@ -9,18 +9,11 @@ import java.util.List;
 
 public interface SurveyService {
 
-    //설문 등록
-    int register(SurveyDtoList surveyDtoList);
-
     //설문 1건 조회
     List<SurveyDTO> readAllByRound(int round);
 
     //설문 수정
     int modify(SurveyDtoList surveyDtoList, int round);
-
-    //설문 삭제
-    int deleteAllByRound(int round);
-
 
     default Survey surveyDtoToEntity(SurveyDTO surveyDTO){
 
