@@ -57,7 +57,6 @@ public class LessonController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId = ((UserDetails) principal).getUsername();
 
-
         PageResponseDTO<Lesson> responseDTO = lessonService.ongoingLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
@@ -102,9 +101,7 @@ public class LessonController {
 
         Lesson lesson = trainingService.getLessonByIdx(idx);
         model.addAttribute("lesson", lesson);
-        model.addAttribute("responseDTO", studentService.searchStudent(idx, pageRequestDTO));
-
-        log.info("아아아아아" + pageRequestDTO.getPage());
+        model.addAttribute("responseDTO", lessonService.searchStudent(pageRequestDTO, lesson.getIdx()));
 
         return "/lesson/studentList";
     }

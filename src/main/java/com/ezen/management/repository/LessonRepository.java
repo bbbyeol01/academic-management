@@ -20,4 +20,11 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> , LessonSe
     Optional<List<Lesson>> getLessonsByMember(Member member);
 
     List<Lesson> getLessonsByEndDayGreaterThan(LocalDate now);
+
+    @Query("select l from Lesson l where l.startDay = :today")
+    Optional<List<Lesson>> lessonDateStart(LocalDate today);
+
+    @Query("select l from Lesson l where l.endDay = :today")
+    Optional<List<Lesson>> lessonDateEnd(LocalDate today);
+
 }
