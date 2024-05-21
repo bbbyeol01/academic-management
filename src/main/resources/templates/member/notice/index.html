@@ -145,6 +145,38 @@
   }
 
 
+  //   페이지 클릭 이벤트 처리
+  //   clear 버튼 누르면 검색 조건 사라진 목록(/member/teacher) 출력
+  document.querySelector(".pagination").addEventListener("click", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const target = e.target;
+
+    if (target.tagName !== 'A') {
+      return;
+    }
+
+    const formObj = document.querySelector("form");
+
+    const num = target.getAttribute("data-num");
+    const keyword = document.querySelector(".keyword");
+    const type = document.querySelector(".type");
+
+    // 버튼 누르면 ?page=num
+    formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
+
+    // 검색 목록이면
+    if(keyword.value !== ''){
+      formObj.innerHTML += `<input type="hidden" name="type" value="${type.value}">`
+      formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
+    }
+
+    formObj.submit();
+
+  }, false);
+  //  페이지 클릭 end
+
 </script>
 </body>
 </html>

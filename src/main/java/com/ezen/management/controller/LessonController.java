@@ -97,8 +97,11 @@ public class LessonController {
         if(!userDetails.getUsername().equals(lesson.getMember().getId())){
             authorities.forEach(auth ->{
                 log.info("출력? : " +  auth);
-                if(!auth.toString().equals("ROLE_MASTER") || !auth.toString().equals("ROLE_ADMIN")){
-                    throw new AccessDeniedException("접근 권한이 없습니다.");
+                log.info("같냐? : {}", auth.toString().equals("ROLE_MASTER"));
+                if(!auth.toString().equals("ROLE_MASTER")){
+                    if(!auth.toString().equals("ROLE_ADMIN")){
+                        throw new AccessDeniedException("접근 권한이 없습니다.");
+                    }
                 }
             });
         }
