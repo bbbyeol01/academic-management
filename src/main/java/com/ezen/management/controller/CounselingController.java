@@ -7,6 +7,7 @@ import com.ezen.management.service.CounselingService;
 import com.ezen.management.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
+@PreAuthorize("hasAnyRole('MASTER', 'ADMIN', 'TEACHER')") //추가 변경 사항 = login 밀어내기
 @RequestMapping("/counseling")
 public class CounselingController {
 
