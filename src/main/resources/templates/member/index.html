@@ -53,12 +53,12 @@
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
 
-        <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
+        <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%; display: flex">
             <br>
             <!--                <h1> 멤버 홈 </h1>-->
             <!--                <h1> 뭐넣죠여기? </h1>-->
 
-            <div class="col-md-6 float-start">
+            <div class="col-md-6" style="margin-left: auto; margin-right: 50px; margin-bottom: 50px">
                 <div class="row">
                     <h5>공지사항</h5>
                     <hr>
@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="col-md-5 float-end">
+            <div class="col-md-5" style="margin-right: auto;">
                 <div class="row">
                     <h5>진행 중인 수업</h5>
                     <hr>
@@ -118,8 +118,7 @@
                             <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex">
                                 <p style="margin: 5px"> [[${lesson.curriculum.category.name}]]</p></div>
                             &nbsp;&nbsp;
-                            <div th:text="${lesson.curriculum.name}"
-                                 style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "></div>
+                            <div class="lessonTitle" th:text="${lesson.curriculum.name}" th:data="${lesson.idx}" style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "></div>
                             <div style="margin-left: auto;" th:text="${lesson.member.name}"></div>
 
                             <br>
@@ -404,13 +403,13 @@
         calendarStartDay(today).then(result => {
             console.log(result[0].curriculum.name);
             result.forEach(lesson => {
-                startDay.innerHTML += `&nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기<br><br>`;
+                startDay.innerHTML += `<a href="/lesson/detail?idx=` + lesson.idx +`"> &nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기</a><br><br>`;
             })
         })
         calendarEndDay(today).then(result => {
             console.log("종강일 : " + result);
             result.forEach(lesson => {
-                endDay.innerHTML += `&nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기<br><br>`;
+                endDay.innerHTML += `<a href="/lesson/detail?idx=` + lesson.idx +`"> &nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기</a><br><br>`;
             })
         })
 
