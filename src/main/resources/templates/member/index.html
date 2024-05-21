@@ -53,113 +53,113 @@
     <div class="content">
         <div th:replace="/layout/basic :: navbar"></div>
 
-        <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
-            <br>
-            <!--                <h1> 멤버 홈 </h1>-->
-            <!--                <h1> 뭐넣죠여기? </h1>-->
 
-            <div class="col-md-6 float-start">
-                <div class="row">
-                    <h5>공지사항</h5>
-                    <hr>
-                    <div th:each="notice : ${noticeList}">
-                        <div style="display: flex" class="align-items-center">
-                            <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex">
-                                <p style="margin: 5px"> [[${notice.categoryName}]]</p></div>
-                            &nbsp;&nbsp;
-                            <div th:text="${notice.title}"
-                                 style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                                 th:data="${notice.idx}" onclick="read(this.getAttribute('data'))"></div>
-                            <div style="margin-left: auto;" th:text="${notice.writeDate}"></div>
-                            <br>
-                            <br>
+            <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%; display: flex" >
+                <br>
+                <div class="col-md-6" style="margin-left: auto; margin-right: 50px; margin-bottom: 50px;" >
+                    <div class="row">
+                        <h5>공지사항</h5>
+                        <hr>
+                        <div th:each="notice : ${noticeList}">
+                            <div style="display: flex" class="align-items-center">
+                                <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex">
+                                    <p style="margin: 5px"> [[${notice.categoryName}]]</p></div>
+                                &nbsp;&nbsp;
+                                <div th:text="${notice.title}"
+                                     style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                     th:data="${notice.idx}" onclick="read(this.getAttribute('data'))"></div>
+                                <div style="margin-left: auto;" th:text="${notice.writeDate}"></div>
+                                <br>
+                                <br>
 
 
+                            </div>
                         </div>
                     </div>
+                    <br>
+                    <div class="row">
+                        <h5>일정</h5>
+                        <hr>
+                        <table class="scriptCalendar">
+                            <thead>
+                            <tr>
+                                <td class="calendarBtn" id="btnPrevCalendar">&#60;&#60;</td>
+                                <td colspan="5" style="text-align: center">
+                                    <span id="calYear">YYYY</span>년
+                                    <span id="calMonth">MM</span>월
+                                </td>
+                                <td class="calendarBtn" id="nextNextCalendar">&#62;&#62;</td>
+                            </tr>
+                            <tr>
+                                <td>일</td>
+                                <td>월</td>
+                                <td>화</td>
+                                <td>수</td>
+                                <td>목</td>
+                                <td>금</td>
+                                <td>토</td>
+                            </tr>
+                            </thead>
+                            <tbody th:each="lessonDate : ${lessonDate}"></tbody>
+                        </table>
+
+                    </div>
                 </div>
-                <br>
-                <div class="row">
-                    <h5>일정</h5>
-                    <hr>
-                    <table class="scriptCalendar">
-                        <thead>
-                        <tr>
-                            <td class="calendarBtn" id="btnPrevCalendar">&#60;&#60;</td>
-                            <td colspan="5" style="text-align: center">
-                                <span id="calYear">YYYY</span>년
-                                <span id="calMonth">MM</span>월
-                            </td>
-                            <td class="calendarBtn" id="nextNextCalendar">&#62;&#62;</td>
-                        </tr>
-                        <tr>
-                            <td>일</td>
-                            <td>월</td>
-                            <td>화</td>
-                            <td>수</td>
-                            <td>목</td>
-                            <td>금</td>
-                            <td>토</td>
-                        </tr>
-                        </thead>
-                        <tbody th:each="lessonDate : ${lessonDate}"></tbody>
-                    </table>
 
-                </div>
-            </div>
+                <div class="col-md-5" style="margin-right: auto;">
+                    <div class="row">
+                        <h5>진행 중인 수업</h5>
+                        <hr>
 
-            <div class="col-md-5 float-end">
-                <div class="row">
-                    <h5>진행 중인 수업</h5>
-                    <hr>
+                        <div th:each="lesson : ${LessonList}">
+                            <div style="display: flex" class="align-items-center">
+                                <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex">
+                                    <p style="margin: 5px"> [[${lesson.curriculum.category.name}]]</p></div>
+                                &nbsp;&nbsp;
+                                <div class="lessonTitle" th:text="${lesson.curriculum.name}"
+                                     th:data="${lesson.idx}"
+                                     style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "></div>
+                                <div style="margin-left: auto;" th:text="${lesson.member.name}"></div>
 
-                    <div th:each="lesson : ${LessonList}">
-                        <div style="display: flex" class="align-items-center">
-                            <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex">
-                                <p style="margin: 5px"> [[${lesson.curriculum.category.name}]]</p></div>
-                            &nbsp;&nbsp;
-                            <div th:text="${lesson.curriculum.name}"
-                                 style="cursor: pointer; width: 65%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; "></div>
-                            <div style="margin-left: auto;" th:text="${lesson.member.name}"></div>
-
-                            <br>
-                            <br>
+                                <br>
+                                <br>
+                            </div>
                         </div>
                     </div>
+                    <br>
                 </div>
-                <br>
             </div>
 
-        </div>
 
-        <!-- 캘린더 모달 -->
-        <div class="modal calendarModal" tabindex="-1">
-            <div class="modal-dialog" style="max-width: 60%;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title" style="font-weight:bold"></div>
+            <!-- 캘린더 모달 -->
+            <div class="modal calendarModal" tabindex="-1">
+                <div class="modal-dialog" style="max-width: 60%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title" style="font-weight:bold"></div>
+                        </div>
+                        <br>
+                        <div>&nbsp;&nbsp;&nbsp;개강</div>
+                        <br>
+                        <div class="startDay"></div>
+                        <hr>
+                        <div>&nbsp;&nbsp;&nbsp;종강</div>
+                        <br>
+                        <div class="endDay"></div>
+                        <br>
+                        <div class="modal-footer"></div>
                     </div>
-                    <br>
-                    <div>&nbsp;&nbsp;&nbsp;개강</div>
-                    <br>
-                    <div class="startDay"></div>
-                    <hr>
-                    <div>&nbsp;&nbsp;&nbsp;종강</div>
-                    <br>
-                    <div class="endDay"></div>
-                    <br>
-                    <div class="modal-footer"></div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- content end -->
+</div>
+<!-- content end -->
 
 
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-    <a th:replace="/layout/basic :: back-to-top"></a>
+<!-- 진짜 개 천천히 top으로 올라가네요-->
+<!--    좀 빠르게 고침 -->
+<!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
+<a th:replace="/layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
@@ -176,21 +176,21 @@
 
     const lessonTitle = document.querySelector(".lessonTitle");
     lessonTitle.addEventListener("click", function () {
-        let idx =  this.getAttribute("data");
+        let idx = this.getAttribute("data");
         location.href = "/lesson/detail?idx=" + idx;
     })
 
-        document.addEventListener("DOMContentLoaded", function () {
-        buildCalendar();
+    document.addEventListener("DOMContentLoaded", function () {
+            buildCalendar();
 
-        document.getElementById("btnPrevCalendar").addEventListener("click", function (event) {
-            prevCalendar();
-        });
+            document.getElementById("btnPrevCalendar").addEventListener("click", function (event) {
+                prevCalendar();
+            });
 
-        document.getElementById("nextNextCalendar").addEventListener("click", function (event) {
-            nextCalendar();
-        });
-    }
+            document.getElementById("nextNextCalendar").addEventListener("click", function (event) {
+                nextCalendar();
+            });
+        }
     )
     ;
 
@@ -404,13 +404,13 @@
         calendarStartDay(today).then(result => {
             console.log(result[0].curriculum.name);
             result.forEach(lesson => {
-                startDay.innerHTML += `&nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기<br><br>`;
+                startDay.innerHTML += `<a href="/lesson/detail?idx=` + lesson.idx + `"> &nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기</a><br><br>`;
             })
         })
         calendarEndDay(today).then(result => {
             console.log("종강일 : " + result);
             result.forEach(lesson => {
-                endDay.innerHTML += `&nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기<br><br>`;
+                endDay.innerHTML += `<a href="/lesson/detail?idx=` + lesson.idx + `"> &nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기</a><br><br>`;
             })
         })
 
