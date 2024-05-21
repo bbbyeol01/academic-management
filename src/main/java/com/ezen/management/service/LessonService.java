@@ -6,7 +6,6 @@ import com.ezen.management.domain.SubjectTest;
 import com.ezen.management.dto.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface LessonService {
@@ -32,4 +31,10 @@ public interface LessonService {
     List<SubjectTest> searchSubjectTest(Long studentIdx);
 
     Long subjectTestUpdate(SubjectTestList subjectTestList);
+
+    //캘린더 : 해당일에 시작하는 수업 검색
+    List<Lesson> lessonDateStart(LocalDate today);
+
+    //캘린더 : 해당일에 종료되는 수업 검색
+    List<Lesson> lessonDateEnd(LocalDate today);
 }

@@ -33,6 +33,9 @@ public class StudentSearchImpl extends QuerydslRepositorySupport implements Stud
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
+        log.info("KEYWORD : " + keyword);
+        log.info("TYPE : " + types);
+
         if(lessonIdx != null){
             booleanBuilder.and(student.lesson.idx.eq(lessonIdx));
         }
@@ -50,6 +53,42 @@ public class StudentSearchImpl extends QuerydslRepositorySupport implements Stud
                     case "l" : // 수업 이름
                         booleanBuilder.or(student.lesson.curriculum.name.contains(keyword));
                         booleanBuilder.or(student.lesson.number.stringValue().contains(keyword));
+                        break;
+                }
+            }
+        }
+        query.orderBy(student.name.asc());
+        query.where(booleanBuilder);
+
+        //페이징
+        this.getQuerydsl().applyPagination(pageable, query);
+
+        List<Student> list = query.fetch();
+        long count = query.fetchCount();
+
+        return new PageImpl<>(list, pageable, count);
+    }
+
+    @Override
+    @Transactional
+    public Page<Student> searchStudentName(Long lessonIdx, String[] types, String keyword, Pageable pageable) {
+        QStudent student = QStudent.student;
+
+        JPQLQuery<Student> query = from(student);
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        booleanBuilder.and(student.lesson.idx.eq(lessonIdx));
+
+        log.info("KEYWORD : " + keyword);
+        log.info("TYPE : " + types);
+
+        if (types != null && keyword != null) {
+            for (String type : types) {
+                switch (type) {
+                    case "n" : // 학생 이름
+//                        여기가 and문이 되면 && 로 수행하기 때문에 오류. || 연산이기 때문에 or. 헷갈리지 말 것.
+                        booleanBuilder.and(student.name.contains(keyword));
+
                         break;
                 }
             }

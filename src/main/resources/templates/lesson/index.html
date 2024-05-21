@@ -20,24 +20,40 @@
             <br>
 
             <!-- 검색 -->
+            <div class="row g-4">
+                <a href="/lesson/ongoing" style="width: 33%">
+                    <!--          <div class="form-control state" value="진행중" onclick="updateSelectedValue('진행중')"-->
+                    <!--               style="width: 33%;; display: inline-flex; background-color:#80ceff; justify-content : center; font-weight: 400; color: white">-->
+                    <!--            진행 중-->
+                    <!--          </div>-->
+                    <div>
+                        <div class="h-100 p-4 state">
+                            <button class="btn btn-outline-primary w-100 m-2 " type="button" th:text="진행중" onclick="updateSelectedValue('진행중')" />
+                        </div>
+                    </div>
+                </a>
+                <a href="/lesson/end" style="width: 33%">
 
-            <div>
-                <a href="/lesson">
-                    <div class="form-control"
-                         style="width: 33%; display: inline-flex; background-color:rgba(23,91,238,0.98); justify-content : center; font-weight: 400; color: white;">
-                        전체
+                    <!--          <div class="form-control state" value="완료" onclick="updateSelectedValue('완료')"-->
+                    <!--               style="width: 33%;; display: inline-flex; background-color:rgba(23,91,238,0.98); justify-content : center; font-weight: 400; color: white">-->
+                    <!--            완료-->
+                    <!--          </div>-->
+                    <!--          -->
+
+                    <div>
+                        <div class="h-100 p-4 state">
+                            <button class="btn btn-outline-primary w-100 m-2 " type="button" th:text="완료" onclick="updateSelectedValue('완료')" />
+                        </div>
                     </div>
                 </a>
-                <a href="/lesson/ongoing">
-                    <div class="form-control state" value="진행중" onclick="updateSelectedValue('진행중')"
-                         style="width: 33%; display: inline-flex; background-color:#80ceff; justify-content : center; font-weight: 400; color: white">
-                        진행 중
-                    </div>
-                </a>
-                <a href="/lesson/end">
-                    <div class="form-control state" value="완료" onclick="updateSelectedValue('완료')"
-                         style="width: 33%; display: inline-flex; background-color:#80ceff; justify-content : center; font-weight: 400; color: white">
-                        완료
+                <a href="/lesson" style="width: 33%">
+                    <!--          <div class="form-control"style="width: 33%;; display: inline-flex; background-color:#80ceff; justify-content : center; font-weight: 400; color: white">-->
+                    <!--            전체-->
+                    <!--          </div>-->
+                    <div>
+                        <div class="h-100 p-4 state">
+                            <button class="btn w-100 m-2 " style="background-color:#009CFF; color: #000; border-color: #009CFF" type="button" th:text="전체" onclick="updateSelectedValue('전체')" />
+                        </div>
                     </div>
                 </a>
             </div>
