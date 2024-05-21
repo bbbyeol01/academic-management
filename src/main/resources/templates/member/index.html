@@ -1,7 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/layout/basic :: head"></head>
+<head th:replace="/layout/basic :: head">
+</head>
+<style type="text/css">
+    a {
+        color: #000000;
+        text-decoration: none;
+    }
+
+    .scriptCalendar {
+        text-align: center;
+    }
+
+    .scriptCalendar > thead > tr > td {
+        width: 50px;
+        height: 30px;
+    }
+
+    .scriptCalendar > thead > tr:first-child > td {
+        font-weight: bold;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .scriptCalendar > thead > tr:last-child > td {
+        width: 50px;
+        height: 30px;
+        font-weight: bold;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .scriptCalendar > tbody > tr > td {
+        width: 50px;
+        height: 70px;
+        text-align: center;
+        vertical-align: top;
+        border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+
+    .calendarBtn {
+        cursor: pointer;
+    }
+</style>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
@@ -15,66 +55,107 @@
 
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
-<!--                <h1> 멤버 홈 </h1>-->
-<!--                <h1> 뭐넣죠여기? </h1>-->
-                <div class="col-md-5 float-start">
+            <!--                <h1> 멤버 홈 </h1>-->
+            <!--                <h1> 뭐넣죠여기? </h1>-->
+            <div class="col-md-5 float-start">
 
-                    <div class="row">
-                        <h5>진행 중인 수업</h5>
-                        <hr>
+                <div class="row">
+                    <h5>진행 중인 수업</h5>
+                    <hr>
 
-                        <div th:each="lesson : ${LessonList}">
-                            <div style="display: flex" class="align-items-center">
-                                <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px"> [[${lesson.curriculum.category.name}]]</p></div>
-                                &nbsp;&nbsp;
-                                <div th:text="${lesson.curriculum.name}" style="cursor: pointer; width: 65%"></div>
-                                <div style="margin-left: auto;" th:text="${lesson.member.name}"></div>
+                    <div th:each="lesson : ${LessonList}">
+                        <div style="display: flex" class="align-items-center">
+                            <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex">
+                                <p style="margin: 5px"> [[${lesson.curriculum.category.name}]]</p></div>
+                            &nbsp;&nbsp;
+                            <div th:text="${lesson.curriculum.name}" style="cursor: pointer; width: 65%"></div>
+                            <div style="margin-left: auto;" th:text="${lesson.member.name}"></div>
 
-                                <br>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-                <div class="col-md-6 float-end">
-                    <div class="row">
-                        <h5>공지사항</h5>
-                        <hr>
-                        <div th:each="notice : ${noticeList}">
-                            <div style="display: flex" class="align-items-center">
-                                <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px"> [[${notice.categoryName}]]</p></div>
-                                &nbsp;&nbsp;
-                                <div th:text="${notice.title}" style="cursor: pointer" th:data="${notice.idx}" onclick="read(this.getAttribute('data'))"></div>
-                                <div style="margin-left: auto;" th:text="${notice.writeDate}"></div>
-                                <br>
-                                <br>
-
-                            </div>
+                            <br>
 
                         </div>
 
                     </div>
 
-                    <br>
 
-                    <div class="row">
-                        <h5>일정</h5>
-                        <hr>
+                </div>
+
+            </div>
+            <div class="col-md-6 float-end">
+                <div class="row">
+                    <h5>공지사항</h5>
+                    <hr>
+                    <div th:each="notice : ${noticeList}">
+                        <div style="display: flex" class="align-items-center">
+                            <div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex">
+                                <p style="margin: 5px"> [[${notice.categoryName}]]</p></div>
+                            &nbsp;&nbsp;
+                            <div th:text="${notice.title}" style="cursor: pointer" th:data="${notice.idx}"
+                                 onclick="read(this.getAttribute('data'))"></div>
+                            <div style="margin-left: auto;" th:text="${notice.writeDate}"></div>
+                            <br>
+                            <br>
+
+                        </div>
 
                     </div>
 
                 </div>
+
+                <br>
+
+                <div class="row">
+                    <h5>일정</h5>
+                    <hr>
+                    <table class="scriptCalendar">
+                        <thead>
+                        <tr>
+                            <td class="calendarBtn" id="btnPrevCalendar">&#60;&#60;</td>
+                            <td colspan="5" style="text-align: center">
+                                <span id="calYear">YYYY</span>년
+                                <span id="calMonth">MM</span>월
+                            </td>
+                            <td class="calendarBtn" id="nextNextCalendar">&#62;&#62;</td>
+                        </tr>
+                        <tr>
+                            <td>일</td>
+                            <td>월</td>
+                            <td>화</td>
+                            <td>수</td>
+                            <td>목</td>
+                            <td>금</td>
+                            <td>토</td>
+                        </tr>
+                        </thead>
+                        <tbody th:each="lessonDate : ${lessonDate}"></tbody>
+                    </table>
+
+                </div>
+
+            </div>
 
         </div>
 
-
-
-
-
+        <!-- 캘린더 모달 -->
+        <div class="modal calendarModal" tabindex="-1">
+            <div class="modal-dialog" style="max-width: 60%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" style="font-weight:bold"></div>
+                    </div>
+                    <br>
+                    <div>&nbsp;&nbsp;&nbsp;개강</div>
+                    <br>
+                    <div class="startDay"></div>
+                    <hr>
+                    <div>&nbsp;&nbsp;&nbsp;종강</div>
+                    <br>
+                    <div class="endDay"></div>
+                    <br>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- content end -->
 
@@ -88,13 +169,272 @@
 <!-- wrapper end-->
 
 
-
 <div th:replace="/layout/basic :: scriptSet">
 </div>
-<script>
+<script src="/js/training.js"></script>
+<script type="text/javascript">
 
-    function read(idx){
+    function read(idx) {
         location.href = "/member/notice/read?idx=" + idx;
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        buildCalendar();
+
+        document.getElementById("btnPrevCalendar").addEventListener("click", function (event) {
+            prevCalendar();
+        });
+
+        document.getElementById("nextNextCalendar").addEventListener("click", function (event) {
+            nextCalendar();
+        });
+    })
+    ;
+
+    var toDay = new Date(); // @param 전역 변수, 오늘 날짜 / 내 컴퓨터 로컬을 기준으로 toDay에 Date 객체를 넣어줌
+    var nowDate = new Date(); // @param 전역 변수, 실제 오늘날짜 고정값
+
+    /**
+     * @brief 이전달 버튼 클릭시
+     */
+    function prevCalendar() {
+        this.toDay = new Date(toDay.getFullYear(), toDay.getMonth() - 1, toDay.getDate());
+        buildCalendar();    // @param 전월 캘린더 출력 요청
+    }
+
+    /**
+     * @brief 다음달 버튼 클릭시
+     */
+    function nextCalendar() {
+        this.toDay = new Date(toDay.getFullYear(), toDay.getMonth() + 1, toDay.getDate());
+        buildCalendar();    // @param 명월 캘린더 출력 요청
+    }
+
+    /**
+     * @brief 캘린더 오픈
+     * @details 날짜 값을 받아 캘린더 폼을 생성하고, 날짜값을 채워넣는다.
+     */
+    function buildCalendar() {
+
+        let doMonth = new Date(toDay.getFullYear(), toDay.getMonth(), 1);
+        let lastDate = new Date(toDay.getFullYear(), toDay.getMonth() + 1, 0);
+
+        let tbCalendar = document.querySelector(".scriptCalendar > tbody");
+
+        document.getElementById("calYear").innerText = toDay.getFullYear();                       // @param YYYY월
+        document.getElementById("calMonth").innerText = autoLeftPad((toDay.getMonth() + 1), 2);   // @param MM월
+
+
+        // @details 이전 캘린더의 출력결과가 남아있다면, 이전 캘린더를 삭제한다.
+        while (tbCalendar.rows.length > 0) {
+            tbCalendar.deleteRow(tbCalendar.rows.length - 1);
+        }
+
+        // @param 첫번째 개행
+        let row = tbCalendar.insertRow();
+
+        // @param 날짜가 표기될 열의 증가값
+        let dom = 1;
+
+        // @details 시작일의 요일값( doMonth.getDay() ) + 해당월의 전체일( lastDate.getDate())을  더해준 값에서
+        //  7로 나눈값을 올림( Math.ceil() )하고 다시 시작일의 요일값( doMonth.getDay() )을 빼준다.
+        let daysLength = (Math.ceil((doMonth.getDay() + lastDate.getDate()) / 7) * 7) - doMonth.getDay();
+
+        // @param 달력 출력
+        // @details 시작값은 1일을 직접 지정하고 요일값( doMonth.getDay() )를 빼서 마이너스( - )로 for문을 시작한다.
+        for (let day = 1 - doMonth.getDay(); daysLength >= day; day++) {
+
+            let column = row.insertCell();
+
+            // @param 평일( 전월일과 익월일의 데이터 제외 )
+            if (Math.sign(day) == 1 && lastDate.getDate() >= day) {
+
+                let today = toDay.getFullYear() + "-" + document.getElementById("calMonth").innerText + "-" + day;
+
+                // @param 평일 날짜 데이터 삽입
+                if (day < 10) {
+                    today = toDay.getFullYear() + "-" + document.getElementById("calMonth").innerText + "-0" + day;
+                }
+
+                //여기에서 training.js 에 findLessonDate 불러서 if true면 체크 false 면 그냥 날짜 출력
+                findLessonDate(today).then(result => {
+                    if (result == true) {
+                        console.log(today + " : " + result);
+                        column.innerHTML = `${autoLeftPad(day, 2)}<br>🔵`;
+                    } else {
+                        column.innerHTML = autoLeftPad(day, 2);
+                    }
+                })
+
+
+                // @param 일요일인 경우
+                if (dom % 7 == 1) {
+                    column.style.color = "#FF4D4D";
+                }
+
+                // @param 토요일인 경우
+                if (dom % 7 == 0) {
+                    column.style.color = "#4D4DFF";
+                    row = tbCalendar.insertRow();   // @param 토요일이 지나면 다시 가로 행을 한줄 추가한다.
+                }
+
+            } //날짜 넣기 END
+
+            // @param 평일 전월일과 익월일의 데이터 날짜변경
+            else {
+                let exceptDay = new Date(doMonth.getFullYear(), doMonth.getMonth(), day);
+                column.innerText = autoLeftPad(exceptDay.getDate(), 2);
+                column.style.color = "#A9A9A9";
+            }
+
+            // @brief   전월, 명월 음영처리
+            // @details 현재년과 선택 년도가 같은경우
+            if (toDay.getFullYear() == nowDate.getFullYear()) {
+
+                // @details 현재월과 선택월이 같은경우
+                if (toDay.getMonth() == nowDate.getMonth()) {
+
+                    // @details 현재일보다 이전인 경우이면서 현재월에 포함되는 일인경우
+                    if (nowDate.getDate() > day && Math.sign(day) == 1) {
+                        column.style.backgroundColor = "#FFFFFF";
+                        column.style.cursor = "pointer";
+                        column.onclick = function () {
+                            calendarChoiceDay(this);
+                        }
+                    }
+
+                    // @details 현재일보다 이후이면서 현재월에 포함되는 일인경우
+                    else if (nowDate.getDate() < day && lastDate.getDate() >= day) {
+                        column.style.backgroundColor = "#FFFFFF";
+                        column.style.cursor = "pointer";
+                        column.onclick = function () {
+                            calendarChoiceDay(this);
+                        }
+                    }
+
+                    // @details 현재일인 경우
+                    else if (nowDate.getDate() == day) {
+                        column.style.backgroundColor = "rgba(188,214,255,0.25)";
+                        column.style.cursor = "pointer";
+                        column.onclick = function () {
+                            calendarChoiceDay(this);
+                        }
+                    }
+
+                    // @details 현재월보다 이전인경우
+                } else if (toDay.getMonth() < nowDate.getMonth()) {
+                    if (Math.sign(day) == 1 && day <= lastDate.getDate()) {
+                        column.style.backgroundColor = "#FFFFFF";
+                        column.style.cursor = "pointer";
+                        column.onclick = function () {
+                            calendarChoiceDay(this);
+                        }
+                    }
+                }
+
+                // @details 현재월보다 이후인경우
+                else {
+                    if (Math.sign(day) == 1 && day <= lastDate.getDate()) {
+                        column.style.backgroundColor = "#FFFFFF";
+                        column.style.cursor = "pointer";
+                        column.onclick = function () {
+                            calendarChoiceDay(this);
+                        }
+                    }
+                }
+            }
+
+            // @details 선택한년도가 현재년도보다 작은경우
+            else if (toDay.getFullYear() < nowDate.getFullYear()) {
+                if (Math.sign(day) == 1 && day <= lastDate.getDate()) {
+                    column.style.backgroundColor = "#FFFFFF";
+                    column.style.cursor = "pointer";
+                    column.onclick = function () {
+                        calendarChoiceDay(this);
+                    }
+                }
+            }
+
+            // @details 선택한년도가 현재년도보다 큰경우
+            else {
+                if (Math.sign(day) == 1 && day <= lastDate.getDate()) {
+                    column.style.backgroundColor = "#FFFFFF";
+                    column.style.cursor = "pointer";
+                    column.onclick = function () {
+                        calendarChoiceDay(this);
+                    }
+                }
+            }
+            dom++;
+        } //param 달력출력 END
+    }
+
+    /**
+     * @brief 날짜 선택
+     * @details 날짜를 선택하면 모달 창이 뜬다.
+     */
+
+    const calendarModal = new bootstrap.Modal(document.querySelector(".calendarModal"))
+
+    function calendarChoiceDay(column) {
+
+        // 선택한 날짜를 가져옵니다.
+        var selectedDate = column.innerText.replace('🔵', ''); // V 제거한 일 만 가져오기
+        var calMonth = document.getElementById("calMonth").innerText
+        var calYear = document.getElementById("calYear").innerText = toDay.getFullYear();
+
+        // 모달의 제목과 내용 변경
+        const modalTitle = document.querySelector(".modal-title");
+        modalTitle.textContent = calYear + " 년  " + calMonth + " 월   " + selectedDate + " 일";
+
+        // 모달 본문 내용에 해당 일의 시작하는 수업과 종료하는 수업 출력
+        const startDay = document.querySelector(".startDay");
+        const endDay = document.querySelector(".endDay");
+
+        // 기존의 개강수업과 종강수업들을 삭제합니다.
+        startDay.innerHTML = " ";
+        endDay.innerHTML = " ";
+
+        // today 세팅 0000-00-00 형식
+        let today = calYear + "-" + calMonth + "-" + autoLeftPad(selectedDate, 2);
+
+        calendarStartDay(today).then(result => {
+            console.log(result[0].curriculum.name);
+            result.forEach(lesson => {
+                startDay.innerHTML += `&nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기<br><br>`;
+            })
+        })
+        calendarEndDay(today).then(result => {
+            console.log("종강일 : " + result);
+            result.forEach(lesson => {
+                endDay.innerHTML += `&nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기<br><br>`;
+            })
+        })
+
+        // 모달을 엽니다.
+        calendarModal.show();
+
+        // 선택한 날짜에 클래스를 추가합니다.
+        if (document.getElementsByClassName("choiceDay")[0]) {
+            document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");
+        }
+        column.classList.add("choiceDay");
+
+    } // calendarChoiceDay END!!
+
+    /**
+     * @brief 숫자 두자릿수( 00 ) 변경
+     * @details 자릿수가 한자리인 ( 1, 2, 3 등 )  의 값을 10, 11, 12 등과 같은 두자리수 형식으로 맞추기위해 0을 붙인다.
+     * @param num 앞에 0을 붙일 숫자 값 * @param digit 글자의 자릿수를 지정 ( 2자릿수인 경우 00, 3자릿수인 경우 000 … )
+     */
+
+    function autoLeftPad(num, digit
+    ) {
+        if (String(num).length < digit) {
+            num = new Array(digit - String(num).length + 1).join("0") + num;
+        }
+        return num;
     }
 
 </script>

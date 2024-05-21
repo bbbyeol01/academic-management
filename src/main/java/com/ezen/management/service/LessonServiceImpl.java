@@ -7,7 +7,6 @@ import com.ezen.management.repository.MemberRepository;
 import com.ezen.management.repository.StudentRepository;
 import com.ezen.management.repository.SubjectTestRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -162,6 +161,17 @@ public class LessonServiceImpl implements LessonService{
         subjectTestRepository.saveAll(subjectTest);
 
         return subjectTest.get(0).getStudent().getIdx();
+    }
+
+    //캘린더 : 당일 시작하는 수업 검색
+    @Override
+    public List<Lesson> lessonDateStart(LocalDate today) {
+        return lessonRepository.lessonDateStart(today).orElseThrow();
+    }
+    //캘린더 : 당일 종료하는 수업 검색
+    @Override
+    public List<Lesson> lessonDateEnd(LocalDate today) {
+        return lessonRepository.lessonDateEnd(today).orElseThrow();
     }
 
     public SubjectTest SubjectTesListDTOtoSubjectTestEntity(SubjectTestListDTO subjectTestListDTO){
