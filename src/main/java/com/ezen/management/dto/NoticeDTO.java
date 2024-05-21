@@ -22,4 +22,5 @@ public class NoticeDTO {
     private String writer;
     private String writerName;
     private boolean admin;
+    private boolean hold;
 }

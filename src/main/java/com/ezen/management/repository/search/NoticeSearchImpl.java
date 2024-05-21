@@ -49,6 +49,8 @@ public class NoticeSearchImpl extends QuerydslRepositorySupport implements Notic
             booleanBuilder.and(notice.category.eq(category));
         }
 
+        booleanBuilder.and(notice.del.eq(false));
+
 
         query.where(booleanBuilder);
 

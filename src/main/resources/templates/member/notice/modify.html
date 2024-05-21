@@ -17,25 +17,20 @@
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
             <br>
 
-            <h3 style="display: inline-flex">공지사항 작성</h3>
+            <h3 style="display: inline-flex">공지사항 수정</h3>
             <div class="float-end">
-                <button style="display: inline-flex" class="btn btn-primary insertBtn"> 작성 </button>
-                <button style="display: inline-flex" class="btn btn-secondary insertBtn"> 목록 </button>
+                <button style="display: inline-flex" class="btn btn-primary insertBtn"> 수정 </button>
+                <button style="display: inline-flex" class="btn btn-secondary listBtn"> 목록 </button>
             </div>
 
             <hr>
             <br>
 
-            <!--            <label for="admin">회원 전용</label>-->
-            <!--            <select class="form-control" name="admin" id="admin">-->
-            <!--                <option value="false">전체 공개</option>-->
-            <!--                <option value="true" selected>회원 전용</option>-->
-            <!--            </select>-->
-
+            <input type="hidden" th:value="${noticeDTO.idx}" id="idx"/>
             <div style="display: flex; align-items: center">
                 <select class="form-control" name="categoryIdx" id="categoryIdx" style="width: 20%">
-                    <option value="0" selected>카테고리</option>
-                    <option value="1">1</option>
+                    <option value="0" selected>카테고리 선택</option>
+                    <option th:each="item : ${noticeCategoryList}" th:value="${item.idx}" th:text="${item.name}" th:selected="${item.idx == noticeDTO.categoryIdx}"></option>
                 </select>
 
                 &nbsp;
@@ -45,15 +40,22 @@
                     <input class="form-check-input" name="admin" type="checkbox" role="switch" id="admin" checked value="true">
                     <label class="form-check-label" for="admin">회원 전용</label>
                 </div>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <div class="form-check form-switch">
+                    <input class="form-check-input" name="hold" type="checkbox" role="switch" id="hold" th:checked="${noticeDTO.isHold}">
+                    <label class="form-check-label" for="hold">필독</label>
+                </div>
             </div>
 
 
             <br>
 
-            <input name="title" id="title" class="form-control" placeholder="제목"/>
+            <input name="title" id="title" class="form-control" th:value="${noticeDTO.title}"/>
 
             <br>
-            <textarea name="content" id="content" class="form-control" rows="15" placeholder="1000자 이내로 입력하세요."></textarea>
+            <textarea name="content" id="content" class="form-control" rows="15" th:text="${noticeDTO.content}"></textarea>
 
             <input type="hidden" id="writer" name="writer"/>
 
@@ -84,8 +86,6 @@
 
 <div th:replace="/layout/basic :: scriptSet"></div>
 
-<script src="/js/member/teacher.js"></script>
-
 <script>
 
 
@@ -94,15 +94,13 @@
 
 
     const username = '[[${#authentication.principal.username}]]';
-
-
-
-
     const insertBtn = document.querySelector(".insertBtn");
     const title = document.querySelector("#title");
     const content = document.querySelector("#content");
     const categoryIdx = document.querySelector("#categoryIdx");
     const admin = document.querySelector("#admin");
+    const hold = document.querySelector("#hold");
+    const idx = document.querySelector("#idx");
     insertBtn.addEventListener("click", function () {
         // alert("click!");
 
@@ -124,16 +122,19 @@
         }
 
         const paramList = {
+            idx : idx.value,
             title : title.value,
             content : content.value,
             writer : username,
             categoryIdx : categoryIdx.value,
-            admin : admin.value
+            admin : admin.value,
+            hold : hold.value
         }
 
-        postStudent(paramList).then( result => {
+        putNotice(paramList).then( result => {
 
             console.log("notice index : " + result);
+            location.href = "/member/notice/read?idx=" + result;
 
 
         }).catch( e => {
@@ -145,10 +146,17 @@
 
     })
 
-    async function postStudent(paramList) {
-        const response = await axios.put('/member/notice/write', null, {params : paramList} );
+    async function putNotice(paramList) {
+        const response = await axios.put('/member/notice/modify', null, {params : paramList} );
         return response.data;
     }
+
+
+    const listBtn = document.querySelector(".listBtn");
+    listBtn.addEventListener("click", function () {
+        // alert("click!");
+        location.href = "/member/notice";
+    })
 
 
 

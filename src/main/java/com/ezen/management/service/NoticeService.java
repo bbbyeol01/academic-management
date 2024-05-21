@@ -18,4 +18,8 @@ public interface NoticeService {
 
     List<NoticeDTO> getIndexList();
 
+    int update(NoticeDTO noticeDTO);
+
+    int delete(int idx);
+
 }

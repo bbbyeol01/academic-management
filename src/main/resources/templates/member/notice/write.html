@@ -45,6 +45,13 @@
                     <input class="form-check-input" name="admin" type="checkbox" role="switch" id="admin" checked value="true">
                     <label class="form-check-label" for="admin">회원 전용</label>
                 </div>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <div class="form-check form-switch">
+                    <input class="form-check-input" name="hold" type="checkbox" role="switch" id="hold" checked value="true">
+                    <label class="form-check-label" for="hold">필독</label>
+                </div>
             </div>
 
 
@@ -99,6 +106,7 @@
     const content = document.querySelector("#content");
     const categoryIdx = document.querySelector("#categoryIdx");
     const admin = document.querySelector("#admin");
+    const hold = document.querySelector("#hold");
     insertBtn.addEventListener("click", function () {
         // alert("click!");
 
@@ -124,12 +132,14 @@
             content : content.value,
             writer : username,
             categoryIdx : categoryIdx.value,
-            admin : admin.value
+            admin : admin.value,
+            hold : hold.value
         }
 
-        postStudent(paramList).then( result => {
+        postNotice(paramList).then( result => {
 
             console.log("notice index : " + result);
+            location.href = "/member/notice/read?idx=" + result;
 
 
         }).catch( e => {
@@ -141,7 +151,7 @@
 
     })
 
-    async function postStudent(paramList) {
+    async function postNotice(paramList) {
         const response = await axios.post('/member/notice/write', null, {params : paramList} );
         return response.data;
     }
