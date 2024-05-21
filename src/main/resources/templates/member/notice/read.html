@@ -21,11 +21,13 @@
         <button class="btn btn-outline-secondary" th:text="${noticeDTO.categoryName}"></button>
         &nbsp;
         &nbsp;
-        <div style="font-size: 20pt; font-weight: bold; color: black" th:text="${noticeDTO.title}"></div>
+        <div style="font-size: 20pt; font-weight: bold; color: black" th:text="${noticeDTO.title}"></div>&nbsp;&nbsp;<div th:if="${noticeDTO.isAdmin()}">회원 전용</div>
       </div>
 
       <div style="display: inline-flex" class="float-end">
-        <button style="display: none;" class="btn btn-primary float-end editBtn"> 수정 </button>
+        <button style="display: none;" class="btn btn-primary float-end editBtn" th:data="${noticeDTO.idx}"> 수정 </button>
+        &nbsp;
+        <button style="display: none;" class="btn btn-danger float-end deleteBtn" th:data="${noticeDTO.idx}"> 삭제 </button>
         &nbsp;
         <button style="display: inline-flex" class="btn btn-secondary float-end listBtn"> 목록 </button>
       </div>
@@ -69,8 +71,6 @@
 
 <div th:replace="/layout/basic :: scriptSet"></div>
 
-<script src="/js/member/teacher.js"></script>
-
 <script>
 
   const listBtn = document.querySelector(".listBtn");
@@ -88,8 +88,46 @@
   console.log(writer);
 
   const editBtn = document.querySelector(".editBtn");
+  const deleteBtn = document.querySelector(".deleteBtn");
   if(writer === principal){
     editBtn.style.display = "inline-flex";
+    deleteBtn.style.display = "inline-flex";
+  }
+
+  editBtn.addEventListener("click", function () {
+
+    let idx = editBtn.getAttribute("data");
+    location.href = "/member/notice/modify?idx=" + idx;
+  })
+
+
+  deleteBtn.addEventListener("click", function () {
+
+    if(!confirm("삭제하시겠습니까?")){
+      return;
+    }
+
+    let idx = deleteBtn.getAttribute("data");
+
+    const paramList = {
+      idx : idx
+    }
+
+    noticeDelete(paramList).then( result => {
+      console.log(result);
+      alert(result + "번 글이 삭제되었습니다.");
+      location.href = "/member/notice";
+    }).catch( e => {
+      console.log(e);
+    });
+
+
+  })
+
+
+  async function noticeDelete(paramList) {
+    const response = await axios.delete(`/member/notice/delete/${paramList.idx}`);
+    return response.data;
   }
 
 
