@@ -104,7 +104,7 @@ public class CounselingController {
         redirectAttributes.addFlashAttribute("result", idx);
         redirectAttributes.addAttribute("idx", counselingDTO.getStudentIdx());
 
-        return "redirect:/counseling/counselingDetail";
+        return "redirect:counseling/counselingDetail";
     }
 
 
@@ -140,7 +140,7 @@ public class CounselingController {
 
         log.info("counselingDTO= " + counselingDTO);
 
-        return "redirect:/counseling/counselingDetail";
+        return "redirect:counseling/counselingDetail";
     }
 
 
@@ -163,7 +163,7 @@ public class CounselingController {
         redirectAttributes.addFlashAttribute("result", "delete");
         redirectAttributes.addAttribute("idx", counseling.getStudent().getIdx());
 
-        return "redirect:/counseling/counselingDetail";
+        return "redirect:counseling/counselingDetail";
 
     }
 

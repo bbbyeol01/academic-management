@@ -36,7 +36,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(){
-        return "/index";
+        return "index";
     }
 
 
@@ -81,7 +81,7 @@ public class HomeController {
         List<Lesson> lessonDate = lessonService.findAll();
         model.addAttribute("lessonDate", lessonDate);
 
-        return "/member/index";
+        return "member/index";
     }
 
 //      캘린더 해당 날짜에 시작하거나 끝나는 수업 있나 확인 후 있으면 true 없으면 false 를 training.js -> findLessonDate로 보냄
@@ -115,20 +115,20 @@ public class HomeController {
     public String redirect(Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        for (GrantedAuthority authority : userDetails.getAuthorities()) {
-            String authorityName = authority.getAuthority();
+//        for (GrantedAuthority authority : userDetails.getAuthorities()) {
+//            String authorityName = authority.getAuthority();
+//
+//            log.info("authorityName : {}",  authorityName);
+//
+//
+//            return switch (authorityName) {
+//                case "ROLE_MASTER", "ROLE_ADMIN" -> "redirect:/member";
+//                case "ROLE_TEACHER" -> "redirect:/lesson";
+//                default -> "redirect:/member/login?error";
+//            };
+//        }
 
-            log.info("authorityName : {}",  authorityName);
-
-
-            return switch (authorityName) {
-                case "ROLE_MASTER", "ROLE_ADMIN" -> "redirect:/member";
-                case "ROLE_TEACHER" -> "redirect:/lesson";
-                default -> "redirect:/member/login?error";
-            };
-        }
-
-        return "redirect:/member";
+        return "redirect:member";
 
     }
 

@@ -57,7 +57,7 @@ public class MemberController {
         model.addAttribute("admin", MemberRole.ADMIN);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
-        return "/member/admin/index";
+        return "member/admin/index";
     }
 
 
@@ -72,9 +72,9 @@ public class MemberController {
 
         try{
             memberService.adminInsert(memberDTO);
-            return "redirect:/member/admin?code=insert-success";
+            return "redirect:member/admin?code=insert-success";
         }catch (Exception e){
-            return "redirect:/member/admin?code=insert-fail";
+            return "redirect:member/admin?code=insert-fail";
         }
     }
 
@@ -101,10 +101,10 @@ public class MemberController {
 
         try{
             memberService.modify(memberDTO);
-            return "redirect:/member/admin?code=modify-success";
+            return "redirect:member/admin?code=modify-success";
         }catch (Exception e){
             log.error(e.getMessage());
-            return "redirect:/member/admin?code=modify-fail";
+            return "redirect:member/admin?code=modify-fail";
         }
     }
 
@@ -139,7 +139,7 @@ public class MemberController {
         model.addAttribute("teacher", MemberRole.TEACHER);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
-        return "/member/teacher/index";
+        return "member/teacher/index";
     }
 
 
@@ -155,10 +155,10 @@ public class MemberController {
 
         try{
             memberService.teacherInsert(memberDTO);
-            return "redirect:/member/teacher?code=insert-success";
+            return "redirect:member/teacher?code=insert-success";
         }catch (Exception e){
             log.error(e.getMessage());
-            return "redirect:/member/teacher?code=insert-fail";
+            return "redirect:member/teacher?code=insert-fail";
         }
 
     }
@@ -183,9 +183,9 @@ public class MemberController {
 
         try{
             memberService.modify(memberDTO);
-            return "redirect:/member/teacher?code=modify-success";
+            return "redirect:member/teacher?code=modify-success";
         }catch (Exception e){
-            return "redirect:/member/teacher?code=modify-fail";
+            return "redirect:member/teacher?code=modify-fail";
         }
 
     }
@@ -221,7 +221,7 @@ public class MemberController {
         PageResponseDTO<Student> pageResponseDTO = studentService.searchStudent(lessonIdx, pageRequestDTO);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
-        return "/member/student/index";
+        return "member/student/index";
     }
 
 
@@ -235,9 +235,9 @@ public class MemberController {
 
         try {
             studentService.insert(studentDTO);
-            return "redirect:/member/student?code=insert-success";
+            return "redirect:member/student?code=insert-success";
         }catch (Exception e){
-            return "redirect:/member/student?code=insert-fail";
+            return "redirect:member/student?code=insert-fail";
         }
 
     }
@@ -251,9 +251,9 @@ public class MemberController {
 
         try {
             studentService.modify(studentDTO);
-            return "redirect:/member/student?code=modify-success";
+            return "redirect:member/student?code=modify-success";
         }catch (Exception e){
-            return "redirect:/member/student?code=modify-fail";
+            return "redirect:member/student?code=modify-fail";
         }
 
     }
@@ -290,9 +290,9 @@ public class MemberController {
 
         try{
             studentService.delete(studentDTO);
-            return "redirect:/member/student?code=delete-success";
+            return "redirect:member/student?code=delete-success";
         }catch (Exception e){
-            return "redirect:/member/student?code=delete-fail";
+            return "redirect:member/student?code=delete-fail";
         }
 
     }

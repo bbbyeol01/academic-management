@@ -51,7 +51,7 @@ public class LessonController {
         List<QuestionName> questionName = questionNameService.findAll();
         model.addAttribute("questionName", questionName);
 
-        return "/lesson/index";
+        return "lesson/index";
     }
 
     //진행중인 수업 목록
@@ -66,7 +66,7 @@ public class LessonController {
         List<QuestionName> questionName = questionNameService.findAll();
         model.addAttribute("questionName", questionName);
 
-        return "/lesson/ongoing";
+        return "lesson/ongoing";
     }
 
     //완료된 수업 목록
@@ -81,7 +81,7 @@ public class LessonController {
         List<QuestionName> questionName = questionNameService.findAll();
         model.addAttribute("questionName", questionName);
 
-        return "/lesson/end";
+        return "lesson/end";
     }
 
     //수업상세
@@ -112,7 +112,7 @@ public class LessonController {
         //인덱스에 해당하는 수업
         model.addAttribute("lesson", trainingService.getLessonByIdx(idx));
 
-        return "/lesson/detail";
+        return "lesson/detail";
     }
 
     //학생 목록
@@ -123,7 +123,7 @@ public class LessonController {
         model.addAttribute("lesson", lesson);
         model.addAttribute("responseDTO", lessonService.searchStudent(pageRequestDTO, lesson.getIdx()));
 
-        return "/lesson/studentList";
+        return "lesson/studentList";
     }
 
     //학생 상세
@@ -134,7 +134,7 @@ public class LessonController {
         model.addAttribute("subjectTest", subjectTest);
 
         model.addAttribute("student", studentService.findById(idx));
-        return "/lesson/studentDetail";
+        return "lesson/studentDetail";
     }
 
 
@@ -158,6 +158,6 @@ public class LessonController {
         Long idx = lessonService.subjectTestUpdate(subjectTestList);
         log.info("컨트롤러 학생 인덱스 : " + idx);
 
-        return "redirect:/lesson/studentDetail?idx=" + idx;
+        return "redirect:lesson/studentDetail?idx=" + idx;
     }
 }

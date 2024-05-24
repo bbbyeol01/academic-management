@@ -104,9 +104,9 @@ public class QuestionController {
 
         try{
             questionService.insert(questionDTO);
-            return "redirect:/member/question?code=success";
+            return "redirect:member/question?code=success";
         }catch (Exception e){
-            return "redirect:/member/question?code=fail";
+            return "redirect:member/question?code=fail";
         }
 
     }
@@ -120,11 +120,11 @@ public class QuestionController {
             questionService.update(questionDTO);
         }catch (Exception e){
             log.error(e.getMessage());
-            return "redirect:/member/question?code=modify-fail";
+            return "redirect:member/question?code=modify-fail";
         }
 
 
-        return "redirect:/member/question?code=modify-success";
+        return "redirect:member/question?code=modify-success";
 
     }
 
@@ -192,10 +192,10 @@ public class QuestionController {
             questionNameService.save(name);
         }catch (Exception e){
             log.error(e.getMessage());
-            return "redirect:/member/question?code=fail";
+            return "redirect:member/question?code=fail";
         }
 
-        return "redirect:/member/question?code=success";
+        return "redirect:member/question?code=success";
     }
 
 

@@ -49,7 +49,7 @@ public class NoticeController {
 
         model.addAttribute("pageResponseDTO", all);
 
-        return "/member/notice/index";
+        return "member/notice/index";
     }
 
     @Operation(summary = "upload notice", description = "공지사항 작성")
@@ -92,7 +92,7 @@ public class NoticeController {
         }
 
         model.addAttribute("noticeDTO", noticeDTO);
-        return "/member/notice/read";
+        return "member/notice/read";
     }
 
     @PutMapping("/modify")
@@ -112,7 +112,7 @@ public class NoticeController {
 
         model.addAttribute("noticeDTO", byId);
 
-        return "/member/notice/modify";
+        return "member/notice/modify";
     }
 
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="/layout/basic :: head">
+<head th:replace="layout/basic :: head">
 </head>
 
 <body>
@@ -26,11 +26,11 @@
 </style>
 <!-- warpper start -->
 <div class="wrapper">
-    <div th:replace="/layout/basic :: sidebar"></div>
+    <div th:replace="layout/basic :: sidebar"></div>
 
   <!-- content start -->
   <div class="content">
-    <div th:replace="/layout/basic :: navbar"></div>
+    <div th:replace="layout/basic :: navbar"></div>
 
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
@@ -338,12 +338,12 @@
 
 
     </div> <!-- content end -->
-    <a th:replace="/layout/basic :: back-to-top"></a>
+    <a th:replace="layout/basic :: back-to-top"></a>
 </div>
 <!-- wrapper end-->
 
 
-<div th:replace="/layout/basic :: scriptSet">
+<div th:replace="layout/basic :: scriptSet">
 </div>
 
 </body>
