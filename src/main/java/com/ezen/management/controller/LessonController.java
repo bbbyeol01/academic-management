@@ -12,12 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +60,6 @@ public class LessonController {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String userId = ((UserDetails) principal).getUsername();
 
-
         PageResponseDTO<Lesson> responseDTO = lessonService.ongoingLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
@@ -85,7 +87,24 @@ public class LessonController {
     //수업상세
     //수업유형, 수업과정, 수업세부정보 -> 클릭으로 해당 수업의 학생들까지 ㄱㄱ
     @GetMapping(value = "/detail")
-    public String lessonDetail(Model model, @RequestParam("idx") Long idx){
+    public String lessonDetail(Model model, @RequestParam("idx") Long idx) throws AccessDeniedException {
+
+        Lesson lesson = lessonService.findById(idx);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = (UserDetails)principal;
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+
+        if(!userDetails.getUsername().equals(lesson.getMember().getId())){
+            authorities.forEach(auth ->{
+                log.info("출력? : " +  auth);
+                log.info("같냐? : {}", auth.toString().equals("ROLE_MASTER"));
+                if(!auth.toString().equals("ROLE_MASTER")){
+                    if(!auth.toString().equals("ROLE_ADMIN")){
+                        throw new AccessDeniedException("접근 권한이 없습니다.");
+                    }
+                }
+            });
+        }
 
         //보유과목
         model.addAttribute("subjectHold", subjectHoldRepository.getSubjectHoldByLesson_idx(idx));
@@ -102,9 +121,7 @@ public class LessonController {
 
         Lesson lesson = trainingService.getLessonByIdx(idx);
         model.addAttribute("lesson", lesson);
-        model.addAttribute("responseDTO", studentService.searchStudent(idx, pageRequestDTO));
-
-        log.info("아아아아아" + pageRequestDTO.getPage());
+        model.addAttribute("responseDTO", lessonService.searchStudent(pageRequestDTO, lesson.getIdx()));
 
         return "/lesson/studentList";
     }

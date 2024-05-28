@@ -12,7 +12,6 @@ async function categoryUpdate(updateCategory){
 
 //유형 삭제
 async function categoryDelete(idx){
-    console.log("악시오스 되나")
     await axios.delete(`/training/category/${idx.idx}`)
 }
 
@@ -58,3 +57,25 @@ async function curriculumDelete(idx){
 async function lessonDelete(idx){
     await axios.delete(`/training/lesson/${idx}`)
 }
+
+//---------------------------------------------------캘린더----------------------------------------------------
+
+//해당 날짜에 시작하는 수업이나 종료하는 수업 있는지 확인
+async function findLessonDate(today){
+    const result = await axios.post(`/findLessonDate`, today)
+    return result.data
+}
+
+async function calendarStartDay(today){
+    const result = await axios.post(`/calendarStartDay/${today}`, today)
+    console.log("개강일 js : " + result.data)
+    return result.data
+}
+
+async function calendarEndDay(today){
+    const result = await axios.post(`/calendarEndDay/${today}`, today)
+    console.log("종강일 js : ")
+    console.log( result.data)
+    return result.data
+}
+

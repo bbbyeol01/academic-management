@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head th:fragment="head">
     <meta charset="utf-8">
-    <title>Ezen</title>
+    <title>MBC 아카데미</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -23,20 +23,21 @@
 
     <!-- Libraries Stylesheet -->
     <link href="/js/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="/js/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="/js/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="/css/style.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet"/>
 
 </head>
 
 <body>
 <div class="container-xxl position-relative bg-white d-flex p-0" id="wrapper">
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -48,27 +49,30 @@
     <div class="sidebar pe-4 pb-3" th:fragment="sidebar" th:with="user=${#authentication.principal}">
         <nav class="navbar bg-light navbar-light">
             <a href="/" class="navbar-brand mx-4 mb-3">
-                <h3 class="text-primary">이젠아카데미</h3>
+                <h3 class="text-primary"><img src="/images/MBC-academy.png" style="width: 150px"></h3>
             </a>
             <div class="d-flex align-items-center ms-4 mb-4">
                 <div class="position-relative">
-                    <img class="rounded-circle profile" src="/images/user.jpg" alt="" style="width: 40px; height: 40px; object-fit: cover">
+                    <img class="rounded-circle profile" src="/images/default_profile.jpg" alt=""
+                         style="width: 40px; height: 40px; object-fit: cover">
                     <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
                 </div>
                 <div class="ms-3">
                     <h6 class="mb-0 name">[[${user.name}]]</h6>
-<!--                    <span class="access">권한</span>-->
+                    <!--                    <span class="access">권한</span>-->
                     <span sec:authorize="hasRole('ROLE_MASTER')">MASTER</span>
                     <span sec:authorize="hasRole('ROLE_ADMIN')">ADMIN</span>
                     <span sec:authorize="hasRole('ROLE_TEACHER')">TEACHER</span>
                 </div>
             </div>
-            <div class="navbar-nav w-100">
-<!--                classList.add("active")-->
-                <a href="/member" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Home</a>
+            <div class="navbar-nav w-100" style="display: flex; flex-direction: column;">
+                <!--                classList.add("active")-->
+                <a href="/member" class="nav-item nav-link"><i class="bi bi-house-door-fill me-2"></i>Home</a>
+                <a href="/member/notice" class="nav-item nav-link"><i class="fa fa-table me-2"></i>공지사항</a>
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle memberManagement" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>인사 관리</a>
+                    <a href="#" class="nav-link dropdown-toggle memberManagement" data-bs-toggle="dropdown"><i
+                            class="me-2 bi bi-person-fill"></i>인사 관리</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="/member/admin" class="dropdown-item adminManagement">행정 관리</a>
                         <a href="/member/teacher" class="dropdown-item teacherManagement">교사 관리</a>
@@ -77,7 +81,8 @@
                 </div>
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>훈련 관리</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-laptop me-2"></i>훈련 관리</a>
                     <div class="dropdown-menu bg-transparent border-0">
 
                         <a href="/training/category" class="dropdown-item">유형</a>
@@ -90,40 +95,39 @@
                 </div>
 
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>평가 관리</a>
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="bi-pencil-fill me-2"></i>평가 관리</a>
                     <div class="dropdown-menu bg-transparent border-0">
 
-<!--                        <a href="/counseling/list" class="dropdown-item">상담 관리</a>-->
-<!--                        <a href="#" class="dropdown-item">과목 평가</a>-->
+                        <!--                        <a href="/counseling/list" class="dropdown-item">상담 관리</a>-->
+                        <!--                        <a href="#" class="dropdown-item">과목 평가</a>-->
                         <a href="/member/question" class="dropdown-item">사전 평가(문제 수정)</a>
                         <a href="/member/survey/read?round=1" class="dropdown-item">설문 조사(문제 수정)</a>
-<!--                        <a href="/member/lesson/question" class="dropdown-item">사전 평가</a>-->
+                        <!--                        <a href="/member/lesson/question" class="dropdown-item">사전 평가</a>-->
 
                     </div>
                 </div>
 
+                <a href="/lesson/ongoing" class="nav-item nav-link"><i class="bi bi-book-half me-2"></i>수업</a>
 
-                <a href="/lesson" class="nav-item nav-link"><i class="fa fa-th me-2"></i>수업</a>
-
-<!--                <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>-->
-<!--                <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>-->
-<!--                <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>-->
-
-<!--                <div class="nav-item dropdown">-->
-<!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>-->
-<!--                    <div class="dropdown-menu bg-transparent border-0">-->
-<!--                        <a href="signin.html" class="dropdown-item">Sign In</a>-->
-<!--                        <a href="signup.html" class="dropdown-item">Sign Up</a>-->
-<!--                        <a href="404.html" class="dropdown-item">404 Error</a>-->
-<!--                        <a href="blank.html" class="dropdown-item">Blank Page</a>-->
-<!--                    </div>-->
-<!--                </div>-->
+                <a style="position: fixed; bottom: 0; width: 230px" href="/logout" class="nav-item nav-link"><i class="me-2 bi bi-door-open-fill"></i>로그아웃</a>
 
 
+                <!--                <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>-->
+                <!--                <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>-->
+                <!--                <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>-->
 
-
-
+                <!--                <div class="nav-item dropdown">-->
+                <!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>-->
+                <!--                    <div class="dropdown-menu bg-transparent border-0">-->
+                <!--                        <a href="signin.html" class="dropdown-item">Sign In</a>-->
+                <!--                        <a href="signup.html" class="dropdown-item">Sign Up</a>-->
+                <!--                        <a href="404.html" class="dropdown-item">404 Error</a>-->
+                <!--                        <a href="blank.html" class="dropdown-item">Blank Page</a>-->
+                <!--                    </div>-->
             </div>
+
+
         </nav>
     </div>
     <!-- Sidebar End -->
@@ -132,102 +136,95 @@
     <!-- Content Start -->
     <div class="content" style="height: 100%">
         <!-- Navbar Start -->
-        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0" style="width: 100%;" th:fragment="navbar">
-            <a href="/member" class="navbar-brand d-flex d-lg-none me-4">
-                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-            </a>
-            <a href="#" class="sidebar-toggler flex-shrink-0">
-                <i class="fa fa-bars"></i>
-            </a>
-            <form class="d-none d-md-flex ms-4">
-                <input class="form-control border-0" type="search" placeholder="검색">
-            </form>
-            <div class="navbar-nav align-items-center ms-auto">
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-envelope me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">메시지</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle profile" src="/images/user.jpg" alt="" style="width: 40px; height: 40px; object-fit: cover">
-                                <div class="ms-2">
-                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                            </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle profile" src="/images/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                <div class="ms-2">
-                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                            </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle profile" src="/images/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                <div class="ms-2">
-                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                            </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all message</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-bell me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">알림</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">Profile updated</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">New user added</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">Password changed</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all notifications</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-2 profile" src="/images/user.jpg" alt="" style="width: 40px; height: 40px;">
-                        <span class="d-none d-lg-inline-flex name"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">프로필</a>
-                        <a href="#" class="dropdown-item">설정</a>
-                        <a href="/logout" class="dropdown-item">로그아웃</a>
-                    </div>
-                </div>
-            </div>
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0" style="width: 100%;"
+             th:fragment="navbar">
+            <!--            <a href="/member" class="navbar-brand d-flex d-lg-none me-4">-->
+            <!--                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>-->
+            <!--            </a>-->
+            <!--            <a href="#" class="sidebar-toggler flex-shrink-0">-->
+            <!--                <i class="fa fa-bars"></i>-->
+            <!--            </a>-->
+            <!--            <form class="d-none d-md-flex ms-4">-->
+            <!--                <input class="form-control border-0" type="search" placeholder="검색">-->
+            <!--            </form>-->
+            <!--            <div class="navbar-nav align-items-center ms-auto">-->
+            <!--                <div class="nav-item dropdown">-->
+            <!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+            <!--                        <i class="fa fa-envelope me-lg-2"></i>-->
+            <!--                        <span class="d-none d-lg-inline-flex">메시지</span>-->
+            <!--                    </a>-->
+            <!--                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">-->
+            <!--                        <a href="#" class="dropdown-item">-->
+            <!--                            <div class="d-flex align-items-center">-->
+            <!--                                <img class="rounded-circle profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px; object-fit: cover">-->
+            <!--                                <div class="ms-2">-->
+            <!--                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>-->
+            <!--                                    <small>15 minutes ago</small>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </a>-->
+            <!--                        <hr class="dropdown-divider">-->
+            <!--                        <a href="#" class="dropdown-item">-->
+            <!--                            <div class="d-flex align-items-center">-->
+            <!--                                <img class="rounded-circle profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px;">-->
+            <!--                                <div class="ms-2">-->
+            <!--                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>-->
+            <!--                                    <small>15 minutes ago</small>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </a>-->
+            <!--                        <hr class="dropdown-divider">-->
+            <!--                        <a href="#" class="dropdown-item">-->
+            <!--                            <div class="d-flex align-items-center">-->
+            <!--                                <img class="rounded-circle profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px;">-->
+            <!--                                <div class="ms-2">-->
+            <!--                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>-->
+            <!--                                    <small>15 minutes ago</small>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </a>-->
+            <!--                        <hr class="dropdown-divider">-->
+            <!--                        <a href="#" class="dropdown-item text-center">See all message</a>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="nav-item dropdown">-->
+            <!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+            <!--                        <i class="fa fa-bell me-lg-2"></i>-->
+            <!--                        <span class="d-none d-lg-inline-flex">알림</span>-->
+            <!--                    </a>-->
+            <!--                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">-->
+            <!--                        <a href="#" class="dropdown-item">-->
+            <!--                            <h6 class="fw-normal mb-0">Profile updated</h6>-->
+            <!--                            <small>15 minutes ago</small>-->
+            <!--                        </a>-->
+            <!--                        <hr class="dropdown-divider">-->
+            <!--                        <a href="#" class="dropdown-item">-->
+            <!--                            <h6 class="fw-normal mb-0">New user added</h6>-->
+            <!--                            <small>15 minutes ago</small>-->
+            <!--                        </a>-->
+            <!--                        <hr class="dropdown-divider">-->
+            <!--                        <a href="#" class="dropdown-item">-->
+            <!--                            <h6 class="fw-normal mb-0">Password changed</h6>-->
+            <!--                            <small>15 minutes ago</small>-->
+            <!--                        </a>-->
+            <!--                        <hr class="dropdown-divider">-->
+            <!--                        <a href="#" class="dropdown-item text-center">See all notifications</a>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--                <div class="nav-item dropdown">-->
+            <!--                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+            <!--                        <img class="rounded-circle me-lg-2 profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px;">-->
+            <!--                        <span class="d-none d-lg-inline-flex name"></span>-->
+            <!--                    </a>-->
+            <!--                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">-->
+            <!--                        <a href="#" class="dropdown-item">프로필</a>-->
+            <!--                        <a href="#" class="dropdown-item">설정</a>-->
+            <!--                        <a href="/logout" class="dropdown-item" ><div style="background-color: whitesmoke; color: red; width: 40px; height: 40px;">로그아웃</div></a>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </nav>
         <!-- Navbar End -->
-
-
-
-
-
-
-
-
 
 
         <!-- Footer Start -->
@@ -241,7 +238,8 @@
                         <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
                         Designed By <a href="https://htmlcodex.com">HTML Codex</a>
                         </br>
-                        Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                        Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                          target="_blank">ThemeWagon</a>
                     </div>
                 </div>
             </div>
@@ -252,59 +250,53 @@
     <!-- Content End -->
 
 
-
-
-
-
     <!-- Back to Top -->
-    <a th:fragment="back-to-top" href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a th:fragment="back-to-top" href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i
+            class="bi bi-arrow-up"></i></a>
 </div>
 
 
-
-
-
 <div th:fragment="scriptSet">
-<!-- JavaScript Libraries -->
+    <!-- JavaScript Libraries -->
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="/js/lib/chart/chart.min.js"></script>
-<script src="/js/lib/easing/easing.min.js"></script>
-<script src="/js/lib/waypoints/waypoints.min.js"></script>
-<script src="/js/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="/js/lib/tempusdominus/js/moment.min.js"></script>
-<script src="/js/lib/tempusdominus/js/moment-timezone.min.js"></script>
-<script src="/js/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-
-<!-- Template Javascript -->
-<script src="/js/main.js"></script>
-
-<script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/lib/chart/chart.min.js"></script>
+    <script src="/js/lib/easing/easing.min.js"></script>
+    <script src="/js/lib/waypoints/waypoints.min.js"></script>
+    <script src="/js/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="/js/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="/js/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="/js/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
 
-    console.log("hello!");
-    // nav 프로필 사진 변경
-    const fileName = '[[${#authentication.principal.fileName}]]';
-    const uuid = '[[${#authentication.principal.uuid}]]';
+    <!-- Template Javascript -->
+    <script src="/js/main.js"></script>
 
-    const profile = document.querySelectorAll(".profile");
+    <script>
 
-    console.log(fileName);
-    console.log(uuid);
 
-    profile.forEach(function (profile) {
-        if(uuid !== null || uuid === ''){
-            profile.src = `/view/${uuid + '_' + fileName}`;
-        }
+        //    console.log("hello!");
+        //    // nav 프로필 사진 변경
+        //    const fileName = '[[${#authentication.principal.fileName}]]';
+        //    const uuid = '[[${#authentication.principal.uuid}]]';
+        //
+        //    const profile = document.querySelectorAll(".profile");
+        //
+        //    console.log(fileName);
+        //    console.log(uuid);
+        //
+        //    profile.forEach(function (profile) {
+        //        if(uuid !== null || uuid === ''){
+        //            profile.src = `/view/${uuid + '_' + fileName}`;
+        //        }
+        //
+        //        profile.src = `/images/default_profile.jpg`;
+        //
+        //    })
 
-        profile.src = `/images/default_profile.jpg`;
-
-    })
-
-</script>
+    </script>
 </div>
 
 

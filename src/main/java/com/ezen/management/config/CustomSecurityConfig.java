@@ -44,7 +44,7 @@ public class CustomSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
 //                                권한이 있어야 접근할 수 있는 페이지
-                                    request.requestMatchers("/member/**", "/lesson/**")
+                                    request.requestMatchers("/member/**", "/lesson/**", "/counseling/**")
                                         .hasAnyRole("MASTER", "ADMIN", "TEACHER")
                                         .anyRequest()
                                         .permitAll())
