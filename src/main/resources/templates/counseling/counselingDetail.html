@@ -2,17 +2,17 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns="http://www.w3.org/1999/html">
-<head th:replace="/layout/basic :: head"></head>
+<head th:replace="layout/basic :: head"></head>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
-    <div th:replace="/layout/basic :: sidebar">
+    <div th:replace="layout/basic :: sidebar">
     </div>
 
 
 <!-- content start -->
     <div class="content">
-        <div th:replace="/layout/basic :: navbar"></div>
+        <div th:replace="layout/basic :: navbar"></div>
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 <!-- button -->
             <div class="row float-end">
@@ -32,10 +32,10 @@
                 <tbody class="col">
                 <tr class="col" style="display: flex; flex-direction: column; min-height: 100%;">
                     <td style="display: inline-flex; vertical-align: top; padding-bottom: 50px;" >
-                        <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
+                        <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + student.extension}" alt=""
                              style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
                         <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
-                             style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
+                        style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
             <!-- 사진은 좌측 / 정보는 우측 = 공간나눔 -->
                         <table class="fs-6" style="margin-left: 20px; font-weight: bold; color: black;">
                             <tr>
@@ -139,44 +139,31 @@
 
 
 
-
-
-
-
-
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-    <a th:replace="/layout/basic :: back-to-top"></a>
+    <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
 
 
-<div th:replace="/layout/basic :: scriptSet">
+<div th:replace="layout/basic :: scriptSet">
 </div>
 
 <script content="script" th:inline="javascript">
 
-    console.log("안녕 여기 상담 상세");
-
-
     //학생정보확인
     const studentIdx = [[${student.idx}]]
-    console.log("studentIdx= " + studentIdx);
 
     //상담회차 정보 확인
-    let round = document.getElementById("round").innerText;
-    console.log("round = " + round);
-
+    // let round = document.getElementById("round").innerText;
+    let round = [[${student.counseling}]];
 
     //상담 추가하기
     document.querySelector(".creatBtn").addEventListener("click", function (e){
         e.preventDefault()
         e.stopPropagation()
 
-        if (round === "6") {
+        if (round === 6) {
             // 버튼 비활성화
             document.querySelector(".creatBtn").disabled = true;
             // 사용자에게 메시지 표시
@@ -196,7 +183,6 @@
         e.stopPropagation()
 
         const lessonIdx = [[${student.lesson.idx}]]
-        console.log("lessonIdx= " + lessonIdx);
 
         location.href = '/lesson/studentList?idx=' + lessonIdx;
 

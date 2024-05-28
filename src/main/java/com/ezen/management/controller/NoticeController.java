@@ -45,19 +45,15 @@ public class NoticeController {
 
         PageResponseDTO<NoticeDTO> all = noticeService.findAll(pageRequestDTO, category);
 
-        log.info("noticeDtoList : {}", all.getDtoList());
-
         model.addAttribute("pageResponseDTO", all);
 
-        return "/member/notice/index";
+        return "member/notice/index";
     }
 
     @Operation(summary = "upload notice", description = "공지사항 작성")
     @PostMapping("/write")
     @ResponseBody
     public Integer writePost(NoticeDTO noticeDTO){
-
-        log.info("noticeDTO : {} ", noticeDTO);
 
         return noticeService.insert(noticeDTO);
 
@@ -92,7 +88,7 @@ public class NoticeController {
         }
 
         model.addAttribute("noticeDTO", noticeDTO);
-        return "/member/notice/read";
+        return "member/notice/read";
     }
 
     @PutMapping("/modify")
@@ -112,7 +108,7 @@ public class NoticeController {
 
         model.addAttribute("noticeDTO", byId);
 
-        return "/member/notice/modify";
+        return "member/notice/modify";
     }
 
 

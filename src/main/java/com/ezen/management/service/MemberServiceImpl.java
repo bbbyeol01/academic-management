@@ -47,8 +47,8 @@ public class MemberServiceImpl implements MemberService {
                 .name(memberDTO.getName())
                 .build();
 
-        if(!memberDTO.getFileName().isEmpty()){
-            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
+        if(memberDTO.getUuid() != null){
+            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
         member.addRole(MemberRole.ADMIN);
@@ -66,8 +66,8 @@ public class MemberServiceImpl implements MemberService {
                 .name(memberDTO.getName())
                 .build();
 
-        if(memberDTO.getFileName() != null){
-            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
+        if(memberDTO.getUuid() != null){
+            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
         member.addRole(MemberRole.TEACHER);
@@ -87,7 +87,6 @@ public class MemberServiceImpl implements MemberService {
 
         List<Member> dtoList = all.getContent();
 
-        log.info("memberServiceImpl dtoList " + dtoList);
         dtoList.forEach(member -> {
             log.info("member roleSet" + member.getRoleSet());
         });
@@ -107,9 +106,6 @@ public class MemberServiceImpl implements MemberService {
         String[] types = pageRequestDTO.getTypes(); // split("_")
         String keyword = pageRequestDTO.getKeyword();
 
-        log.info("types: " + Arrays.toString(types));
-        log.info("keyword: " + keyword);
-
 //        검색 카테고리, 키워드, 특정 권한을 가진 멤버 regDate 내림차순으로 페이징 처리해서 가져옴
         Page<Member> memberPage = memberRepository.searchMember(types, keyword, pageable, memberRoleSet);
 
@@ -127,7 +123,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void delete(String id) throws Exception {
-        log.info("id......" + id);
 
         Optional<Member> result = memberRepository.findById(id);
         Member member = result.orElseThrow();
@@ -139,7 +134,7 @@ public class MemberServiceImpl implements MemberService {
 
 //             파일 삭제
             if(member.getUuid() != null){
-                Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + '_' + member.getFileName());
+                Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + member.getExtension());
 
                 try{
                     resource.getFile().delete();
@@ -170,7 +165,7 @@ public class MemberServiceImpl implements MemberService {
 
 //        수정 시 주의 : 기존(member)에 사진이 있고, DTO에 사진이 있다면 기존 사진을 서버에서 삭제
         if(member.getUuid() != null && memberDTO.getUuid() != null){
-            Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + '_' + member.getFileName());
+            Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + member.getExtension());
 
             try{
                 resource.getFile().delete();
@@ -182,10 +177,9 @@ public class MemberServiceImpl implements MemberService {
 
 
         if(memberDTO.getUuid() != null){
-            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
+            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
-        log.info("member......" + member);
         memberRepository.save(member);
 
     }

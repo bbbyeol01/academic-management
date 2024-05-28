@@ -42,7 +42,7 @@ public class SurveyController {
         model.addAttribute("round", round);
 
         // 뷰 페이지로 이동합니다.
-        return "/member/survey/read";
+        return "member/survey/read";
     }
 
     /**
@@ -57,7 +57,7 @@ public class SurveyController {
         // 조회된 Survey 목록을 모델에 추가
         model.addAttribute("surveys", surveyList);
 
-        return "/member/survey/modify";
+        return "member/survey/modify";
     }
 
     /**
@@ -90,7 +90,7 @@ public class SurveyController {
         model.addAttribute("student", student);
         model.addAttribute("round", round);
 
-        return "/student/survey";
+        return "student/survey";
     }
 
     /**
@@ -130,7 +130,7 @@ public class SurveyController {
         model.addAttribute("surveyResultDTOList", surveyResultDTOList);
         model.addAttribute("surveyAnswerDTOList", surveyAnswerDTOList);
 
-        return "/member/lesson/survey/result";
+        return "member/lesson/survey/result";
     }
 
 }

@@ -73,20 +73,19 @@ public class QuestionServiceImpl implements QuestionService{
         byId.changeContent(questionDTO.getContent());
         byId.changeExample(questionDTO.getExample());
         byId.changeAnswer(questionDTO.getAnswer());
-//        파일 고치는 로직은 따로?
         byId.changeItem(questionDTO.getItem1(), questionDTO.getItem2(), questionDTO.getItem3(), questionDTO.getItem4());
 
-        if(questionDTO.getFileName() != null){
+        if(questionDTO.getUuid() != null){
 
             try{
-                Resource resource = new FileSystemResource(uploadPath + File.separator + byId.getUuid() + '_' + byId.getFileName());
+                Resource resource = new FileSystemResource(uploadPath + File.separator + byId.getUuid() + byId.getExtension());
                 resource.getFile().delete();
             }catch (IOException e){
                 log.error(e.getMessage());
                 throw new IOException("파일이 삭제되지 않았습니다.");
             }
 
-            byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName());
+            byId.changeFileName(questionDTO.getUuid(), questionDTO.getFileName(), questionDTO.getExtension());
         }
 
         Question save = questionRepository.save(byId);
@@ -138,6 +137,7 @@ public class QuestionServiceImpl implements QuestionService{
                     .answer(questionDTO.getAnswer())
                     .uuid(questionDTO.getUuid())
                     .fileName(questionDTO.getFileName())
+                    .extension(questionDTO.getExtension())
                     .example(questionDTO.getExample())
                     .build();
 

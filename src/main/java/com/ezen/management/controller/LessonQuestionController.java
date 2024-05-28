@@ -53,7 +53,7 @@ public class LessonQuestionController {
 //        log.info("lessonList : {}", lessonList);
 //
 //
-//        return "/member/lesson/question";
+//        return "member/lesson/question";
 //
 //    }
 
@@ -78,7 +78,7 @@ public class LessonQuestionController {
         log.info("lessonList : {}", lessonList);
 
 
-        return "/member/lesson/question";
+        return "member/lesson/question";
 
     }
 

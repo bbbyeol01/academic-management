@@ -2,15 +2,15 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="/layout/basic :: head"></head>
+<head th:replace="layout/basic :: head"></head>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
-    <div th:replace="/layout/basic :: sidebar">
+    <div th:replace="layout/basic :: sidebar">
     </div>
 <!-- content start -->
     <div class="content">
-        <div th:replace="/layout/basic :: navbar"></div>
+        <div th:replace="layout/basic :: navbar"></div>
 
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
             <div class="row mt-3">
@@ -81,22 +81,17 @@
 
 
 
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-    <a th:replace="/layout/basic :: back-to-top"></a>
+    <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
 
 
-<div th:replace="/layout/basic :: scriptSet">
+<div th:replace="layout/basic :: scriptSet">
 </div>
 
 <script content="script" th:inline="javascript">
-
-    console.log("안녕 여기 상담추가");
 
 
     //시간 설정하기
@@ -105,11 +100,10 @@
 
     // 혹은 특정 포맷으로 날짜를 가져올 수 있습니다.
     const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
-    console.log(formattedDate); // 예: "2024-04-09 13:45:30"
+    // 예: "2024-04-09 13:45:30"
 
     // 가져온 오늘 날짜를 input 요소의 값으로 설정합니다.
     counselingDateInput.value = formattedDate;
-    console.log("counselingDateInput=" + counselingDateInput.value);
 
 
 
@@ -155,7 +149,6 @@
         e.stopPropagation()
 
         const studentIdx = [[${student.idx}]]
-        console.log("studentIdx= " + studentIdx);
 
         self.location ='/counseling/counselingDetail?idx=' + studentIdx;
 

@@ -2,17 +2,17 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="/layout/basic :: head"></head>
+<head th:replace="layout/basic :: head"></head>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
-  <div th:replace="/layout/basic :: sidebar">
+  <div th:replace="layout/basic :: sidebar">
 
   </div>
 
   <!-- content start -->
   <div class="content">
-    <div th:replace="/layout/basic :: navbar"></div>
+    <div th:replace="layout/basic :: navbar"></div>
 
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
@@ -121,16 +121,13 @@
   <!-- content end -->
 
 
-  <!-- 진짜 개 천천히 top으로 올라가네요-->
-  <!--    좀 빠르게 고침 -->
-  <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-  <a th:replace="/layout/basic :: back-to-top"></a>
+  <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
 
-<div th:replace="/layout/basic :: scriptSet"></div>
+<div th:replace="layout/basic :: scriptSet"></div>
 
 <script>
 
@@ -167,7 +164,7 @@
     formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
 
     // 검색 목록이면
-    if(keyword.value !== ''){
+    if(keyword.value !== '' && num === 1){
       formObj.innerHTML += `<input type="hidden" name="type" value="${type.value}">`
       formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
     }

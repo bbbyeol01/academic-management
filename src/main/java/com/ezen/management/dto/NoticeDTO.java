@@ -23,4 +23,7 @@ public class NoticeDTO {
     private String writerName;
     private boolean admin;
     private boolean hold;
+    private String fileName;
+    private String uuid;
+    private String extension;
 }
