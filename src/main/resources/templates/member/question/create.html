@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/layout/basic :: head">
+<head th:replace="layout/basic :: head">
 
 
   <style>
@@ -28,13 +28,13 @@
 <body>
 <!-- warpper start -->
 <div class="wrapper">
-  <div th:replace="/layout/basic :: sidebar">
+  <div th:replace="layout/basic :: sidebar">
 
   </div>
 
   <!-- content start -->
   <div class="content">
-    <div th:replace="/layout/basic :: navbar"></div>
+    <div th:replace="layout/basic :: navbar"></div>
 
 
 
@@ -143,13 +143,12 @@
   <!-- content end -->
 
 
-  <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-  <a th:replace="/layout/basic :: back-to-top"></a>
+  <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
-<div th:replace="/layout/basic :: scriptSet">
+<div th:replace="layout/basic :: scriptSet">
 </div>
 
 <script>
@@ -234,8 +233,6 @@
       contentList = Array.from(document.querySelectorAll(".questionContent"));
       statusContentList = Array.from(document.querySelectorAll(".statusContent"));
       questionStatusList = Array.from(document.querySelectorAll(".questionStatus"));
-      console.log(contentList);
-      console.log(statusContentList);
       connectionContent();
 
 
@@ -269,11 +266,8 @@
       questionStatusList = Array.from(document.querySelectorAll(".questionStatus"));
 
 
-      console.log(questionDivs);
       questionDivs[questionDivs.length - 1].remove();
       questionStatusList[questionStatusList.length - 1].remove();
-
-      console.log('done');
 
       count--;
 
@@ -287,11 +281,6 @@
   let contentList = Array.from(document.querySelectorAll(".questionContent"));
   let statusContentList = Array.from(document.querySelectorAll(".statusContent"));
   let questionStatusList = Array.from(document.querySelectorAll(".questionStatus"));
-
-  console.log(contentList);
-  console.log(contentList[0]);
-  console.log(statusContentList);
-  console.log(statusContentList[0]);
 
 
   /* 입력 문제와 상태 바 연동 */

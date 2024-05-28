@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/layout/basic :: head">
+<head th:replace="layout/basic :: head">
 </head>
 <style type="text/css">
     a {
@@ -45,13 +45,13 @@
 <body>
 <!-- warpper start -->
 <div class="wrapper">
-    <div th:replace="/layout/basic :: sidebar">
+    <div th:replace="layout/basic :: sidebar">
 
     </div>
 
     <!-- content start -->
     <div class="content">
-        <div th:replace="/layout/basic :: navbar"></div>
+        <div th:replace="layout/basic :: navbar"></div>
 
             <div class="inner-content" style="margin: 4vw 0 0 6vh; max-width: 80%; display: flex" >
                 <br>
@@ -155,16 +155,13 @@
 <!-- content end -->
 
 
-<!-- 진짜 개 천천히 top으로 올라가네요-->
-<!--    좀 빠르게 고침 -->
-<!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-<a th:replace="/layout/basic :: back-to-top"></a>
+<a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
 
-<div th:replace="/layout/basic :: scriptSet">
+<div th:replace="layout/basic :: scriptSet">
 </div>
 <script src="/js/training.js"></script>
 <script type="text/javascript">
@@ -263,7 +260,6 @@
                 //여기에서 training.js 에 findLessonDate 불러서 if true면 체크 false 면 그냥 날짜 출력
                 findLessonDate(today).then(result => {
                     if (result == true) {
-                        console.log(today + " : " + result);
                         column.innerHTML = `${autoLeftPad(day, 2)}<br>🔵`;
                     } else {
                         column.innerHTML = autoLeftPad(day, 2);
@@ -403,13 +399,11 @@
         let today = calYear + "-" + calMonth + "-" + autoLeftPad(selectedDate, 2);
 
         calendarStartDay(today).then(result => {
-            console.log(result[0].curriculum.name);
             result.forEach(lesson => {
                 startDay.innerHTML += `<a href="/lesson/detail?idx=` + lesson.idx + `"> &nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기</a><br><br>`;
             })
         })
         calendarEndDay(today).then(result => {
-            console.log("종강일 : " + result);
             result.forEach(lesson => {
                 endDay.innerHTML += `<a href="/lesson/detail?idx=` + lesson.idx + `"> &nbsp;&nbsp;&nbsp;` + lesson.curriculum.name + lesson.number + `기</a><br><br>`;
             })

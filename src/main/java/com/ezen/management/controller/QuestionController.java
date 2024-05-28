@@ -56,11 +56,6 @@ public class QuestionController {
 
         PageResponseDTO<Question> questions = questionService.searchQuestion(pageRequestDTO);
 
-//        questions.getDtoList().forEach(question -> {
-//            log.info(question.getContent());
-//        });
-
-
         model.addAttribute("pageResponseDTO", questions);
 
         return "member/question/index";
@@ -73,12 +68,7 @@ public class QuestionController {
     @ResponseBody
     public List<Question> questionList(String name){
 
-        log.info("parameter name : {}", name);
         List<Question> questionByName = questionService.findQuestionByName(name);
-//
-//        questionByName.forEach(question -> {
-//            log.info(question.getContent());
-//        });
 
         return questionByName;
     }
@@ -87,9 +77,6 @@ public class QuestionController {
     @GetMapping("/getQuestion")
     @ResponseBody
     public Question getQuestion(Long questionIdx){
-
-        log.info("questionIdx : {}", questionIdx);
-        log.info("question : {}", questionService.findById(questionIdx));
 
         return questionService.findById(questionIdx);
     }
@@ -214,10 +201,16 @@ public class QuestionController {
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();
 
+
+        int index = originalName.lastIndexOf(".");
+        String extension = originalName.substring(index);
+        originalName = originalName.substring(0, index);
+
         questionDTO.setUuid(uuid);
         questionDTO.setFileName(originalName);
+        questionDTO.setExtension(extension);
 
-        Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+        Path savePath = Paths.get(uploadPath, uuid + extension);
 
         try {
 //           이미지 저장

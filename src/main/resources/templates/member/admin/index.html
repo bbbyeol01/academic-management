@@ -2,17 +2,17 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="/layout/basic :: head"></head>
+<head th:replace="layout/basic :: head"></head>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
-  <div th:replace="/layout/basic :: sidebar">
+  <div th:replace="layout/basic :: sidebar">
 
   </div>
 
   <!-- content start -->
   <div class="content">
-    <div th:replace="/layout/basic :: navbar"></div>
+    <div th:replace="layout/basic :: navbar"></div>
 
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%;">
 
@@ -57,7 +57,7 @@
       <div th:each="member : ${pageResponseDTO.getDtoList()}" th:with="admin=${admin}">
 
             <hr>
-            <img th:if="${member.uuid != null}" class="rounded-circle" th:src="${'/view/' + member.uuid + '_' +  member.fileName}" alt="" style="width: 40px; height: 40px;">
+            <img th:if="${member.uuid != null}" class="rounded-circle" th:src="${'/view/' + member.uuid + member.extension}" alt="" style="width: 40px; height: 40px;">
             <img th:if="${member.uuid == null}" class="rounded-circle" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px;">
         &nbsp;&nbsp;
             <div style="display: inline-flex" th:text="${member.name}"></div>&nbsp;&nbsp; | &nbsp;&nbsp;
@@ -235,16 +235,13 @@
   <!-- content end -->
 
 
-  <!-- 진짜 개 천천히 top으로 올라가네요-->
-  <!--    좀 빠르게 고침 -->
-  <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-  <a th:replace="/layout/basic :: back-to-top"></a>
+  <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
 
-<div th:replace="/layout/basic :: scriptSet">
+<div th:replace="layout/basic :: scriptSet">
 </div>
 <script src="/js/member/admin.js"></script>
 

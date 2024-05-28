@@ -26,6 +26,7 @@ public class StudentDTO {
     private String phone;
     private String uuid;
     private String fileName;
+    private String extension;
     private int counseling;
     private boolean pretest;
     private int score;

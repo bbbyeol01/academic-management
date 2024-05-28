@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="/layout/basic :: head">
+<head th:replace="layout/basic :: head">
 </head>
 
 <body>
@@ -26,11 +26,11 @@
 </style>
 <!-- warpper start -->
 <div class="wrapper">
-    <div th:replace="/layout/basic :: sidebar"></div>
+    <div th:replace="layout/basic :: sidebar"></div>
 
   <!-- content start -->
   <div class="content">
-    <div th:replace="/layout/basic :: navbar"></div>
+    <div th:replace="layout/basic :: navbar"></div>
 
     <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
@@ -46,7 +46,7 @@
                 <input type="hidden" class="studentIdx" th:value="${student.idx}">
                 <input type="hidden" class="lessonIdx" th:value="${student.lesson.idx}">
                 <div style="display: inline-flex">
-                    <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
+                    <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + student.extension}" alt=""
                          style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
                     <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
                          style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
@@ -338,12 +338,13 @@
 
 
     </div> <!-- content end -->
-    <a th:replace="/layout/basic :: back-to-top"></a>
+
+    <a th:replace="layout/basic :: back-to-top"></a>
 </div>
 <!-- wrapper end-->
 
 
-<div th:replace="/layout/basic :: scriptSet">
+<div th:replace="layout/basic :: scriptSet">
 </div>
 
 </body>
@@ -381,7 +382,6 @@
   document.querySelector(".counselingBtn").addEventListener("click", function (e){
 
     const idx = [[${student.idx}]]
-    console.log("idx= " + idx);
 
     //값과 타입까지 비교위한(====)
     // if (idx === null) {
@@ -409,8 +409,6 @@
 
   async function getStudent(paramList){
     const response = await axios.get('/student/getStudent', {params : paramList});
-    console.log("done!");
-    console.log(response);
 
     return response.data;
   }
@@ -427,8 +425,6 @@
 
 
   function openPaper(studentIdx){
-    // console.log('questionAnswerIdx : ' + questionAnswerIdx);
-    console.log('studentIdx : ' + studentIdx);
     let htmls = '';
 
     const params = {
@@ -438,15 +434,13 @@
 
     // 학생 정보
     getStudent(params).then(result => {
-      console.log("student info!");
-      console.log(result);
 
       studentName.innerText = result.name;
       studentLesson.innerText = result.lessonName + ' ' +  result.lessonNumber + '회차';
       studentPhone.innerText = result.phone;
       studentBirthday.innerText = result.birthday;
       if(result.uuid != null){
-        studentFileName.innerHTML = `<img src="/view/${result.uuid + '_' + result.fileName}" style="object-fit: cover; width: 150px; height: 200px">`;
+        studentFileName.innerHTML = `<img src="/view/${result.uuid + result.extension}" style="object-fit: cover; width: 150px; height: 200px">`;
       }else{
           studentFileName.innerHTML = `<img src="/images/default_profile.jpg" style="object-fit: cover; width: 150px; height: 200px">`;
       }
@@ -461,15 +455,6 @@
 
     // 답안지
     getQuestionAnswer(params).then(result => {
-      console.log(result);
-      console.log('questionAnswer!')
-      console.log(result.questionAnswer);
-      console.log(result.answerList);
-      console.log(result.questionAnswer[0]);
-      console.log('1. answer : ' + result.answerList[0].answer.toString());
-      console.log(result.answerList[0].answer.toString() === result.questionAnswer[0]);
-
-
 
       for(let i = 0; i < 20; i++){
         // $(".questionAnswerPaper").append()

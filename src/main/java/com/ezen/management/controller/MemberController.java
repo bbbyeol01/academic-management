@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLDataException;
@@ -57,7 +59,7 @@ public class MemberController {
         model.addAttribute("admin", MemberRole.ADMIN);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
-        return "/member/admin/index";
+        return "member/admin/index";
     }
 
 
@@ -139,7 +141,7 @@ public class MemberController {
         model.addAttribute("teacher", MemberRole.TEACHER);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
-        return "/member/teacher/index";
+        return "member/teacher/index";
     }
 
 
@@ -221,7 +223,7 @@ public class MemberController {
         PageResponseDTO<Student> pageResponseDTO = studentService.searchStudent(lessonIdx, pageRequestDTO);
         model.addAttribute("pageResponseDTO", pageResponseDTO);
 
-        return "/member/student/index";
+        return "member/student/index";
     }
 
 
@@ -279,6 +281,7 @@ public class MemberController {
                 .etc(student.getEtc())
                 .uuid(student.getUuid())
                 .fileName(student.getFileName())
+                .extension(student.getExtension())
                 .build();
 
     }
@@ -309,10 +312,16 @@ public class MemberController {
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();
 
+        int index = originalName.lastIndexOf(".");
+        String extension = originalName.substring(index);
+        originalName = originalName.substring(0, index);
+
         studentDTO.setUuid(uuid);
         studentDTO.setFileName(originalName);
+        studentDTO.setExtension(extension);
 
-        Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+        Path savePath = Paths.get(uploadPath, uuid + extension);
+
 
         try {
 //           이미지 저장
@@ -333,10 +342,17 @@ public class MemberController {
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();
 
+        int index = originalName.lastIndexOf(".");
+        String extension = originalName.substring(index);
+        originalName = originalName.substring(0, index);
+
         memberDTO.setUuid(uuid);
         memberDTO.setFileName(originalName);
+        memberDTO.setExtension(extension);
 
-        Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+//        저장 시 uuid.확장자명
+        Path savePath = Paths.get(uploadPath, uuid + extension);
+
 
         try {
 //           이미지 저장
@@ -350,3 +366,4 @@ public class MemberController {
 
 
 }
+

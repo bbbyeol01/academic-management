@@ -14,6 +14,7 @@ public class QuestionDTO {
     private String example;
     private String uuid;
     private String fileName;
+    private String extension;
     private int number;
     private String item1;
     private String item2;
@@ -21,4 +22,12 @@ public class QuestionDTO {
     private String item4;
 
     private int answer;
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
 }

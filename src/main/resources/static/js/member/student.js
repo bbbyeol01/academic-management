@@ -22,7 +22,7 @@ document.querySelector(".pagination").addEventListener("click", function (e) {
     formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
 
     // 검색 목록이면
-    if(keyword.value !== ''){
+    if(keyword.value !== '' && num ===1){
         formObj.innerHTML += `<input type="hidden" name="type" value="${type.value}">`
         formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
     }
@@ -96,7 +96,6 @@ registerBtn.addEventListener("click", function (e){
 
 async function getOngoingLesson(){
     const response = await axios.get('/lesson/getOngoing', null);
-    console.log(response);
 
     return response.data;
 
@@ -127,8 +126,6 @@ function studentModify(studentIdx){
 
     getStudent(params).then(result => {
 
-        console.log(result);
-
         // modifyLessonIdx.value = result.lessonIdx;
         modifyIdx.value = result.idx;
         modifyName.value = result.name;
@@ -138,7 +135,7 @@ function studentModify(studentIdx){
         modifyEtc.value = result.etc;
 
         if(result.uuid != null){
-            modifyImage.innerHTML = '<img src="/view/' + result.uuid + '_' + result.fileName +'" class="rounded-circle" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">';
+            modifyImage.innerHTML = '<img src="/view/' + result.uuid + result.extension +'" class="rounded-circle" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">';
         }else{
             modifyImage.innerHTML = `<img class="rounded-circle" src="/images/default_profile.jpg" alt="" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">`;
         }
@@ -153,9 +150,6 @@ function studentModify(studentIdx){
 
 
 function modifyValid(){
-
-    console.log('modifyValid!');
-    console.log(modifyIdx.value);
 
     modifyName.value = modifyName.value.trim();
     modifyPhone.value = modifyPhone.value.trim();
@@ -199,7 +193,6 @@ modifyBtn.addEventListener("click", function (e){
 
 async function getStudent(paramList){
     const response = await axios.get('/member/student/getStudent', {params : paramList});
-    console.log(response);
 
     return response.data;
 }
@@ -283,10 +276,8 @@ function insertValid(){
 
 
 const url = new URL(window.location.href);
-console.log(window.location.href);
 const urlSearchParams = url.searchParams;
 
-console.log(urlSearchParams.get("code"));
 const code = urlSearchParams.get("code");
 
 switch (code){

@@ -229,8 +229,8 @@ public class TrainingController {
         PageResponseDTO<Lesson> responseDTO = trainingService.searchLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
-        PageResponseDTO<Curriculum> responseCurriculum = trainingService.searchCurriculum(pageRequestDTO);
-        List<Curriculum> curriculum = responseCurriculum.getDtoList();
+//        PageResponseDTO<Curriculum> responseCurriculum = trainingService.searchCurriculum(pageRequestDTO);
+        List<Curriculum> curriculum = trainingService.curriculumList();
         model.addAttribute("curriculum", curriculum);
 
         List<QuestionName> questionName = questionNameService.findAll();
@@ -276,7 +276,7 @@ public class TrainingController {
         //인덱스에 해당하는 수업
         model.addAttribute("lesson", trainingService.getLessonByIdx(idx));
 
-        return "/training/lesson/detail";
+        return "training/lesson/detail";
     }
 
 

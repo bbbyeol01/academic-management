@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/layout/student/basic :: head"></head>
+<head th:replace="layout/student/basic :: head"></head>
 <body>
 <!-- warpper start -->
 <div class="wrapper">
-    <div th:replace="/layout/student/basic :: sidebar">
+    <div th:replace="layout/student/basic :: sidebar">
 
     </div>
 
@@ -53,17 +53,14 @@
     <!-- content end -->
 
 
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
-    <a th:replace="/layout/student/basic :: back-to-top"></a>
+    <a th:replace="layout/student/basic :: back-to-top"></a>
 
 </div>
 <!-- wrapper end-->
 
 
 
-<div th:replace="/layout/student/basic :: scriptSet">
+<div th:replace="layout/student/basic :: scriptSet">
 </div>
 
 <script>
@@ -72,7 +69,6 @@
 
     // alert -------------------------------------------------------------
     const url = new URL(window.location.href);
-    console.log(window.location.href);
     const urlSearchParams = url.searchParams;
 
     const code = urlSearchParams.get("code");
