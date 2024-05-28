@@ -26,6 +26,7 @@ public class Question {
 //    사진
     private String uuid;
     private String fileName;
+    private String extension;
 
     private int number;
 
@@ -45,9 +46,10 @@ public class Question {
         this.example = example;
     }
 
-    public void changeFileName(String uuid, String fileName) {
+    public void changeFileName(String uuid, String fileName, String extension) {
         this.uuid = uuid;
         this.fileName = fileName;
+        this.extension = extension;
     }
 
 

@@ -257,7 +257,7 @@
         formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
 
         // 검색 목록이면
-        if(keyword.value !== ''){
+        if(keyword.value !== '' && num === 1){
             formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
         }
 

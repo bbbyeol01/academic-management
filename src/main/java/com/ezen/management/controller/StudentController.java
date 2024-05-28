@@ -62,7 +62,7 @@ public class StudentController {
             student = studentService.findByLessonIdxAndName(studentDTO.getLessonIdx(), studentDTO.getName());
         }catch (Exception e){
 //        학생이 존재하지 않으면 돌아감
-            return "redirect:student?code=not-exist-student";
+            return "redirect:/student?code=not-exist-student";
 
         }
 
@@ -81,7 +81,7 @@ public class StudentController {
 
 //        학생이 존재하지 않으면 문제를 풀 수 없음
         if (student == null) {
-            return "redirect:student";
+            return "redirect:/student";
         }
 
 //        레슨에 저장된 문제 카테고리(문제 이름)
@@ -113,9 +113,9 @@ public class StudentController {
         try{
 //          채점 (답안지 삽입 + 학생 컬럼 pretest = true, score = 점수)
             questionAnswerService.grading(questionAnswerDTO);
-            return "redirect:student?code=success";
+            return "redirect:/student?code=success";
         }catch (Exception e){
-            return "redirect:student?code=fail";
+            return "redirect:/student?code=fail";
         }
 
     }
@@ -146,6 +146,7 @@ public class StudentController {
                 .phone(student.getPhone())
                 .uuid(student.getUuid())
                 .fileName(student.getFileName())
+                .extension(student.getExtension())
                 .counseling(student.getCounseling())
                 .pretest(student.isPretest())
                 .score(student.getScore())

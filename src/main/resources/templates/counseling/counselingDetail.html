@@ -32,10 +32,10 @@
                 <tbody class="col">
                 <tr class="col" style="display: flex; flex-direction: column; min-height: 100%;">
                     <td style="display: inline-flex; vertical-align: top; padding-bottom: 50px;" >
-                        <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
+                        <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + student.extension}" alt=""
                              style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
                         <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
-                             style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
+                        style="width: 150px; height: 180px; margin-right: 20px; object-fit: cover">
             <!-- 사진은 좌측 / 정보는 우측 = 공간나눔 -->
                         <table class="fs-6" style="margin-left: 20px; font-weight: bold; color: black;">
                             <tr>
@@ -167,7 +167,8 @@
     console.log("studentIdx= " + studentIdx);
 
     //상담회차 정보 확인
-    let round = document.getElementById("round").innerText;
+    // let round = document.getElementById("round").innerText;
+    let round = [[${student.counseling}]];
     console.log("round = " + round);
 
 
@@ -176,7 +177,7 @@
         e.preventDefault()
         e.stopPropagation()
 
-        if (round === "6") {
+        if (round === 6) {
             // 버튼 비활성화
             document.querySelector(".creatBtn").disabled = true;
             // 사용자에게 메시지 표시

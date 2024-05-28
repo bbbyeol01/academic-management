@@ -379,7 +379,7 @@
     formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
 
     // 검색 목록이면
-    if(keyword.value !== ''){
+    if(keyword.value !== '' && num === 1){
       formObj.innerHTML += `<input type="hidden" name="type" value="${type.value}">`
       formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
     }
@@ -506,7 +506,7 @@
       idx.value = result.idx;
 
       if(result.uuid != null){
-        modifyImage.innerHTML = '<img src="/view/' + result.uuid + '_' + result.fileName +'" class="" style="width: 100%; height:100%; object-fit: contain; cursor: pointer">';
+        modifyImage.innerHTML = '<img src="/view/' + result.uuid + result.extension +'" class="" style="width: 100%; height:100%; object-fit: contain; cursor: pointer">';
       }else {
         modifyImage.innerHTML = '<br><br><br><br>등록된 이미지가 없습니다.';
       }

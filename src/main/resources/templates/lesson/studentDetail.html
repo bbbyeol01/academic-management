@@ -46,7 +46,7 @@
                 <input type="hidden" class="studentIdx" th:value="${student.idx}">
                 <input type="hidden" class="lessonIdx" th:value="${student.lesson.idx}">
                 <div style="display: inline-flex">
-                    <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + '_' + student.fileName}" alt=""
+                    <img th:if="${student.uuid != null}" th:src="${'/view/' + student.uuid + student.extension}" alt=""
                          style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
                     <img th:if="${student.uuid == null}" src="/images/default_profile.jpg" alt=""
                          style="width: 150px; height: 180px; margin-right: 40px; object-fit: cover">
@@ -446,7 +446,7 @@
       studentPhone.innerText = result.phone;
       studentBirthday.innerText = result.birthday;
       if(result.uuid != null){
-        studentFileName.innerHTML = `<img src="/view/${result.uuid + '_' + result.fileName}" style="object-fit: cover; width: 150px; height: 200px">`;
+        studentFileName.innerHTML = `<img src="/view/${result.uuid + result.extension}" style="object-fit: cover; width: 150px; height: 200px">`;
       }else{
           studentFileName.innerHTML = `<img src="/images/default_profile.jpg" style="object-fit: cover; width: 150px; height: 200px">`;
       }

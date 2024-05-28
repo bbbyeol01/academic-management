@@ -47,8 +47,8 @@ public class MemberServiceImpl implements MemberService {
                 .name(memberDTO.getName())
                 .build();
 
-        if(!memberDTO.getFileName().isEmpty()){
-            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
+        if(memberDTO.getFileName() != null){
+            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
         member.addRole(MemberRole.ADMIN);
@@ -67,7 +67,7 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         if(memberDTO.getFileName() != null){
-            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
+            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
         member.addRole(MemberRole.TEACHER);
@@ -139,7 +139,7 @@ public class MemberServiceImpl implements MemberService {
 
 //             파일 삭제
             if(member.getUuid() != null){
-                Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + '_' + member.getFileName());
+                Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + member.getExtension());
 
                 try{
                     resource.getFile().delete();
@@ -170,7 +170,7 @@ public class MemberServiceImpl implements MemberService {
 
 //        수정 시 주의 : 기존(member)에 사진이 있고, DTO에 사진이 있다면 기존 사진을 서버에서 삭제
         if(member.getUuid() != null && memberDTO.getUuid() != null){
-            Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + '_' + member.getFileName());
+            Resource resource = new FileSystemResource(uploadPath + File.separator + member.getUuid() + member.getExtension());
 
             try{
                 resource.getFile().delete();
@@ -182,7 +182,7 @@ public class MemberServiceImpl implements MemberService {
 
 
         if(memberDTO.getUuid() != null){
-            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName());
+            member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
         log.info("member......" + member);

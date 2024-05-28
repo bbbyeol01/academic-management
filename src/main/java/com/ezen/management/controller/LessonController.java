@@ -158,6 +158,6 @@ public class LessonController {
         Long idx = lessonService.subjectTestUpdate(subjectTestList);
         log.info("컨트롤러 학생 인덱스 : " + idx);
 
-        return "redirect:lesson/studentDetail?idx=" + idx;
+        return "redirect:/lesson/studentDetail?idx=" + idx;
     }
 }

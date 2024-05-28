@@ -24,7 +24,6 @@
 
         <div class="inner-content" style="margin: 2vw 0 0 6vh; max-width: 80%">
 
-                <button style="display: inline-flex" class="btn btn-primary float-end">학생추가</button>
                 <h3> 학생목록 </h3>
 
             <hr>
@@ -172,7 +171,7 @@
         formObj.innerHTML += `<input type="hidden" name="idx" value="${idx}">`;
 
         // 검색 목록이면
-        if (keyword.value !== '') {
+        if (keyword.value !== '' && num === 1) {
             formObj.innerHTML += `<input type="hidden" name="type" value="${type.value}">`
             formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
         }

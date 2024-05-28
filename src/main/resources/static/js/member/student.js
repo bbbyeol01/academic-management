@@ -22,7 +22,7 @@ document.querySelector(".pagination").addEventListener("click", function (e) {
     formObj.innerHTML += `<input type="hidden" name="page" value="${num}">`;
 
     // 검색 목록이면
-    if(keyword.value !== ''){
+    if(keyword.value !== '' && num ===1){
         formObj.innerHTML += `<input type="hidden" name="type" value="${type.value}">`
         formObj.innerHTML += `<input type="hidden" name="keyword" value="${keyword.value}">`
     }
@@ -138,7 +138,7 @@ function studentModify(studentIdx){
         modifyEtc.value = result.etc;
 
         if(result.uuid != null){
-            modifyImage.innerHTML = '<img src="/view/' + result.uuid + '_' + result.fileName +'" class="rounded-circle" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">';
+            modifyImage.innerHTML = '<img src="/view/' + result.uuid + result.extension +'" class="rounded-circle" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">';
         }else{
             modifyImage.innerHTML = `<img class="rounded-circle" src="/images/default_profile.jpg" alt="" style="width: 100%; height:100%; object-fit: cover; cursor: pointer">`;
         }

@@ -35,7 +35,8 @@
       <hr>
       <br>
       <div style="display: flex" class="align-items-center">
-        <img class="rounded-circle profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px; object-fit: cover">
+        <img th:if="${noticeDTO.uuid != null}" class="rounded-circle profile" th:src="${'/view/' + noticeDTO.uuid + noticeDTO.extension}" alt="" style="width: 40px; height: 40px; object-fit: cover">
+        <img th:if="${noticeDTO.uuid == null}" class="rounded-circle profile" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px; object-fit: cover">
         &nbsp;
         &nbsp;
         <div>

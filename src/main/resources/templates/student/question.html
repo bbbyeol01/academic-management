@@ -204,8 +204,8 @@
                     </div>
 
                     <!--                    사진 -->
-                    <div th:if="${question.fileName != null && question.fileName != ''}">
-                        <img th:src="'/view/' + ${question.uuid} + '_' + ${question.fileName}" style="max-width: 270px; margin: 30px">
+                    <div th:if="${question.uuid != null && question.uuid != ''}">
+                        <img th:src="'/view/' + ${question.uuid} + ${question.extension}" style="max-width: 270px; margin: 30px">
                     </div>
 
 

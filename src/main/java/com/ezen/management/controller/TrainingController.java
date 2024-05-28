@@ -207,7 +207,7 @@ public class TrainingController {
         curriculumDTO.setDay(day);
 
         trainingService.curriculumUpdate(curriculumDTO);
-        return "redirect:training/curriculum";
+        return "redirect:/training/curriculum";
     }
 
     //과정삭제
@@ -229,8 +229,8 @@ public class TrainingController {
         PageResponseDTO<Lesson> responseDTO = trainingService.searchLesson(pageRequestDTO, userId);
         model.addAttribute("responseDTO", responseDTO);
 
-        PageResponseDTO<Curriculum> responseCurriculum = trainingService.searchCurriculum(pageRequestDTO);
-        List<Curriculum> curriculum = responseCurriculum.getDtoList();
+//        PageResponseDTO<Curriculum> responseCurriculum = trainingService.searchCurriculum(pageRequestDTO);
+        List<Curriculum> curriculum = trainingService.curriculumList();
         model.addAttribute("curriculum", curriculum);
 
         List<QuestionName> questionName = questionNameService.findAll();
@@ -319,7 +319,7 @@ public class TrainingController {
             }
         }
 
-        return "redirect:training/lesson";
+        return "redirect:/training/lesson";
     }
 
     //수업수정
@@ -343,7 +343,7 @@ public class TrainingController {
 
         trainingService.lessonUpdate(lessonDTO);
 
-        return "redirect:training/lesson/detail?idx="+lessonDTO.getIdx();
+        return "redirect:/training/lesson/detail?idx="+lessonDTO.getIdx();
     }
 
     //수업삭제

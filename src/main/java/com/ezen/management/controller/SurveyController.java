@@ -68,7 +68,7 @@ public class SurveyController {
 
         round = surveyService.modify(surveyDtoList, round);
 
-        return "redirect:member/survey/read?round=" + round;
+        return "redirect:/member/survey/read?round=" + round;
     }
 
     /*=======================설문작성(학생)=======================*/
@@ -101,7 +101,7 @@ public class SurveyController {
 
         int result = surveyAnswerService.insert(surveyAnswerDTO, studentDTO);
 
-        return "redirect:student";
+        return "redirect:/student";
     }
 
     /*=========================설문결과=========================*/

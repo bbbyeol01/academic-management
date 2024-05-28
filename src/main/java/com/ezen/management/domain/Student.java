@@ -29,7 +29,10 @@ public class Student extends BaseEntity{
     private String uuid;
 
     @Builder.Default
-    private String fileName = "default_profile.jpg";
+    private String fileName = "default_profile";
+
+    @Builder.Default
+    private String extension = ".jpg";
 
     //    상담 등록 시 +1
     @Builder.Default
@@ -75,9 +78,10 @@ public class Student extends BaseEntity{
         this.survey++;
     }
 
-    public void changeFileName(String uuid, String fileName){
+    public void changeFileName(String uuid, String fileName, String extension){
         this.uuid = uuid;
         this.fileName = fileName;
+        this.extension = extension;
     }
 
     public void changeEtc(String etc){

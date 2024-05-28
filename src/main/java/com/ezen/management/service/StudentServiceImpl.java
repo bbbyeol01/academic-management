@@ -116,7 +116,7 @@ public class StudentServiceImpl implements StudentService{
                 .build();
 
         if(studentDTO.getFileName() != null && !studentDTO.getFileName().isEmpty()){
-            student.changeFileName(studentDTO.getUuid(), studentDTO.getFileName());
+            student.changeFileName(studentDTO.getUuid(), studentDTO.getFileName(), studentDTO.getExtension());
         }
 
         if(studentDTO.getEtc() != null && !studentDTO.getEtc().isEmpty()){
@@ -150,7 +150,7 @@ public class StudentServiceImpl implements StudentService{
 
 //        수정 시 주의 : 기존(student)에 사진이 있고, DTO에 사진이 있다면 기존 사진을 서버에서 삭제
         if(student.getUuid() != null && studentDTO.getUuid() != null){
-            Resource resource = new FileSystemResource(uploadPath + File.separator + student.getUuid() + '_' + student.getFileName());
+            Resource resource = new FileSystemResource(uploadPath + File.separator + student.getUuid() + '.' + student.getExtension());
 
             try{
                 resource.getFile().delete();
@@ -167,7 +167,7 @@ public class StudentServiceImpl implements StudentService{
         student.changePhone(studentDTO.getPhone());
 
         if(studentDTO.getUuid() != null){
-            student.changeFileName(studentDTO.getUuid(), studentDTO.getFileName());
+            student.changeFileName(studentDTO.getUuid(), studentDTO.getFileName(), studentDTO.getExtension());
         }
 
         studentRepository.save(student);
@@ -193,7 +193,7 @@ public class StudentServiceImpl implements StudentService{
 
 //        파일 삭제
         if(student.getUuid() != null){
-            Resource resource = new FileSystemResource(uploadPath + File.separator + student.getUuid() + '_' + student.getFileName());
+            Resource resource = new FileSystemResource(uploadPath + File.separator + student.getUuid() + student.getExtension());
 
             try{
                 resource.getFile().delete();

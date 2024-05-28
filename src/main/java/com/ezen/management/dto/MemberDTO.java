@@ -15,6 +15,7 @@ public class MemberDTO {
     private String name;
     private String uuid;
     private String fileName;
+    private String extension;
     private MemberState memberState;
 
 }

@@ -99,6 +99,8 @@ public class NoticeController {
     @ResponseBody
     public Integer modify(NoticeDTO noticeDTO) {
 
+        log.info("noticeDTO ; {}", noticeDTO);
+
         return noticeService.update(noticeDTO);
     }
 

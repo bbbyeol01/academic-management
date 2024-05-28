@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLDataException;
@@ -72,9 +74,9 @@ public class MemberController {
 
         try{
             memberService.adminInsert(memberDTO);
-            return "redirect:member/admin?code=insert-success";
+            return "redirect:/member/admin?code=insert-success";
         }catch (Exception e){
-            return "redirect:member/admin?code=insert-fail";
+            return "redirect:/member/admin?code=insert-fail";
         }
     }
 
@@ -101,10 +103,10 @@ public class MemberController {
 
         try{
             memberService.modify(memberDTO);
-            return "redirect:member/admin?code=modify-success";
+            return "redirect:/member/admin?code=modify-success";
         }catch (Exception e){
             log.error(e.getMessage());
-            return "redirect:member/admin?code=modify-fail";
+            return "redirect:/member/admin?code=modify-fail";
         }
     }
 
@@ -155,10 +157,10 @@ public class MemberController {
 
         try{
             memberService.teacherInsert(memberDTO);
-            return "redirect:member/teacher?code=insert-success";
+            return "redirect:/member/teacher?code=insert-success";
         }catch (Exception e){
             log.error(e.getMessage());
-            return "redirect:member/teacher?code=insert-fail";
+            return "redirect:/member/teacher?code=insert-fail";
         }
 
     }
@@ -183,9 +185,9 @@ public class MemberController {
 
         try{
             memberService.modify(memberDTO);
-            return "redirect:member/teacher?code=modify-success";
+            return "redirect:/member/teacher?code=modify-success";
         }catch (Exception e){
-            return "redirect:member/teacher?code=modify-fail";
+            return "redirect:/member/teacher?code=modify-fail";
         }
 
     }
@@ -235,9 +237,9 @@ public class MemberController {
 
         try {
             studentService.insert(studentDTO);
-            return "redirect:member/student?code=insert-success";
+            return "redirect:/member/student?code=insert-success";
         }catch (Exception e){
-            return "redirect:member/student?code=insert-fail";
+            return "redirect:/member/student?code=insert-fail";
         }
 
     }
@@ -251,9 +253,9 @@ public class MemberController {
 
         try {
             studentService.modify(studentDTO);
-            return "redirect:member/student?code=modify-success";
+            return "redirect:/member/student?code=modify-success";
         }catch (Exception e){
-            return "redirect:member/student?code=modify-fail";
+            return "redirect:/member/student?code=modify-fail";
         }
 
     }
@@ -279,6 +281,7 @@ public class MemberController {
                 .etc(student.getEtc())
                 .uuid(student.getUuid())
                 .fileName(student.getFileName())
+                .extension(student.getExtension())
                 .build();
 
     }
@@ -290,9 +293,9 @@ public class MemberController {
 
         try{
             studentService.delete(studentDTO);
-            return "redirect:member/student?code=delete-success";
+            return "redirect:/member/student?code=delete-success";
         }catch (Exception e){
-            return "redirect:member/student?code=delete-fail";
+            return "redirect:/member/student?code=delete-fail";
         }
 
     }
@@ -309,10 +312,16 @@ public class MemberController {
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();
 
+        int index = originalName.lastIndexOf(".");
+        String extension = originalName.substring(index);
+        originalName = originalName.substring(0, index);
+
         studentDTO.setUuid(uuid);
         studentDTO.setFileName(originalName);
+        studentDTO.setExtension(extension);
 
-        Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+        Path savePath = Paths.get(uploadPath, uuid + extension);
+
 
         try {
 //           이미지 저장
@@ -333,10 +342,20 @@ public class MemberController {
         String uuid = UUID.randomUUID().toString();
         String originalName = file.getOriginalFilename();
 
+        int index = originalName.lastIndexOf(".");
+        String extension = originalName.substring(index);
+        originalName = originalName.substring(0, index);
+
+        log.info("파일 이름: {}", originalName);
+        log.info("확장자 : {}", extension);
+
         memberDTO.setUuid(uuid);
         memberDTO.setFileName(originalName);
+        memberDTO.setExtension(extension);
 
-        Path savePath = Paths.get(uploadPath, uuid + "_" + originalName);
+//        저장 시 uuid.확장자명
+        Path savePath = Paths.get(uploadPath, uuid + extension);
+
 
         try {
 //           이미지 저장
@@ -350,3 +369,4 @@ public class MemberController {
 
 
 }
+

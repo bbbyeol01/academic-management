@@ -15,7 +15,7 @@ public interface NoticeRepository extends JpaRepository<Notice, Integer>, Notice
     @Query("select n from Notice n left join n.category nc where n.idx = :idx")
     Notice findByIdWithCategory(int idx);
 
-    @Query("select n from Notice n left join n.category nc order by n.idx desc limit 5")
+    @Query("select n from Notice n left join n.category nc where n.del = false order by n.idx desc limit 5")
     List<Notice> getNoticeLimit();
 
 }

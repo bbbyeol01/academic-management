@@ -128,7 +128,7 @@ public class HomeController {
 //            };
 //        }
 
-        return "redirect:member";
+        return "redirect:/member";
 
     }
 

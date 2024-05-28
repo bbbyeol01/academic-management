@@ -56,7 +56,7 @@
       <div th:each="member : ${pageResponseDTO.getDtoList()}" th:with="teacher=${teacher}">
 
           <hr>
-          <img th:if="${member.uuid != null}" class="rounded-circle" th:src="${'/view/' + member.uuid + '_' + member.fileName}" alt="" style="width: 40px; height: 40px; object-fit: cover">
+          <img th:if="${member.uuid != null}" class="rounded-circle" th:src="${'/view/' + member.uuid + member.extension}" alt="" style="width: 40px; height: 40px; object-fit: cover">
           <img th:if="${member.uuid == null}" class="rounded-circle" src="/images/default_profile.jpg" alt="" style="width: 40px; height: 40px; object-fit: cover">
         &nbsp;&nbsp;
           <div style="display: inline-flex" th:text="${member.name}"></div> &nbsp;&nbsp; | &nbsp;&nbsp;

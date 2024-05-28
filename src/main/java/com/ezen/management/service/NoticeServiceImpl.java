@@ -1,5 +1,6 @@
 package com.ezen.management.service;
 
+import com.ezen.management.domain.Member;
 import com.ezen.management.domain.Notice;
 import com.ezen.management.domain.NoticeCategory;
 import com.ezen.management.dto.NoticeDTO;
@@ -68,18 +69,23 @@ public class NoticeServiceImpl implements NoticeService {
                     writeDate =  minutes / 525600 + "년 전";
                 }
 
+            Member writer = memberRepository.findById(notice.getWriter()).get();
+
             NoticeDTO noticeDTO = NoticeDTO.builder()
                     .idx(notice.getIdx())
                     .title(notice.getTitle())
                     .content(notice.getContent())
                     .writer(notice.getWriter())
-                    .writerName(memberRepository.findById(notice.getWriter()).get().getName())
+                    .writerName(writer.getName())
                     .modDate(notice.getModDate())
                     .writeDate(writeDate)
                     .categoryIdx(notice.getCategory().getIdx())
                     .categoryName(notice.getCategory().getName())
                     .admin(notice.isAdmin())
                     .hold(notice.isHold())
+                    .uuid(writer.getUuid())
+                    .fileName(writer.getFileName())
+                    .extension(writer.getExtension())
                     .build();
 
             dtoList.add(noticeDTO);
@@ -139,6 +145,8 @@ public class NoticeServiceImpl implements NoticeService {
             writeDate =  minutes / 525600 + "년 전";
         }
 
+        Member writer = memberRepository.findById(notice.getWriter()).get();
+
         NoticeDTO noticeDTO = NoticeDTO.builder()
                 .idx(notice.getIdx())
                 .title(notice.getTitle())
@@ -151,6 +159,9 @@ public class NoticeServiceImpl implements NoticeService {
                 .categoryName(notice.getCategory().getName())
                 .admin(notice.isAdmin())
                 .hold(notice.isHold())
+                .uuid(writer.getUuid())
+                .fileName(writer.getFileName())
+                .extension(writer.getExtension())
                 .build();
 
 
@@ -187,6 +198,7 @@ public class NoticeServiceImpl implements NoticeService {
                 writeDate =  minutes / 525600 + "년 전";
             }
 
+            Member writer = memberRepository.findById(notice.getWriter()).get();
 
             NoticeDTO noticeDTO = NoticeDTO.builder()
                     .idx(notice.getIdx())
@@ -200,6 +212,9 @@ public class NoticeServiceImpl implements NoticeService {
                     .categoryName(notice.getCategory().getName())
                     .admin(notice.isAdmin())
                     .hold(notice.isHold())
+                    .uuid(writer.getUuid())
+                    .fileName(writer.getFileName())
+                    .extension(writer.getExtension())
                     .build();
 
             noticeDTOList.add(noticeDTO);
@@ -223,7 +238,7 @@ public class NoticeServiceImpl implements NoticeService {
         Optional<NoticeCategory> byId1 = noticeCategoryRepository.findById(noticeDTO.getCategoryIdx());
         NoticeCategory noticeCategory = byId1.get();
 
-        notice.modify(noticeCategory, noticeDTO.getTitle(), notice.getContent(), noticeDTO.isAdmin(), noticeDTO.isHold());
+        notice.modify(noticeCategory, noticeDTO.getTitle(), noticeDTO.getContent(), noticeDTO.isAdmin(), noticeDTO.isHold());
 
         Notice save = noticeRepository.save(notice);
 
