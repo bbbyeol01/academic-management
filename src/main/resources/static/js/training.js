@@ -35,9 +35,7 @@ async function subjectDelete(idx){
 //----------------------------------------------------과정----------------------------------------------------
 //과정 추가
 // async function curriculumInsert(insert){
-//     console.log("time : " + insert.time + " , day : " +insert.day )
 //     const response = await axios.post(`/training/curriculum/insert`,null,{param : {name:insert.name, category:insert.category, time:insert.time, day:insert.day}})
-//     console.log("response : " + response)
 //     return response.data
 // }
 
@@ -68,14 +66,11 @@ async function findLessonDate(today){
 
 async function calendarStartDay(today){
     const result = await axios.post(`/calendarStartDay/${today}`, today)
-    console.log("개강일 js : " + result.data)
     return result.data
 }
 
 async function calendarEndDay(today){
     const result = await axios.post(`/calendarEndDay/${today}`, today)
-    console.log("종강일 js : ")
-    console.log( result.data)
     return result.data
 }
 

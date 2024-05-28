@@ -45,8 +45,6 @@ public class NoticeController {
 
         PageResponseDTO<NoticeDTO> all = noticeService.findAll(pageRequestDTO, category);
 
-        log.info("noticeDtoList : {}", all.getDtoList());
-
         model.addAttribute("pageResponseDTO", all);
 
         return "member/notice/index";
@@ -56,8 +54,6 @@ public class NoticeController {
     @PostMapping("/write")
     @ResponseBody
     public Integer writePost(NoticeDTO noticeDTO){
-
-        log.info("noticeDTO : {} ", noticeDTO);
 
         return noticeService.insert(noticeDTO);
 
@@ -98,8 +94,6 @@ public class NoticeController {
     @PutMapping("/modify")
     @ResponseBody
     public Integer modify(NoticeDTO noticeDTO) {
-
-        log.info("noticeDTO ; {}", noticeDTO);
 
         return noticeService.update(noticeDTO);
     }

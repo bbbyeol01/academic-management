@@ -56,11 +56,6 @@ public class QuestionController {
 
         PageResponseDTO<Question> questions = questionService.searchQuestion(pageRequestDTO);
 
-//        questions.getDtoList().forEach(question -> {
-//            log.info(question.getContent());
-//        });
-
-
         model.addAttribute("pageResponseDTO", questions);
 
         return "member/question/index";
@@ -73,12 +68,7 @@ public class QuestionController {
     @ResponseBody
     public List<Question> questionList(String name){
 
-        log.info("parameter name : {}", name);
         List<Question> questionByName = questionService.findQuestionByName(name);
-//
-//        questionByName.forEach(question -> {
-//            log.info(question.getContent());
-//        });
 
         return questionByName;
     }
@@ -87,9 +77,6 @@ public class QuestionController {
     @GetMapping("/getQuestion")
     @ResponseBody
     public Question getQuestion(Long questionIdx){
-
-        log.info("questionIdx : {}", questionIdx);
-        log.info("question : {}", questionService.findById(questionIdx));
 
         return questionService.findById(questionIdx);
     }

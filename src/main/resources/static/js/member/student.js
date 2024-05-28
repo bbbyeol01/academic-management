@@ -96,7 +96,6 @@ registerBtn.addEventListener("click", function (e){
 
 async function getOngoingLesson(){
     const response = await axios.get('/lesson/getOngoing', null);
-    console.log(response);
 
     return response.data;
 
@@ -127,8 +126,6 @@ function studentModify(studentIdx){
 
     getStudent(params).then(result => {
 
-        console.log(result);
-
         // modifyLessonIdx.value = result.lessonIdx;
         modifyIdx.value = result.idx;
         modifyName.value = result.name;
@@ -153,9 +150,6 @@ function studentModify(studentIdx){
 
 
 function modifyValid(){
-
-    console.log('modifyValid!');
-    console.log(modifyIdx.value);
 
     modifyName.value = modifyName.value.trim();
     modifyPhone.value = modifyPhone.value.trim();
@@ -199,7 +193,6 @@ modifyBtn.addEventListener("click", function (e){
 
 async function getStudent(paramList){
     const response = await axios.get('/member/student/getStudent', {params : paramList});
-    console.log(response);
 
     return response.data;
 }
@@ -283,10 +276,8 @@ function insertValid(){
 
 
 const url = new URL(window.location.href);
-console.log(window.location.href);
 const urlSearchParams = url.searchParams;
 
-console.log(urlSearchParams.get("code"));
 const code = urlSearchParams.get("code");
 
 switch (code){

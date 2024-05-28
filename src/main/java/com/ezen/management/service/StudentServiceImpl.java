@@ -57,9 +57,6 @@ public class StudentServiceImpl implements StudentService{
         Optional<Student> byId = studentRepository.findById(studentIdx);
         Student student = byId.get();
 
-        log.info("student : {}", student);
-
-
 //        null 처리 해야함!
         return byId.get();
     }
@@ -72,10 +69,6 @@ public class StudentServiceImpl implements StudentService{
         Pageable pageable = pageRequestDTO.getPageable("regDate");
 
         String[] types = pageRequestDTO.getTypes();
-
-//        for (String type : types) {
-//            log.info(type);
-//        }
 
         String keyword = pageRequestDTO.getKeyword();
 
@@ -115,7 +108,7 @@ public class StudentServiceImpl implements StudentService{
                 .phone(studentDTO.getPhone())
                 .build();
 
-        if(studentDTO.getFileName() != null && !studentDTO.getFileName().isEmpty()){
+        if(studentDTO.getUuid() != null && !studentDTO.getUuid().isEmpty()){
             student.changeFileName(studentDTO.getUuid(), studentDTO.getFileName(), studentDTO.getExtension());
         }
 

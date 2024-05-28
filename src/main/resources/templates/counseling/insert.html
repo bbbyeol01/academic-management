@@ -81,9 +81,6 @@
 
 
 
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
     <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
@@ -96,8 +93,6 @@
 
 <script content="script" th:inline="javascript">
 
-    console.log("안녕 여기 상담추가");
-
 
     //시간 설정하기
     // HTML 요소를 선택합니다.
@@ -105,11 +100,10 @@
 
     // 혹은 특정 포맷으로 날짜를 가져올 수 있습니다.
     const formattedDate = moment().format('YYYY-MM-DD HH:mm:ss');
-    console.log(formattedDate); // 예: "2024-04-09 13:45:30"
+    // 예: "2024-04-09 13:45:30"
 
     // 가져온 오늘 날짜를 input 요소의 값으로 설정합니다.
     counselingDateInput.value = formattedDate;
-    console.log("counselingDateInput=" + counselingDateInput.value);
 
 
 
@@ -155,7 +149,6 @@
         e.stopPropagation()
 
         const studentIdx = [[${student.idx}]]
-        console.log("studentIdx= " + studentIdx);
 
         self.location ='/counseling/counselingDetail?idx=' + studentIdx;
 

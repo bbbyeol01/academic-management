@@ -338,6 +338,7 @@
 
 
     </div> <!-- content end -->
+
     <a th:replace="layout/basic :: back-to-top"></a>
 </div>
 <!-- wrapper end-->
@@ -381,7 +382,6 @@
   document.querySelector(".counselingBtn").addEventListener("click", function (e){
 
     const idx = [[${student.idx}]]
-    console.log("idx= " + idx);
 
     //값과 타입까지 비교위한(====)
     // if (idx === null) {
@@ -409,8 +409,6 @@
 
   async function getStudent(paramList){
     const response = await axios.get('/student/getStudent', {params : paramList});
-    console.log("done!");
-    console.log(response);
 
     return response.data;
   }
@@ -427,8 +425,6 @@
 
 
   function openPaper(studentIdx){
-    // console.log('questionAnswerIdx : ' + questionAnswerIdx);
-    console.log('studentIdx : ' + studentIdx);
     let htmls = '';
 
     const params = {
@@ -438,8 +434,6 @@
 
     // 학생 정보
     getStudent(params).then(result => {
-      console.log("student info!");
-      console.log(result);
 
       studentName.innerText = result.name;
       studentLesson.innerText = result.lessonName + ' ' +  result.lessonNumber + '회차';
@@ -461,15 +455,6 @@
 
     // 답안지
     getQuestionAnswer(params).then(result => {
-      console.log(result);
-      console.log('questionAnswer!')
-      console.log(result.questionAnswer);
-      console.log(result.answerList);
-      console.log(result.questionAnswer[0]);
-      console.log('1. answer : ' + result.answerList[0].answer.toString());
-      console.log(result.answerList[0].answer.toString() === result.questionAnswer[0]);
-
-
 
       for(let i = 0; i < 20; i++){
         // $(".questionAnswerPaper").append()

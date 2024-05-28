@@ -346,9 +346,6 @@ public class MemberController {
         String extension = originalName.substring(index);
         originalName = originalName.substring(0, index);
 
-        log.info("파일 이름: {}", originalName);
-        log.info("확장자 : {}", extension);
-
         memberDTO.setUuid(uuid);
         memberDTO.setFileName(originalName);
         memberDTO.setExtension(extension);

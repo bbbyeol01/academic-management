@@ -81,9 +81,6 @@
 
 
 
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
     <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
@@ -95,9 +92,6 @@
 </div>
 
 <script content="script" th:inline="javascript">
-
-    console.log("안녕 여기 상담수정");
-
 
 
     //form에 id 추가
@@ -140,8 +134,6 @@
         e.stopPropagation()
 
         const studentIdx = [[${student.idx}]]
-        console.log("studentIdx= " + studentIdx);
-
         self.location ='/counseling/counselingDetail?idx=' + studentIdx;
 
     }, false)

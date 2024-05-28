@@ -78,9 +78,6 @@
     <!-- content end -->
 
 
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
     <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
@@ -97,8 +94,6 @@
 
 
     const principal = '[[${#authentication.principal.username}]]';
-    console.log(principal);
-
 
     const username = '[[${#authentication.principal.username}]]';
     const insertBtn = document.querySelector(".insertBtn");
@@ -109,8 +104,6 @@
     const hold = document.querySelector("#hold");
     insertBtn.addEventListener("click", function () {
         // alert("click!");
-
-        console.log("categoryIdx : " + categoryIdx.value);
 
         if(categoryIdx.value === '0'){
             alert('카테고리가 선택되지 않았습니다.');
@@ -138,7 +131,6 @@
 
         postNotice(paramList).then( result => {
 
-            console.log("notice index : " + result);
             location.href = "/member/notice/read?idx=" + result;
 
 

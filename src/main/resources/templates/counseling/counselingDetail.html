@@ -139,14 +139,6 @@
 
 
 
-
-
-
-
-
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
     <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
@@ -159,18 +151,12 @@
 
 <script content="script" th:inline="javascript">
 
-    console.log("안녕 여기 상담 상세");
-
-
     //학생정보확인
     const studentIdx = [[${student.idx}]]
-    console.log("studentIdx= " + studentIdx);
 
     //상담회차 정보 확인
     // let round = document.getElementById("round").innerText;
     let round = [[${student.counseling}]];
-    console.log("round = " + round);
-
 
     //상담 추가하기
     document.querySelector(".creatBtn").addEventListener("click", function (e){
@@ -197,7 +183,6 @@
         e.stopPropagation()
 
         const lessonIdx = [[${student.lesson.idx}]]
-        console.log("lessonIdx= " + lessonIdx);
 
         location.href = '/lesson/studentList?idx=' + lessonIdx;
 

@@ -130,9 +130,6 @@ public class LessonServiceImpl implements LessonService{
         String[] types = pageRequestDTO.getTypes();
         String keyword = pageRequestDTO.getKeyword();
 
-        log.info("KEYWORD : " + keyword);
-        log.info("TYPE : " + types);
-
         Page<Student> studentPage = studentRepository.searchStudentName(lessonIdx, types, keyword, pageable);
         List<Student> dtoList = studentPage.getContent();
 
@@ -175,8 +172,6 @@ public class LessonServiceImpl implements LessonService{
     }
 
     public SubjectTest SubjectTesListDTOtoSubjectTestEntity(SubjectTestListDTO subjectTestListDTO){
-
-        log.info("서비스 : " + subjectTestListDTO);
 
         Student student = studentRepository.findById(subjectTestListDTO.getStudentIdx()).orElseThrow();
 

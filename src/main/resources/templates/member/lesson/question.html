@@ -276,9 +276,6 @@
     <!-- content end -->
 
 
-    <!-- 진짜 개 천천히 top으로 올라가네요-->
-    <!--    좀 빠르게 고침 -->
-    <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
     <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
@@ -346,7 +343,6 @@
 
 
     const keyword = document.querySelector(".keyword");
-    console.log(keyword.value);
     const type = document.querySelector("#type");
 
     // 분류 변경되면
@@ -355,12 +351,10 @@
     function printQuestionAnswerList(){
 
         // 레슨 인덱스
-        console.log('레슨 인덱스');
-        console.log(lessonSelect.value);
+        // console.log(lessonSelect.value);
 
         // 전체 선택하면 초기화면
         if(lessonSelect.value === '0'){
-            console.log('바보');
             location.href = '/member/lesson/question';
             return;
         }
@@ -384,8 +378,6 @@
         let htmls2 = '';
 
         getQuestionAnswerList(params).then(result => {
-            console.log(result);
-            console.log(result.dtoList);
 
             if(result.dtoList === null){
                 htmls = `<p>검색 결과가 없습니다.</p>`;
@@ -396,7 +388,6 @@
 
             for(const questionAnswer of result.dtoList){
 
-                console.log(questionAnswer.student.name);
 
                 htmls += `<br>
                         <a class="link-dark" href="#">
@@ -429,8 +420,6 @@
     const searchBtn = document.querySelector("#searchBtn");
     const searchForm = document.querySelector("#searchForm");
     searchBtn.addEventListener("click", function () {
-
-        console.log(lessonSelect.value);
 
         // 분류가 선택되어있으면
         if(lessonSelect.value !== '0'){
@@ -467,8 +456,6 @@
     const studentScore = document.querySelector(".studentScore");
 
     function openPaper(studentIdx){
-        // console.log('questionAnswerIdx : ' + questionAnswerIdx);
-        console.log('studentIdx : ' + studentIdx);
         let htmls = '';
 
         const params = {
@@ -478,9 +465,6 @@
 
         // 학생 정보
         getStudent(params).then(result => {
-          console.log("student info!");
-          console.log(result);
-
           studentName.innerText = result.name;
           studentLesson.innerText = result.lessonName + ' ' +  result.lessonNumber + '회차';
           studentPhone.innerText = result.phone;
@@ -497,15 +481,6 @@
 
         // 답안지
         getQuestionAnswer(params).then(result => {
-            console.log(result);
-            console.log('questionAnswer!')
-            console.log(result.questionAnswer);
-            console.log(result.answerList);
-            console.log(result.questionAnswer[0]);
-            console.log('1. answer : ' + result.answerList[0].answer.toString());
-            console.log(result.answerList[0].answer.toString() === result.questionAnswer[0]);
-
-
 
             for(let i = 0; i < 20; i++){
                 // $(".questionAnswerPaper").append()
@@ -571,18 +546,10 @@
 
     async function getStudent(paramList){
         const response = await axios.get('/student/getStudent', {params : paramList});
-        console.log("done!");
-        console.log(response);
 
         return response.data;
     }
 
-
-    const 몰 = {
-        루 : "??"
-    }
-
-    console.log(몰?.루);
 
 </script>
 

@@ -75,10 +75,10 @@ public class QuestionServiceImpl implements QuestionService{
         byId.changeAnswer(questionDTO.getAnswer());
         byId.changeItem(questionDTO.getItem1(), questionDTO.getItem2(), questionDTO.getItem3(), questionDTO.getItem4());
 
-        if(questionDTO.getFileName() != null){
+        if(questionDTO.getUuid() != null){
 
             try{
-                Resource resource = new FileSystemResource(uploadPath + File.separator + byId.getUuid() + '_' + byId.getFileName());
+                Resource resource = new FileSystemResource(uploadPath + File.separator + byId.getUuid() + byId.getExtension());
                 resource.getFile().delete();
             }catch (IOException e){
                 log.error(e.getMessage());

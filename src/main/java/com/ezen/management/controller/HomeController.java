@@ -56,7 +56,6 @@ public class HomeController {
         String password = ((UserDetails) principal).getPassword();
 
         log.info(username);
-        log.info(password);
 
         authorities.forEach(auth -> {
             log.info("auth : {}", auth);

@@ -344,9 +344,6 @@
   <!-- content end -->
 
 
-  <!-- 진짜 개 천천히 top으로 올라가네요-->
-  <!--    좀 빠르게 고침 -->
-  <!-- 더 빠르게 바꾸고 싶으면 main.js에서 back-to-top speed 조정 낮을수록 빠름 -->
   <a th:replace="layout/basic :: back-to-top"></a>
 
 </div>
@@ -458,11 +455,7 @@
   // 문제 리스트 불러옴
   async function getQuestionList(paramList){
 
-    console.log(paramList);
-    console.log(paramList.name);
-
     const response = await axios.get('/member/question/list', {params : paramList});
-    console.log(response);
 
     return response.data;
   }// getQuestionList
@@ -491,10 +484,6 @@
     }
 
     getQuestion(paramList).then( result => {
-      console.log(result);
-      console.log(result.idx);
-      console.log(result.content);
-
 
       content.value = result.content;
       item1.value = result.item1;
@@ -518,19 +507,10 @@
 
     }).catch( e => {
       console.log(e);
-      console.log('error!');
 
     })
 
   }
-
-
-//   문제 수정
-//   수정 모달에 작성된 모든 값 파라미터로 보내서 수정 후 해당 분류 이름의 문제들 리턴 받으면 리스트 교체
-//   async function updateQuestion(paramList){
-//     const response = await axios.post(`/member/question/update`, null, {params : paramList});
-//     return response.data;
-//   }
 
 
   const modifyBtn = document.querySelector("#modifyBtn");
@@ -543,8 +523,6 @@
       return;
     }
 
-    console.log(content.value);
-
 
     // trim
     content.value = content.value.trim();
@@ -552,8 +530,6 @@
     item2.value = item2.value.trim();
     item3.value = item3.value.trim();
     item4.value = item4.value.trim();
-
-    console.log(content.value);
 
     // 공백 검증
     if(content.value === ''){
@@ -577,45 +553,8 @@
       return;
     }
 
-    // const modifyParam = {
-    //   idx : idx.value,
-    //   name : name.value,
-    //   content : content.value,
-    //   item1 : item1.value,
-    //   item2 : item2.value,
-    //   item3 : item3.value,
-    //   item4 : item4.value,
-    //   answer : answer.value
-    // }
 
     modifyForm.submit();
-
-    // updateQuestion(modifyParam).then(result => {
-    //
-    //   console.log("update result");
-    //   console.log(result);
-    //
-    //   for(const question of result){
-    //
-    //     htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
-    //               &nbsp;
-    //               <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
-    //               <div class="float-end" style="display: inline-flex">
-    //               <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
-    //               &nbsp;
-    //               <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
-    //               </div>
-    //               <hr>`;
-    //   }// for
-    //
-    //   location.reload();
-    //
-    //   alert('[' + name.value + '] ' + number.value + '번 문제가 수정되었습니다.');
-    //   $("#modifyModal").modal('hide');
-    //
-    //
-    //
-    // })
 
   })
 
@@ -626,7 +565,6 @@
 //   문제 idx로 문제 정보 불러옴
   async function getQuestion(paramList){
     const response = await axios.get(`/member/question/getQuestion`, {params : paramList});
-    console.log(response);
     return response.data;
   }
 
@@ -665,9 +603,6 @@
     const param = {
       name : insertQuestionKeyword.value
     }
-
-    console.log("insertQuestionKeyword");
-    console.log(insertQuestionKeyword.value);
 
     // 리스트를 가져와서 그 크기에 +1로 number를 설정
     getQuestionList(param).then(result => {
@@ -709,79 +644,13 @@
       }
 
 
-
-      // param을 작성 후 /member/question/insert로 Post 요청
-      // insertForm.submit();
-      // const insertParam = {
-      //   name : insertQuestionKeyword.value,
-      //   number : insertNumber.value,
-      //   content : insertContent.value,
-      //   example : insertExample.value,
-      //   item1 : insertItem1.value,
-      //   item2 : insertItem2.value,
-      //   item3 : insertItem3.value,
-      //   item4 : insertItem4.value,
-      //   answer : insertAnswer.value
-      // }
-
-      // console.log(insertParam);
-
       insertForm.submit();
-
-
-      // let htmls = '';
-      // insertQuestion(insertParam).then(result => {
-
-    //   문제 리스트가 리턴되면 새로운 문제 리스트를 출력하고 모달 초기화한 뒤 모달을 닫음
-    //     for(const question of result){
-    //
-    //       htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
-    //               &nbsp;
-    //               <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
-    //               <div class="float-end" style="display: inline-flex">
-    //               <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
-    //               &nbsp;
-    //               <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
-    //               </div>
-    //               <hr>`;
-    //     }// for
-
-        // [분류] n번 문제가 등록되었습니다.
-        // alert('[' + insertQuestionKeyword.value + '] ' + insertNumber.value + '번 문제가 등록되었습니다.');
-        // 문제 리스트 교체
-        // questionList.innerHTML = htmls;
-
-
-        // 모달 초기화
-        // insertNumber.value = '';
-        // registerBtn.value = '';
-        // insertContent.value = '';
-        // insertExample.value = '';
-        // insertItem1.value = '';
-        // insertItem2.value = '';
-        // insertItem3.value = '';
-        // insertItem4.value = '';
-        // insertAnswer.value = '';
-        // insertQuestionKeyword.value = '';
-        //
-        // // 모달 닫기
-        // $("#insertModal").modal('hide');
-
-        // location.reload();
-      // })
 
 
     })
 
 
-  })// registerBtn.addEventListener
-
-  // async function insertQuestion(paramList){
-  //   const response = await axios.post(`/member/question/insert`, null, {params : paramList});
-  //   console.log(response);
-  //
-  //   return response.data;
-  // }
+  })
 
 
   // 삭제
@@ -799,23 +668,7 @@
     let htmls = '';
     deleteQuestion(deleteParams).then(result => {
 
-      // for(const question of result){
-      //
-      //   htmls += `<div style="border-radius: 5px; border: solid #2a2d34 1px; max-width: 100px; display: inline-flex"><p style="margin: 5px">${question.name}</p></div>
-      //             &nbsp;
-      //             <div style="max-width: 60%; display: inline-flex"><a style="word-break: keep-all">${question.number}. ${question.content}</a></div>
-      //             <div class="float-end" style="display: inline-flex">
-      //             <button class="btn btn-secondary" questionIdx="${question.idx}" onclick="questionModify(this.getAttribute('questionIdx'))">수정</button>
-      //             &nbsp;
-      //             <button class="btn btn-danger" questionIdx="${question.idx}" onclick="questionDelete(this.getAttribute('questionIdx'))">삭제</button>
-      //             </div>
-      //             <hr>`;
-      // }// for
-
       alert('삭제되었습니다.');
-
-      // 문제 리스트 교체
-      // questionList.innerHTML = htmls;
 
       // 페이징 처리를 위해 새로고침
       location.href = '/member/question';
@@ -828,8 +681,6 @@
 
   async function deleteQuestion(paramList){
     const response = await axios.post(`/member/question/delete`, null, {params : paramList});
-    console.log(response);
-
     return response.data;
   }
 

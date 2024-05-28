@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService {
                 .name(memberDTO.getName())
                 .build();
 
-        if(memberDTO.getFileName() != null){
+        if(memberDTO.getUuid() != null){
             member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
@@ -66,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
                 .name(memberDTO.getName())
                 .build();
 
-        if(memberDTO.getFileName() != null){
+        if(memberDTO.getUuid() != null){
             member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
@@ -87,7 +87,6 @@ public class MemberServiceImpl implements MemberService {
 
         List<Member> dtoList = all.getContent();
 
-        log.info("memberServiceImpl dtoList " + dtoList);
         dtoList.forEach(member -> {
             log.info("member roleSet" + member.getRoleSet());
         });
@@ -107,9 +106,6 @@ public class MemberServiceImpl implements MemberService {
         String[] types = pageRequestDTO.getTypes(); // split("_")
         String keyword = pageRequestDTO.getKeyword();
 
-        log.info("types: " + Arrays.toString(types));
-        log.info("keyword: " + keyword);
-
 //        검색 카테고리, 키워드, 특정 권한을 가진 멤버 regDate 내림차순으로 페이징 처리해서 가져옴
         Page<Member> memberPage = memberRepository.searchMember(types, keyword, pageable, memberRoleSet);
 
@@ -127,7 +123,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void delete(String id) throws Exception {
-        log.info("id......" + id);
 
         Optional<Member> result = memberRepository.findById(id);
         Member member = result.orElseThrow();
@@ -185,7 +180,6 @@ public class MemberServiceImpl implements MemberService {
             member.changeProfile(memberDTO.getUuid(), memberDTO.getFileName(), memberDTO.getExtension());
         }
 
-        log.info("member......" + member);
         memberRepository.save(member);
 
     }

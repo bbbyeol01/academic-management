@@ -133,8 +133,6 @@ function teacherModify(teacherId){
     }
 
     getTeacher(params).then(result => {
-        console.log(result);
-
         modifyId.value = result.id;
         // modifyPassword.value =
         modifyName.value = result.name;
@@ -211,8 +209,6 @@ function teacherDelete(teacherId){
     // 백에서 code를 보내거나 redirect하는 대신 백에는 데이터/처리 요청만 하고 성공 실패 여부에 따라 프론트에서 해결
     deleteTeacher(params).then(result => {
 
-        console.log(result);
-
         if(result){
             // self.location = '/member/teacher?code=delete-success';
             alert('삭제되었습니다.');
@@ -223,7 +219,6 @@ function teacherDelete(teacherId){
         location.reload();
 
     }).catch( e => {
-        console.log(e);
         alert('에러가 발생했습니다.\n지속될 경우 관리자에게 문의해주세요.');
         location.reload();
     })
@@ -242,10 +237,8 @@ async function deleteTeacher(paramList){
 
 
 const url = new URL(window.location.href);
-console.log(window.location.href);
 const urlSearchParams = url.searchParams;
 
-console.log(urlSearchParams.get("code"));
 const code = urlSearchParams.get("code");
 
 const popupModal = document.querySelector("#popupModal");

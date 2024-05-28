@@ -47,7 +47,7 @@ public class StudentController {
 
         model.addAttribute("lessonList", lessonList);
 
-        log.info("!!!!!!!!!!!!!!!!!! student index !!!!!!!!!!!!!!!!!!");
+        log.info("[Student Index]");
         return "student/index";
     }
 
@@ -75,8 +75,6 @@ public class StudentController {
     @PostMapping("/question")
     public String testPaper(Model model, StudentDTO studentDTO) {
 
-        log.info("studentDTO : {} ", studentDTO);
-
         Student student = studentService.findByLessonIdxAndName(studentDTO.getLessonIdx(), studentDTO.getName());
 
 //        학생이 존재하지 않으면 문제를 풀 수 없음
@@ -93,22 +91,12 @@ public class StudentController {
         model.addAttribute("student", student);
         model.addAttribute("questions", questions);
 
-        log.info("학생 : {}", student);
-        log.info("수업 : {}", student.getLesson());
-        log.info("문제 : {} ", questions);
-//
-//        questions.forEach(question -> {
-//            log.info("문제 번호 {} 문제 {}", question.getNumber(), question.getContent());
-//        });
-
         return "student/question";
     }
 
 
     @PostMapping("/question/insert")
     public String insert(@Valid QuestionAnswerDTO questionAnswerDTO) {
-
-        log.info("questionAnswerDTO : {}", questionAnswerDTO);
 
         try{
 //          채점 (답안지 삽입 + 학생 컬럼 pretest = true, score = 점수)
@@ -126,11 +114,7 @@ public class StudentController {
 //    @PreAuthorize("hasAnyRole('MASTER', 'ADMIN', 'TEACHER')")
     public StudentDTO getStudent(Long studentIdx) {
 
-        log.info("student Idx : {}", studentIdx);
-
         Student student = studentService.findById(studentIdx);
-        log.info("student! {}", student);
-        log.info("lesson {} ", student.getLesson());
 
         LessonDTO lessonDTO = LessonDTO.builder()
                 .curriculum_name(student.getLesson().getCurriculum().getName())
@@ -157,7 +141,6 @@ public class StudentController {
                 .etc(student.getEtc())
                 .build();
 
-        log.info("studentDTO : {}", studentDTO);
 
         return studentDTO;
 
